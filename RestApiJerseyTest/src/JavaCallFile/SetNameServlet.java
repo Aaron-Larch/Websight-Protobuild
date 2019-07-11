@@ -37,6 +37,7 @@ public class SetNameServlet extends HttpServlet{
  		request.getSession().setAttribute(ObjectId, box);
  		
  		request.setAttribute("mailbox", ObjectId);
+ 		request.setAttribute("Page", "page1");
  		request.setAttribute("Record", box);
  		request.setAttribute("Message", Exit);
  		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);
@@ -93,6 +94,7 @@ public class SetNameServlet extends HttpServlet{
 	 		request.getSession().setAttribute(ObjectId, box);
 	 		
 	 		request.setAttribute("mailbox", ObjectId);
+	 		request.setAttribute("Page", "page1");
 	 		request.setAttribute("Record", box);
 	 		request.setAttribute("Message", Error);
 	 		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);

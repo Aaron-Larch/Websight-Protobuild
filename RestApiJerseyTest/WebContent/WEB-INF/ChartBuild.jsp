@@ -10,6 +10,7 @@
 </head>
 
 <body>
+	<div id="divName" style="display: none;">${Label}</div>
 	<jsp:include page="/PrintFinalData" />
 	<h2>If this works a graph should be here</h2>
 	<textarea id="message" rows="12" cols="150">${Message}</textarea>
@@ -19,6 +20,7 @@
 	<canvas id="LowLineGraph" height="250" width="500"></canvas>
 	<br>
 	<div id="BoxandWhisker" style="height: 250px; width: 100%;"></div>
+	<canvas id="HistogramChart" height="250" width="500"></canvas>
 	
 <script>
 	var xAxsis= ${Arrays.toString(Xaxis)};
@@ -27,13 +29,19 @@
 	var lowData= ${Arrays.toString(YaxisLow)};
 	var boxData= ${Arrays.toString(BoxAndWhiskersGraph)};
 	
+	var obj = ${Arrays.deepToString(BarGraph)};
+	var string = JSON.stringify(obj);
+	var block = string.substring(1, string.length-1);
+	var arr = JSON.parse("[" + block + "]");
+	var HistogramData= ${Arrays.toString(Histogram)};
+	
 	new Chart(document.getElementById("BellcurveChart"), {
 		  type: 'line',
 		  data: {
 		    labels: xAxsis,
 		    datasets: [{ 
 		        data: bellData,
-		        label: "user input",
+		        label: document.getElementById("divName").innerHTML,
 		        borderColor: "#3e95cd",
 		        fill: false
 		      }]
@@ -52,7 +60,7 @@
 		    labels: xAxsis,
 		    datasets: [{ 
 		        data: highData,
-		        label: "user input",
+		        label: document.getElementById("divName").innerHTML,
 		        borderColor: "#3e95cd",
 		        fill: false
 		      }]
@@ -71,7 +79,7 @@
 		    labels: xAxsis,
 		    datasets: [{ 
 		        data: lowData,
-		        label: "user input",
+		        label: document.getElementById("divName").innerHTML,
 		        borderColor: "#3e95cd",
 		        fill: false
 		      }]
@@ -80,6 +88,25 @@
 		    title: {
 		      display: true,
 		      text: 'Data Graph from low to high'
+		    }
+		  }
+		});
+	
+	new Chart(document.getElementById("HistogramChart"), {
+		  type: 'bar',
+		  data: {
+		    labels: arr,
+		    datasets: [{ 
+		        data: HistogramData,
+		        label: document.getElementById("divName").innerHTML,
+		        borderColor: "#3e95cd",
+		        fill: false
+		      }]
+		  },
+		  options: {
+		    title: {
+		      display: true,
+		      text: 'Bell Curve Graph'
 		    }
 		  }
 		});
@@ -98,7 +125,7 @@
 			color: "black",
 			dataPoints: [
 				
-				{ label: "user input", y: boxData }
+				{ label: document.getElementById("divName").innerHTML, y: boxData }
 			]
 		}]
 	});

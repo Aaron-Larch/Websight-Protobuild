@@ -5,13 +5,8 @@ package JavaCallFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import javaDemo.BuildPath;
-import javaDemo.Reports;
-import javaDemo.Statistics;
 import javaDemo.systemTest;
 
 /**
@@ -25,9 +20,6 @@ public class CallClass {
 	 */
 	public static void main(String[] args) {
 		//System.out.println("hello World");
-		int i = 2;
-		double square = Math.pow(i, 4);
-		System.out.println(square);
 		systemTest.Export();
 	}
 	
@@ -52,23 +44,5 @@ public class CallClass {
 	 	System.out.println(baos.toString());
 	 	System.out.println(baos.toString().replace("\n", System.getProperty("line.separator")));
 	 	//out.write(file+"<br>");
-	}
-
-	public static void complexOps(Reports[] temp) {
-		Map<String, Double> chartinfo= new HashMap<String, Double>();
-		if (temp.length==0) {System.out.println("There are no records matching your query");}
-		else {
-			for(int j=0; j < temp.length; j++) {
-				if(temp[j] != null) {
-					System.out.println(temp[j].getreportId()+": "+Arrays.toString(temp[j].gethighC()));
-					chartinfo=Statistics.SampleVariance(temp[j]);
-					chartinfo.putAll(Statistics.Range(temp[j]));
-					
-				
-				}
-			}
-			Statistics.FrequencyTable(temp);
-			//build a mode table across all records 
-		}
 	}
 }

@@ -76,6 +76,7 @@ public class FileSort extends HttpServlet{
 			    	String Object = UUID.randomUUID().toString();
 				 	request.getSession().setAttribute(Object, box);
 				 	request.setAttribute("mailbox", Object);
+				 	request.setAttribute("Page", "page2");
 			    	request.setAttribute("Record", box);
 			    	request.setAttribute("Result", "Your Search produesd no matching results");
 			    	request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a	
@@ -99,8 +100,9 @@ public class FileSort extends HttpServlet{
 		System.setOut(old);
 		
 		//print output
+		request.setAttribute("Page", "page3");
 		request.setAttribute("NumHits", resultes.length-i);
 		request.setAttribute("Message", baos.toString());
-		request.getRequestDispatcher("/WEB-INF/BuldTempFile.jsp").forward(request, response);//page a
+		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a
 	}
 }

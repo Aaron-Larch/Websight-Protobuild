@@ -6,6 +6,7 @@ package JavaCallFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public class PrintFinalData extends HttpServlet{
 		statement[i].showRecord();
 		chartinfo=Statistics.SampleVariance(statement[i]);
 		chartinfo.putAll(Statistics.Range(statement[i]));
-		Statistics.FrequencyTable(statement);
+		chartinfo.putAll(Statistics.HistogramTable(statement[i]));
 		// Put things back
 		System.out.flush();
 		System.setOut(old);
@@ -66,13 +67,23 @@ public class PrintFinalData extends HttpServlet{
 			bellCurveGraph[j]=part1*Math.exp(-1*part2 /part3); //*statement[i].getlowC().length; 
 		}
 		
+		int[][] bin = Statistics.BuildBins(statement[i]);
+		double[] barYaxis=new double[bin.length];
+		for(int i=0; i<bin.length; i++) {
+			barYaxis[i]=chartinfo.get(Arrays.toString(bin[i]));
+		}
+		
+		
 		//print output
 		request.setAttribute("Message", baos.toString());
+		request.setAttribute("Label", statement[i].getreportId());
 		request.setAttribute("Xaxis", Xaxis);
 		request.setAttribute("YaxisHigh", statement[i].gethighC());
 		request.setAttribute("YaxisLow", statement[i].getlowC());
 		request.setAttribute("BellCurveGraph", bellCurveGraph);
 		request.setAttribute("BoxAndWhiskersGraph", BoxPlot);
+		request.setAttribute("Histogram", barYaxis);
+		request.setAttribute("BarGraph", bin);
 
 		
 

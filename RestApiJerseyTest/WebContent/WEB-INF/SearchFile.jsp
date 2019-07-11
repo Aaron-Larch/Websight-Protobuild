@@ -7,9 +7,10 @@
 <meta charset="ISO-8859-1">
 <title>Search Records</title>
 </head>
-<body onload="getMessage()">
-<div id="proofofRecord" style="display: none;">${Message}</div>
+<body>
+<div id="divLoad" style="display: none;">${Page}</div>
     <div Class="SearchStatement">
+    	<div id="proofofRecord" style="display: none;">${Message}</div>
 		<h2>The titles of the files stored and the number of records in each file are:</h2>
 		<div id="title1">What file do you want to look at? If you want to look at every file Select all.</div>
 		
@@ -36,10 +37,33 @@
   			<input type="hidden" name="data" value="${mailbox}">
     		<input type="submit" value="Search"/>
 		</form>
+			<div id="FailedResult">${Result}</div>
 	</div>
-	<div id="FailedResult">${Result}</div>
+	<div Class="BuildTepfile">
+		<h2>There are ${NumHits} enteries matching your request</h2>
+		<textarea id="message" rows="12" cols="150">${Message}</textarea>
+		<form action="FileSort" id="Servlet" method="get">
+			<p>Do you wish to make a graph of this record?</p>
+			<div id="buttons">
+  			<input type="submit" name="choice" value="yes">
+  			<input type="submit" name="choice" value="no">
+  			</div>
+		</form>
+	</div>
+
 <script type="text/javascript">
-function getMessage() {alert(document.getElementById("proofofRecord").innerHTML);}
+window.onload = function () {loadValues(document.getElementById("divLoad").innerHTML);}
+
+function loadValues(flag){
+	if(flag=="page1"){
+		[].forEach.call(document.querySelectorAll(".BuildTepfile"), function (i) {i.style.display="none";});
+		alert(document.getElementById("proofofRecord").innerHTML);
+	}else if(flag=="page2"){
+		[].forEach.call(document.querySelectorAll(".BuildTepfile"), function (i) {i.style.display="none";});
+	}else{
+		[].forEach.call(document.querySelectorAll(".SearchStatement"), function (i) {i.style.display="none";});	
+	}
+}
 </script>
 </body>
 </html>
