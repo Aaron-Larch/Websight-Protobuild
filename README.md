@@ -1,40 +1,41 @@
-# Websight-Protobuild
-build a set of Aarays and then by user request take those array and build a report
-The Basic Idea: What can you do with an array of data?  How can you group and store an array of data?  How can you input and organize data?  How can you display Data? can I write a program that dose all 4 of these things?
+# Website-Protobuild
+Purpose: To build a set of arrays and, by user request, take those arrays and compile a full report of the process from start to finish.
 
-Version 1.0 test to see if java compiler is working.
-To do this I like to write a simple sort function. The sort function will work when any list of numbers given to it will be sorted into numerical order:
-	To do this we need to use two steps
-	is value one greater than value two
-If it is not, then swap value one and two
-Swap using a temp value to hold data before its erased
-That’s done now to write some data for the program.
+Basic Idea: What can you accomplish with an array of data?  How can you group and store an array of data?  How can you input and organize data?  How can you display data? Can I write a program that succesfully completes all four of these tasks ?
 
-Version 1.1 Writing data by hand is boring I remember a collage class talked about random number generators.  Let’s build a random number generator to make the data to sort for us.
-All you need to make a random number is the built in random number generator subroutine “rand.nextInt(range).” And you wil get a random number from 0 to the given range.
+Version 1.0: Test to see if java compiler is working.
+To do this I'd like to write a simple sort function. This sort function will work when any list of numbers being input are sorted into numerical order:
+This is done in two steps;
+	-Is value one greater than value two?
+	-If not, swap values one and two
+Swap using a temp value to hold data before its erased. After that's completed write the date for the program.
 
-The problem is that a random number is just a number and we need an array of numbers so I made a second value size to represent the number of values in an array.  Put in a for loop to populate the data. so now with two inputs we can make and sort as many numbers as we like. This is when the methods
+Version 1.1 
+Writing data by hand is boring. I remember a college class that talked about random number generators. Let’s build a random number generator to make the data to sort for us.
+All you need to make a random number is the built-in random number generator subroutine: “rand.nextInt(range).” You will get a random number from 0 to the given range.
+
+The problem is that a random number is just a number but we need an array of numbers. So I made a second value size to represent the number of values in an array and put in a for loop to populate the data. With two inputs we can make and sort as many numbers as we'd like. This is when the following methods were added to the project:
+
 public int[] rArrayInt(int size, int range)
 public double[] rArrayDouble(int size, int range)
 public float[] rArrayFloat(int size, int range)
 and
 public static void sort(int[] array, String order)
-were added to the project
 
 Version 2.0
-Now that we have the data generator what can we do with it?  I have no idea. But let’s to the classic Statistical Operations Mean, Median, Mode, min, max:
+Now that we have the data generator, what can we do with it? I have no idea, but let’s do the classic statistical operations. They are: mean, median, mode, min & max;
 Average/Mean: (x1+x2+…xn)/n
-Simple enough put a for loop on that and set n to array length.
+Simple enough, put a for loop on that and set "n" to the array length.
 
 Median: x=n/2 or (X((n/2)-1)+X(n/2))/2
-Tricky there are two ways to find a mean. If the code is to work for any given data regardless of size, then there needs to be a way to check if the array has an even or odd number of entry’s my solution is to make an if statement and look for the remainder.  You can do that with the % symbol.
-**IMPORTANT NOTE: When finding the median of a list with even numbers the order matters so make sure the list sorts from low to high or else you formula will be off**
+This is tricky, as there are two ways to find a mean. If the code is to work for any given data, regardless of size, then there needs to be a way to check if the array has an even or odd number of entries. My solution is to make an IF statement and find the remainder. This can ve done with the percentage (%) symbol.
+**IMPORTANT NOTE: When finding the median of a list with even numbers the order matters, so make sure the list sorts from low to high or else you formula will be incorrect.**
 
 Mode: there is no equation for this.
-Mode is tricky you need to run this like a sort. “if value 1 = value 2: store value 1”  but that’s not really going to work because that logic only works if a number appears 2 or more time so if you get 2 4 values and 4 2 values both will be stored when only the 4 2 values are the correct mode. So there needs to be two checks is temp grater than 1 and is the count higher than the recorded count total.  If an array has 2 modes then add a third check dose temp=the recorded mode value.  Addisonaly  you can add:
-&& mode.contains(i)==false. to remove duplicate numbers from your print out statement.
-Min & Max
-The method to find these values are so similar that I combined then into one method to save of redundant code.  To get the min value sort low to high and take the first value of the array. To get the max value sort highest to lowest and take the first value.
+The mode is also tricky so you'll need to run this like a sort. “if value 1 = value 2: store value "1” however, this won't actually work because that logic only works if a number appears two or more times. So, if you get two 4 values and four 2 values both will be stored when only the four 2 values are the correct mode. This means there needs to be two checks in temp that are greater than 1, and that its the count higher than the recorded count total. If an array has 2 modes then add a third check dose temp=the recorded mode value. Additionally, you can add:
+&& mode.contains(i)==false. in order to remove duplicate numbers from your print out statement.
+
+Min & Max: The method to find these values are so similar that I combined then into one method to save of redundant code.  To get the min value sort low to high and take the first value of the array. To get the max value sort highest to lowest and take the first value.
  Methods created for this version were
 public static double[] sortEX(double[] array, String order)
 public static double average(double...array)    
