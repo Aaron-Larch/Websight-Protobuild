@@ -27,11 +27,12 @@ import javaDemo.Statistics;
 public class PrintFinalData extends HttpServlet{
 	Map<String, Double> chartinfo= new HashMap<String, Double>();
 	public int i=0;
+	Reports[] statement;
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {   
-	    Reports[] statement = (Reports[]) request.getSession().getAttribute("Final");
+	    statement = (Reports[]) request.getSession().getAttribute("Final");
 		double[] bellCurveGraph=new double[statement[i].getlowC().length];
 		int[] Xaxis =new int[statement[i].getlowC().length+1];
 		double[] BoxPlot=new double[5];
@@ -84,8 +85,13 @@ public class PrintFinalData extends HttpServlet{
 		request.setAttribute("BoxAndWhiskersGraph", BoxPlot);
 		request.setAttribute("Histogram", barYaxis);
 		request.setAttribute("BarGraph", bin);
-
-		
-
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {  
+	    //handling request
+	    int value = Integer.parseInt(request.getParameter("flag"));
+	    if(i>0 && i<statement.length) {i += value;}
+	    request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp").forward(request, response);	
 	}
 }

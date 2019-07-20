@@ -18,6 +18,7 @@ import javaDemo.SwitchBoard;
 /**
  * @author gce
  *http://localhost:8080/RestApiJerseyTest/FileSort
+ *${jboss.bind.address:127.0.0.1}
  */
 
 @WebServlet("/FileSort")

@@ -87,4 +87,35 @@ public class ReadWriteFileDemo {
 		array.displayArrayValue(num, CH1, CH2);
 	}
 
+	public static void SpellCheck(String[] input) {
+		String[][] Library= {
+		 {"Average","Mean","Median","Mode","Min","Max","Name"},
+		 {">","<","=","!=","<=",">=","contains","of","less than","grater than","equal to",
+		  "less than or equal to","Grater than or equal to","dose not equal","equals"},
+		 {"1","2","3","4","5","6","7","8","9","0"}
+		};
+		int h=0;
+		boolean flag=false;
+		for(int i=0; i<input.length; i++) {
+			for(int j=0; j<Library[h].length; j++) {
+				if(input[i].equalsIgnoreCase(Library[h][j])) {flag=true;}
+			}
+			if(flag==false) {
+				System.out.println("This word dose not mach any that I know");
+				break;
+				}else {
+					flag=false;
+					h++;
+				}
+		}
+	}
+	public static void dynamicparse (String[] words) {
+		String[] output= new String[3];
+		if(words.length==3) {output=words;}
+		else {
+			output[0]=words[0];
+			for(int i=1; i<words.length-1; i++) {output[1].concat(words[i]);}
+			output[2]=words[words.length-1];
+		}
+	}
 }

@@ -79,37 +79,48 @@ public class SwitchBoard {
 	public static Reports[] search( Reports[][] file, String userinput, String Record) { 
 		//create a results record
 		Reports[] storedval = null;
+		String[] feild= new String[3];
 		String[] inputary=userinput.split(" "); //split the sentence into relevant pieces  
 		
-		switch(inputary[0].toLowerCase()){
+		//change format to meet method parameters 
+		if(inputary.length==3) {feild=inputary;}//check to see if the format is already there
+		else {
+			feild[0]=inputary[0]; //the first value is always the operation we wish to s
+			feild[1]=inputary[1]; //Set the Value to the first word you wish to combine
+			for(int i=2; i<inputary.length-1; i++) {feild[1]+=" "+inputary[i].toString();}//concainate the rest of the phrase into one array value
+			feild[2]=inputary[inputary.length-1]; //the last variable is the value 
+		}
+		
+		switch(feild[0].toLowerCase()){
 		case"name":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
-			storedval=BuildPath.searchAllFiles(file, "getreportId", Record, inputary[1].toLowerCase(), inputary[2]);
+			storedval=BuildPath.searchAllFiles(file, "getreportId", Record, feild[1].toLowerCase(), feild[2]);
 			break;
-	
+		
+		case"mean":
 		case"average":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
-			storedval=BuildPath.searchAllFiles(file, "getaverage", Record, inputary[1], inputary[2]);
+			storedval=BuildPath.searchAllFiles(file, "getaverage", Record, feild[1], feild[2]);
 			break;
 	
 		case"median":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
-			storedval=BuildPath.searchAllFiles(file, "getmedian", Record, inputary[1], inputary[2]);
+			storedval=BuildPath.searchAllFiles(file, "getmedian", Record, feild[1], feild[2]);
 			break;
 	
 		case"mode":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
-			storedval=BuildPath.searchAllFiles(file, "getmode", Record, "List", inputary[2]);
+			storedval=BuildPath.searchAllFiles(file, "getmode", Record, "List", feild[2]);
 			break;
 	
 		case"max":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
-			storedval=BuildPath.searchAllFiles(file, "getmax", Record, inputary[1], inputary[2]);
+			storedval=BuildPath.searchAllFiles(file, "getmax", Record, feild[1], feild[2]);
 			break;
 	
 		case"min":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
-			storedval=BuildPath.searchAllFiles(file, "getmin", Record, inputary[1], inputary[2]);
+			storedval=BuildPath.searchAllFiles(file, "getmin", Record, feild[1], feild[2]);
 			break;
 	
 		default:
@@ -187,23 +198,34 @@ public class SwitchBoard {
 		double value = Double.parseDouble(opr.trim()); //convert user input into a double
 		switch(input){
 		case"<":
+		case"less than":
 			flag=((double)obj<value); //check values
 			break;		
 			
 		case">":
+		case"grater than":
 			flag=((double)obj>value); //check values
 			break;
 		
 		case"=":
+		case"equal to":
+		case"equals":
 			flag=((double)obj==value); //check values
 			break;
 		
 		case">=":
+		case"Grater than or equal to":
 			flag=((double)obj>=value); //check values
 			break;	
 		
 		case"<=":
+		case"less than or equal to":	
 			flag=((double)obj<=value); //check values
+			break;
+		
+		case"!=":
+		case"dose not equal":	
+			flag=((double)obj!=value); //check values
 			break;
 			
 		case"contains":

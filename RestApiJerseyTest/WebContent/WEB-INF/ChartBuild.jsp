@@ -22,6 +22,11 @@
 	<div id="BoxandWhisker" style="height: 250px; width: 100%;"></div>
 	<canvas id="HistogramChart" height="250" width="500"></canvas>
 	
+	<form action="PrintFinalData" id="Servlet" method="post">
+	<button type="submit" name="flag" style= "float: left;" value="-1">Back</button>
+	<button type="submit" name="flag" style= "float: Right;" value="1">Next</button>
+	</form>
+	
 <script>
 	var xAxsis= ${Arrays.toString(Xaxis)};
 	var bellData= ${Arrays.toString(BellCurveGraph)};
