@@ -6,6 +6,19 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="Modal.jsp" />
 <title>Create Records</title>
+<style>
+.astext {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+}
+.astext:hover {background: #eee;}
+
+.Calculate {color: dodgerblue;}
+.Restart {color: orange;}
+</style>
 </head>
 <body>
 <div id="divLoad" style="display: none;">${Page}</div>
@@ -14,12 +27,14 @@
 <h1 id="tital1">Data created for the ${Name} file</h1>
     <textarea id="message" rows="12" cols="200">${Message}</textarea>
     <br>
-    <p id="tital2">Do you wish to further analyze ${Name}:</p>
+   	<p id="tital2">Data associated with set ${Name} ready for statistical calculations.</p>
+    <p id="tital3" style= "float: left;"> To generate statistical data with ${Name}, click</p>
     <!-- Trigger for object Switch -->
-  	<button id="BuildRecord" onclick="SwichLoadout(1)">yes</button>
-
+  	<button class="astext Calculate" id="BuildRecord" style= "float: left;" onclick="SwichLoadout(1)"> Calculate</button> <p>.</p>
+	
+	<p id="tital4" style= "float: left;">To obtain data under a different name, click</p>
   	<!-- Trigger the modal with a button -->
-  	<button id="LoadFile" onclick="loadModal('1')">No</button>
+  	<button class="astext Restart" id="LoadFile" style= "float: left;" onclick="loadModal('1')"> Restart</button> <p>.</p>
 </div>
 
 <div class = "Populate">
