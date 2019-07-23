@@ -42,11 +42,11 @@ public class Reports {
     		System.out.print("The name given to this record is: "+reportID+"\n");
     		
     		if(highcount!=null) {
-    			System.out.print("your record was sorted high low and now reads " + Arrays.toString(highcount)+"\n");
+    			System.out.print("your record was sorted high low and now reads: " + Arrays.toString(highcount)+"\n");
     		}
     		
     		if(lowcount!=null) {
-    			System.out.print("your record was sorted low high and now reads " + Arrays.toString(lowcount)+"\n");
+    			System.out.print("your record was sorted low high and now reads: " + Arrays.toString(lowcount)+"\n");
     		}
     		
     		if(ave!=0) {
