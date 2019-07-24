@@ -15,7 +15,7 @@
 		}
 		.column {
 			display: inline-block;
-			margin: 25px 25px 25px 25px;
+			margin: 50px 50px 50px 50px;
 			width: 30%;	
 		}
 		.item {
@@ -23,7 +23,7 @@
 			display: block;
   			margin-left: auto;
   			margin-right: auto;
-			min-height: 325px;
+			min-height: 280px;
 		}
 		#message {
 			font-size: 10pt;
@@ -37,28 +37,26 @@
 		<h1>Graphs Generated</h1>
 	</div>
 	<div id="divName" style="display: none;">${Label}</div>
-	<jsp:include page="/PrintFinalData" />
+	<jsp:include page="${LoadPage}"/>
 	
 	<div class="main-display">
 		<div class="column">
 			<textarea class="item" id="message">${Message}</textarea>
 			<canvas class="item" id="BellcurveChart"></canvas>
+			<canvas class="item" id="HistogramChart"></canvas>
 		</div><div class="column">
 			<canvas class="item" id="HighLineGraph"></canvas>
 			<canvas class="item" id="LowLineGraph"></canvas>
-		</div><div class="column">
 			<div class="item" id="BoxandWhisker"></div>
-			<canvas class="item" id="HistogramChart"></canvas>
 		</div>
 	</div>
 	
 	<form action="PrintFinalData" id="Servlet" method="post">
-	<input type="hidden" name="jspPath" value="${pageContext.request.requestURI}"/>
 	<button type="submit" name="action" style= "float: left;" value="-1">Back</button>
 	<button type="submit" name="action" style= "float: Right;" value="1">Next</button>
 	</form>
 	
-<script>	
+<script>
 	var xAxsis= ${Arrays.toString(Xaxis)};
 	var bellData= ${Arrays.toString(BellCurveGraph)};
 	var highData= ${Arrays.toString(YaxisHigh)};

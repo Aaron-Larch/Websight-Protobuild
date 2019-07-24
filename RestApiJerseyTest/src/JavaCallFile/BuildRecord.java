@@ -84,7 +84,7 @@ public class BuildRecord extends HttpServlet{
 	 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	    if(count < rep.length) {
 	    	rep[count] =  new Reports(); //create new report
-	    	rep[count].setreportId(name+"-"+(count+1)+"."+arrValue); //unique flag for report
+	    	rep[count].setreportId(name+"-"+(count+1)+"."+arrValue); //unique flag or primary key for report
 	    	
 		 	PrintStream ps = new PrintStream(baos);
 		 	// IMPORTANT: Save the old System.out!

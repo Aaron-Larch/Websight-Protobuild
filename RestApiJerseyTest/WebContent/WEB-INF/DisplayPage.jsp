@@ -5,6 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="Modal.jsp" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <title>Create Records</title>
 <style>
 .astext {
@@ -28,13 +29,13 @@
     <textarea id="message" rows="12" cols="200">${Message}</textarea>
     <br>
    	<p id="tital2">Data associated with set ${Name} ready for statistical calculations.</p>
-    <p id="tital3" style= "float: left;"> To generate statistical data with ${Name}, click</p>
+    <p id="tital3" style= "float: left;"> To generate statistical data with ${Name}, click </p>
     <!-- Trigger for object Switch -->
-  	<button class="astext Calculate" id="BuildRecord" style= "float: left;" onclick="SwichLoadout(1)"> Calculate</button> <p>.</p>
+  	<button class="astext Calculate" id="BuildRecord" style= "float: left;" onclick="SwichLoadout(1)">Calculate</button> <p>.</p>
 	
-	<p id="tital4" style= "float: left;">To obtain data under a different name, click</p>
+	<p id="tital4" style= "float: left;">To obtain data under a different name, click </p>
   	<!-- Trigger the modal with a button -->
-  	<button class="astext Restart" id="LoadFile" style= "float: left;" onclick="loadModal('1')"> Restart</button> <p>.</p>
+  	<button class="astext Restart" id="LoadFile" style= "float: left;" onclick="loadModal('1')">Restart</button> <p>.</p>
 </div>
 
 <div class = "Populate">
@@ -58,7 +59,7 @@
 		<input type="hidden" id="data" name="data">
 		<input type="hidden" id="ArraySize" name="length">
 		<input type="hidden" id="ArrayPosition" name="place">
-  		<input type="submit" value="Submit">
+  		<input type="submit" value="Submit" id="CheckTest">
 	</form>
 		<button id="placeholder" onclick="SwichLoadout(2)">Back</button>
 </div>
@@ -126,6 +127,23 @@ function checkAll(source) {
 	    checkboxes[i].checked = source.checked;
 	  }
 	}
+	
+var checkbox = $('input[type="checkbox"]');
+var button = $('#CheckTest');
+
+if(checkbox.is(':checked')){  
+  button.removeProp('disabled');
+}else{  
+  button.prop('disabled', 'disabled');
+}
+
+checkbox.on('change', function(){
+ if(checkbox.is(':checked')){  
+  button.removeProp('disabled');
+}else{  
+  button.prop('disabled', 'disabled');
+} 
+});
 </script>
 
 </body>

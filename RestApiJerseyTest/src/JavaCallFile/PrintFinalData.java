@@ -25,7 +25,7 @@ import javaDemo.Statistics;
  */
 @WebServlet("/PrintFinalData")
 public class PrintFinalData extends HttpServlet{
-	Map<String, Double> chartinfo= new HashMap<String, Double>();
+	Map<String, Double> chartinfo;
 	public int i=0;
 	public static Reports[] statement;
 	private static final long serialVersionUID = 1L;
@@ -37,18 +37,21 @@ public class PrintFinalData extends HttpServlet{
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {  
-	    //handling request
-		String jspPath = request.getParameter("jspPath");
 		int value =Integer.parseInt(request.getParameter("action"));
-	    if(jspPath == null || "".equals(jspPath)) {jspPath = "errorPage.jsp";}
-		if(i>=0 && i<=statement.length) {i += value;}
-		request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp");
+		if(i>=0 && i<statement.length) {
+			i += value;
+			if(i==-1) {i++;}//make sure the back value can never go below 0
+			else if(i==statement.length) {i--;}//make sure the next value can never go above max stored value
+		}
+		DisplayPage(request, response);
+		request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp").forward(request, response);
 	}
 	
 	private void DisplayPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	    statement = (Reports[]) request.getSession().getAttribute("Final");
 		double[] bellCurveGraph=new double[statement[i].getlowC().length];
+		chartinfo= new HashMap<String, Double>();
 		int[] Xaxis =new int[statement[i].getlowC().length+1];
 		double[] BoxPlot=new double[5];
 		
@@ -65,7 +68,7 @@ public class PrintFinalData extends HttpServlet{
 		statement[i].showRecord();
 		chartinfo=Statistics.SampleVariance(statement[i]);
 		chartinfo.putAll(Statistics.Range(statement[i]));
-		chartinfo.putAll(Statistics.HistogramTable(statement[i]));
+		chartinfo.putAll(Statistics.HistogramTable(statement[Math.abs(i)]));
 		// Put things back
 		System.out.flush();
 		System.setOut(old);

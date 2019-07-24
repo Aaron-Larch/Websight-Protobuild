@@ -42,6 +42,7 @@ public class FileSort extends HttpServlet{
 					i=0; 
 					Reports[] statement = tempOutput.toArray(new Reports[tempOutput.size()]);;
 				 	request.getSession().setAttribute("Final", statement);
+				 	request.setAttribute("LoadPage", "/PrintFinalData");
 				 	request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp").forward(request, response);//page b
 				 }
 			}else if ("no".equalsIgnoreCase(userchoice)){
@@ -51,6 +52,7 @@ public class FileSort extends HttpServlet{
 					i=0; 
 					Reports[] statement  = tempOutput.toArray(new Reports[tempOutput.size()]);
 				 	request.getSession().setAttribute("Final", statement);
+					request.setAttribute("LoadPage", "/PrintFinalData");
 				 	request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp").forward(request, response);//page b
 				 }
 			}
