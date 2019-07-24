@@ -14,7 +14,7 @@
     	<br>
 	<div class = "Results">
 		<div id="modal-isi-body"></div>
-    	<p id="tital2">Do you wish to further analyze ${Name}:</p>
+    	<p id="tital2">Do you Wish to continue working with the ${Name} set of Arrays?</p>
     	
     	<!-- Trigger for object Switch -->
   		<button id="BuildRecord" onclick="SwichLoadout()">yes</button>

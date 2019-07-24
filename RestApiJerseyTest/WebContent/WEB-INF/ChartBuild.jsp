@@ -7,20 +7,54 @@
 	<title>Line Chart</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<!-- To center an element vertically, I adopted a solution from the CSS style guide:
+	https://www.w3.org/Style/Examples/007/center.en.html -->
+	<style>
+		.main-display {
+			justify-content: center;
+		}
+		.column {
+			display: inline-block;
+			margin: 50px 50px 50px 50px;
+			width: 30%;	
+		}
+		.item {
+			width: 100%;
+			display: block;
+  			margin-left: auto;
+  			margin-right: auto;
+			min-height: 280px;
+		}
+		#message {
+			font-size: 10pt;
+		}
+	</style>
+	
 </head>
 
 <body>
+	<div id="header">
+		<h1>Graphs Generated</h1>
+	</div>
 	<div id="divName" style="display: none;">${Label}</div>
-	<jsp:include page="/PrintFinalData" />
-	<h2>If this works a graph should be here</h2>
-	<textarea id="message" rows="12" cols="150">${Message}</textarea>
-	<canvas id="BellcurveChart" height="250" width="500"></canvas>
-	<br>
-	<canvas id="HighLineGraph" height="250" width="500"></canvas>
-	<canvas id="LowLineGraph" height="250" width="500"></canvas>
-	<br>
-	<div id="BoxandWhisker" style="height: 250px; width: 100%;"></div>
-	<canvas id="HistogramChart" height="250" width="500"></canvas>
+	<jsp:include page="${LoadPage}"/>
+	
+	<div class="main-display">
+		<div class="column">
+			<textarea class="item" id="message">${Message}</textarea>
+			<canvas class="item" id="BellcurveChart"></canvas>
+			<canvas class="item" id="HistogramChart"></canvas>
+		</div><div class="column">
+			<canvas class="item" id="HighLineGraph"></canvas>
+			<canvas class="item" id="LowLineGraph"></canvas>
+			<div class="item" id="BoxandWhisker"></div>
+		</div>
+	</div>
+	
+	<form action="PrintFinalData" id="Servlet" method="post">
+	<button type="submit" name="action" style= "float: left;" value="-1">Back</button>
+	<button type="submit" name="action" style= "float: Right;" value="1">Next</button>
+	</form>
 	
 <script>
 	var xAxsis= ${Arrays.toString(Xaxis)};
@@ -34,6 +68,7 @@
 	var block = string.substring(1, string.length-1);
 	var arr = JSON.parse("[" + block + "]");
 	var HistogramData= ${Arrays.toString(Histogram)};
+	
 	
 	new Chart(document.getElementById("BellcurveChart"), {
 		  type: 'line',
