@@ -18,6 +18,7 @@ import javaDemo.SwitchBoard;
 /**
  * @author gce
  *http://localhost:8080/RestApiJerseyTest/FileSort
+ *${jboss.bind.address:127.0.0.1}
  */
 
 @WebServlet("/FileSort")
@@ -41,6 +42,7 @@ public class FileSort extends HttpServlet{
 					i=0; 
 					Reports[] statement = tempOutput.toArray(new Reports[tempOutput.size()]);;
 				 	request.getSession().setAttribute("Final", statement);
+				 	request.setAttribute("LoadPage", "/PrintFinalData");
 				 	request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp").forward(request, response);//page b
 				 }
 			}else if ("no".equalsIgnoreCase(userchoice)){
@@ -50,6 +52,7 @@ public class FileSort extends HttpServlet{
 					i=0; 
 					Reports[] statement  = tempOutput.toArray(new Reports[tempOutput.size()]);
 				 	request.getSession().setAttribute("Final", statement);
+					request.setAttribute("LoadPage", "/PrintFinalData");
 				 	request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp").forward(request, response);//page b
 				 }
 			}
@@ -70,18 +73,26 @@ public class FileSort extends HttpServlet{
 			    request.getSession().removeAttribute(ObjectId); 
 			    
 			    //Perform operations
-			    resultes=SwitchBoard.search(box, req, file);
-			    
-			    if(resultes[0].getreportId().equalsIgnoreCase("flag")) {
-			    	String Object = UUID.randomUUID().toString();
-				 	request.getSession().setAttribute(Object, box);
-				 	request.setAttribute("mailbox", Object);
-				 	request.setAttribute("Page", "page2");
-			    	request.setAttribute("Record", box);
-			    	request.setAttribute("Result", "Your Search produesd no matching results");
+			    if(file==null) {
+		    		String Object = UUID.randomUUID().toString();
+		    		request.getSession().setAttribute(Object, box);
+		    		request.setAttribute("mailbox", Object);
+		    		request.setAttribute("Page", "page2");
+		    		request.setAttribute("Record", box);
+			    	request.setAttribute("Result", "You forgot to select witch file you wanted to search through");
 			    	request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a	
+			    }else {
+			    	resultes=SwitchBoard.search(box, req, file);
+			    	if(resultes[0].getreportId().equalsIgnoreCase("flag")) {
+			    		String Object = UUID.randomUUID().toString();
+			    		request.getSession().setAttribute(Object, box);
+			    		request.setAttribute("mailbox", Object);
+			    		request.setAttribute("Page", "page2");
+			    		request.setAttribute("Record", box);
+			    		request.setAttribute("Result", "Your Search produesd no matching results");
+			    		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a	
+			    	}else {PritResult(request, response);}
 			    }
-			    else {PritResult(request, response);}
 	}
 	
 	private void PritResult(HttpServletRequest request, HttpServletResponse response)
