@@ -24,7 +24,7 @@
 	</div>
 
     <div Class="setInputs">
-    <p id="tital3">Witch Array do you wish continue to use Next?:</p>
+    <p id="tital3">Which Array do you wish continue to use Next?:</p>
   	<form action="BuildRecord" id="Servlet" method="get">
   		<select id="arrayList" name="choice"></select>
     	<input type="submit" value="Submit"/>

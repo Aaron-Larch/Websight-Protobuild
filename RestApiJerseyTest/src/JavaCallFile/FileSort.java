@@ -24,6 +24,7 @@ import javaDemo.SwitchBoard;
 @WebServlet("/FileSort")
 public class FileSort extends HttpServlet{
 	public Reports[] resultes;
+	Reports[][] box;
 	ArrayList<Reports> tempOutput = new ArrayList<Reports>();
 	public int i=0;
 	int count=0;
@@ -69,28 +70,16 @@ public class FileSort extends HttpServlet{
 			    String ObjectId = request.getParameter("data");
 			    
 			    //Format Variables 
-			    Reports[][] box = (Reports[][]) request.getSession().getAttribute(ObjectId);
+			    box = (Reports[][]) request.getSession().getAttribute(ObjectId);
 			    request.getSession().removeAttribute(ObjectId); 
 			    
 			    //Perform operations
 			    if(file==null) {
-		    		String Object = UUID.randomUUID().toString();
-		    		request.getSession().setAttribute(Object, box);
-		    		request.setAttribute("mailbox", Object);
-		    		request.setAttribute("Page", "page2");
-		    		request.setAttribute("Record", box);
-			    	request.setAttribute("Result", "You forgot to select witch file you wanted to search through");
-			    	request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a	
+			    	SendPackage(request, response, "You forgot to select witch file you wanted to search through");
 			    }else {
 			    	resultes=SwitchBoard.search(box, req, file);
 			    	if(resultes[0].getreportId().equalsIgnoreCase("flag")) {
-			    		String Object = UUID.randomUUID().toString();
-			    		request.getSession().setAttribute(Object, box);
-			    		request.setAttribute("mailbox", Object);
-			    		request.setAttribute("Page", "page2");
-			    		request.setAttribute("Record", box);
-			    		request.setAttribute("Result", "Your Search produesd no matching results");
-			    		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a	
+			    		SendPackage(request, response, "Your Search produesd no matching results");
 			    	}else {PritResult(request, response);}
 			    }
 	}
@@ -115,5 +104,16 @@ public class FileSort extends HttpServlet{
 		request.setAttribute("NumHits", resultes.length-i);
 		request.setAttribute("Message", baos.toString());
 		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a
+	}
+	
+	private void SendPackage(HttpServletRequest request, HttpServletResponse response, String Error) 
+			throws ServletException, IOException {
+		String Object = UUID.randomUUID().toString();
+		request.getSession().setAttribute(Object, box);
+		request.setAttribute("mailbox", Object);
+		request.setAttribute("Page", "page2");
+		request.setAttribute("Record", box);
+    	request.setAttribute("Result", Error);
+    	request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a	
 	}
 }

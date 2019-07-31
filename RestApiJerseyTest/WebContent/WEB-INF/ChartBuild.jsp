@@ -15,30 +15,36 @@
 		}
 		.column {
 			display: inline-block;
-			margin: 50px 50px 50px 50px;
-			width: 30%;	
+			margin: 10px 10px 10px 10px;
+			width: 47%;	
 		}
 		.item {
-			width: 100%;
+			width: 85%;
 			display: block;
   			margin-left: auto;
   			margin-right: auto;
-			min-height: 280px;
+			min-height: 300px;
 		}
 		#message {
-			font-size: 10pt;
+			font-size: 12pt;
 		}
+		/* Style the footer */
+		footer {
+  		background-color: #777;
+  		padding: 20px;
+  		}
 	</style>
 	
 </head>
 
 <body>
-	<div id="header">
-		<h1>Graphs Generated</h1>
-	</div>
-	<div id="divName" style="display: none;">${Label}</div>
 	<jsp:include page="${LoadPage}"/>
-	
+	<div id="header" style="text-align:center">
+		<h1>Graphs Generated for the object: </h1>
+		<h1>${Label}</h1>
+	</div>
+		<div id="divName" style="display: none;">${Label}</div>
+
 	<div class="main-display">
 		<div class="column">
 			<textarea class="item" id="message">${Message}</textarea>
@@ -50,23 +56,14 @@
 			<div class="item" id="BoxandWhisker"></div>
 		</div>
 	</div>
-	
-	<form action="PrintFinalData" id="Servlet" method="post">
-	<button type="submit" name="action" style= "float: left;" value="-1">Back</button>
-	<button type="submit" name="action" style= "float: Right;" value="1">Next</button>
-	</form>
-	
+
 <script>
 	var xAxsis= ${Arrays.toString(Xaxis)};
 	var bellData= ${Arrays.toString(BellCurveGraph)};
 	var highData= ${Arrays.toString(YaxisHigh)};
 	var lowData= ${Arrays.toString(YaxisLow)};
 	var boxData= ${Arrays.toString(BoxAndWhiskersGraph)};
-	
-	var obj = ${Arrays.deepToString(BarGraph)};
-	var string = JSON.stringify(obj);
-	var block = string.substring(1, string.length-1);
-	var arr = JSON.parse("[" + block + "]");
+	var barXAxis = ${Arrays.deepToString(BarGraph)};
 	var HistogramData= ${Arrays.toString(Histogram)};
 	
 	
@@ -130,7 +127,7 @@
 	new Chart(document.getElementById("HistogramChart"), {
 		  type: 'bar',
 		  data: {
-		    labels: arr,
+		    labels: barXAxis,
 		    datasets: [{ 
 		        data: HistogramData,
 		        label: document.getElementById("divName").innerHTML,
@@ -141,7 +138,7 @@
 		  options: {
 		    title: {
 		      display: true,
-		      text: 'Bell Curve Graph'
+		      text: 'Histogram Chart'
 		    }
 		  }
 		});
@@ -167,4 +164,10 @@
 	chart.render();
 </script>
 </body>
+<footer>
+	<form action="PrintFinalData" id="Servlet" method="post">
+		<button type="submit" name="action" style= "float: left;" value="-1">Back</button>
+		<button type="submit" name="action" style= "float: Right;" value="1">Next</button>
+	</form>
+</footer>
 </html>
