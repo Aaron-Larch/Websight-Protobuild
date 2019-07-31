@@ -173,7 +173,7 @@ public class SwitchBoard {
 		case"max":
 			rep.setmax(Statistics.minMax(temp, inputOP)); //save value in object
 			//call operation and print result
-			System.out.print("the hihest value of your list is: " + rep.getmax() + "\n");
+			System.out.print("the highest value of your list is: " + rep.getmax() + "\n");
 			break;
 			
 		case"min":
@@ -196,7 +196,7 @@ public class SwitchBoard {
 		//convert a user input into a format java can understand
 		boolean flag = false; //set the return value to see if the comparison is true
 		double value = Double.parseDouble(opr.trim()); //convert user input into a double
-		switch(input){
+		switch(input.toLowerCase()){
 		case"<":
 		case"less than":
 			flag=((double)obj<value); //check values
@@ -242,7 +242,7 @@ public class SwitchBoard {
 			
 		default:
 			//user error handling
-			System.out.println("this appears to be an invalid operation. Please try again");
+			System.out.println(input+" appears to be an invalid operation. Please try again");
 			break;
 		}
 		return flag;

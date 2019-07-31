@@ -92,7 +92,7 @@ public class ReadWriteFileDemo {
 		 {"Average","Mean","Median","Mode","Min","Max","Name"},
 		 {">","<","=","!=","<=",">=","contains","of","less than","grater than","equal to",
 		  "less than or equal to","Grater than or equal to","dose not equal","equals"},
-		 {"1","2","3","4","5","6","7","8","9","0"}
+		 {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q", "R", "S", "T", "U", "V","W","X","Y","Z"}
 		};
 		int h=0;
 		boolean flag=false;
@@ -101,7 +101,7 @@ public class ReadWriteFileDemo {
 				if(input[i].equalsIgnoreCase(Library[h][j])) {flag=true;}
 			}
 			if(flag==false) {
-				System.out.println("This word dose not mach any that I know");
+				System.out.println(input[i]+" dose not mach any word that I know");
 				break;
 				}else {
 					flag=false;

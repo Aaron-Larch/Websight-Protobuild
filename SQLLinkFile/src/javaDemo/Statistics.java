@@ -4,12 +4,13 @@
 package javaDemo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 
 /**
  * @author gce
@@ -21,7 +22,6 @@ public class Statistics {
 	 */
 	private static double temp;
 	private static double value;
-	private static double count=1;
 	
 	public static double[] sortEX(double[] array, String order) {
 		if(order.contentEquals("hi")||order.contentEquals("lo")) { //error catching for the choice value
@@ -89,7 +89,7 @@ public class Statistics {
 				Count = temp; // mode is the most accruing number this logic makes the number of reacuring numbers as high as possible
 				mode.clear(); //prevents multiple mode sizes from being collected by reseting the list
 				mode.add(i);
-			} else if (temp == Count) {//a list could have multiple modes
+			} else if (temp == Count && mode.contains(i)==false) {//a list could have multiple modes
 				mode.add(i);
 			}
 		}
@@ -173,49 +173,52 @@ public class Statistics {
 	}
 	
 	public static Map<String, Double> HistogramTable(Reports file) {
-		Map<String, Double> map= new HashMap<String, Double>();
-		int[][] bin = BuildBins(file);
-		//build a frequency table with the bins created
-		for(int i=0; i < file.getlowC().length; i++){
-			for(int j=0; j<bin.length; j++) {
-				//check to see if the array value is between the bin values.
-				if(file.getlowC()[i] >= bin[j][0] && file.getlowC()[i]<=bin[j][bin[j].length-1]) {
-					String bins= Arrays.toString(bin[j]);
-					if(map.containsKey(bins)){map.put(bins, map.get(bins) + count);} 
-					else {map.put(bins, count);}
-				}
-			}
-		}
-		//add zero values
-		for(int i=0; i<bin.length; i++) {
-			String bins= Arrays.toString(bin[i]);
-			if(map.containsKey(bins)==false){map.put(bins, count--);}
-		}
+		Map<List<Integer>, Integer> sourceMap = new TreeMap<>();
+		Map<String, Double> displayMap= new LinkedHashMap<String, Double>();
 		
-		sortbykey(map);
-		return map;
-	}
-	
-	public static int[][] BuildBins(Reports file) 
-    { 
-    	int[][] bin = null;
-		int k=0;
-		//Find the smallest size of bins that create less than 15 bins
+		//Find the smallest size of bins that create less than 15 bins 5 seems like a good place to start
 		for(int i=5; i<(file.getmax()/5); i++) {//this is here to save memory. so where not going through the loop 50 times.
-			int count=(int) ((file.getmax()+i)/i);
+			int count=(int) ((file.getmax())/i);
 			if (count<15) {
 				System.out.println("there will be "+(count+1)+" bins each bin has "+i+" values");
-				bin =new int[count+1][i];
-				for(int j=0; j<(file.getmax()+i); j+=i) {
-					for(int h=0; h<bin[k].length; h++) {bin[k][h]=j+h;}//build the bin
-					k++;
-				}
+				sourceMap=buildHisto(file, i);
 				break;//this is important. without this the loop starts again
 			}
 		}
-		return bin;
-    }
+		
+		// Copy all data from hashMap into the LinkedHashMap and sort the map into numerical order, and a print statemnt
+		displayMap=SortStingsNumericly(sourceMap);
+		
+		return displayMap;
+	}
 	
+	private static Map<List<Integer>, Integer> buildHisto(Reports file, int width) { //pass in length of bins and file
+		Map<List<Integer>, Integer> histo = new HashMap<List<Integer>,Integer>(); //set up array to count
+		double[] data = file.getlowC();	// extract the data
+		List<Integer> BinName= new ArrayList<Integer>();
+		
+		for (int i = 0; i <= file.getmax(); i+=width) { //lay out boundaries for each bin, only lower bound is needed
+			List<Integer> tempBin= new ArrayList<Integer>();
+			for(int j=i; j < (i+width); j++) {BinName.add(j);}
+			tempBin.addAll(BinName);
+			histo.put(tempBin,0);
+			BinName.clear();
+		}
+		
+		for (double d : data) {	//increment up the appropriate bin for each value
+			int value=(int) d; // Handles decimal point values by dropping all values past the "."
+			for(Map.Entry<List<Integer>, Integer> entry : histo.entrySet()) {//sort through all bins to find appropriate range
+				List<Integer> key = entry.getKey();
+				if(key.contains(value)) { //Check if value is in this bins range for each value
+					int countForCurrentBin = histo.get(key);
+					histo.put(key,++countForCurrentBin); //Increment by one
+					break;//save memory when you find a match stop
+				}
+			}
+		}
+		return histo;
+	}
+		
 	private static void sort(double[] array, String order) {
 		if (order.contentEquals("hi")) {
 			// sort highest value to lowest value
@@ -242,16 +245,28 @@ public class Statistics {
 		}	
 	}
 	
-	private static void sortbykey(Map<String, Double> map) 
-	{ 
-		// TreeMap to store values of HashMap 
-		TreeMap<String, Double> sorted = new TreeMap<>(); 
-
-		// Copy all data from hashMap into TreeMap 
-		sorted.putAll(map); 
-
+	private static Map<String, Double> SortStingsNumericly(Map<List<Integer>, Integer> map) {
+		 Map<String, Double> sortedEntries = new LinkedHashMap<String, Double>();
+		 double[] StoredSort = new double[map.size()];
+		 int i=0;
+		 for (Map.Entry<List<Integer>, Integer> entry : map.entrySet()) {
+			 StoredSort[i]=entry.getKey().get(0);
+			 i++;
+		}
+		sort(StoredSort, "lo"); 
+		for (int j=0; j<StoredSort.length; j++) {
+			 for (Map.Entry<List<Integer>, Integer> entry : map.entrySet()) {
+				 if(entry.getKey().get(0)==StoredSort[j]) {
+					 sortedEntries.put(entry.getKey().toString(), map.get(entry.getKey()).doubleValue());
+				 }
+			 }
+		}
+		
 		// Display the TreeMap which is naturally sorted 
-		for (Map.Entry<String, Double> entry : sorted.entrySet())  
-			System.out.println(entry.getKey() + ", Value = " + entry.getValue());         
+		sortedEntries.entrySet()
+		.stream()
+		.forEach(System.out::println);
+		
+		return sortedEntries;
 	}
 }
