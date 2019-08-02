@@ -43,6 +43,19 @@ public class HashMapSorting {
 	    
 	   System.out.println(map);
 	   System.out.println(SortStingsNumericly(map));
+	   
+	   String regex ="\\d*\\.?\\d+";
+
+	// positive test cases, should all be "true"
+	System.out.println("1".matches(regex));
+	System.out.println("12345".matches(regex));
+	System.out.println("12345.6789".matches(regex));
+	System.out.println("12345.678.9".matches(regex));
+
+	// negative test cases, should all be "false"
+	System.out.println("".matches(regex));
+	System.out.println("foo".matches(regex));
+	System.out.println("aa123bb".matches(regex));
 	}
 
 	static <K, V extends Comparable<? super V>> List<Entry<String, Integer>> entriesSortedByValues(Map<String, Integer> map) {
