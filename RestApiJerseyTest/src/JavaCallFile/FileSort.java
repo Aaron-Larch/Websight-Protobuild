@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Assiments.ReadWriteFileDemo;
 import javaDemo.Reports;
 import javaDemo.SwitchBoard;
 
 /**
  * @author gce
- *http://localhost:8080/RestApiJerseyTest/FileSort
+ *http://localhost:8080/RestApiJerseyTest/
  *${jboss.bind.address:127.0.0.1}
  */
 
@@ -27,7 +28,6 @@ public class FileSort extends HttpServlet{
 	Reports[][] box;
 	ArrayList<Reports> tempOutput = new ArrayList<Reports>();
 	public int i=0;
-	int count=0;
 	String output;
 	private static final long serialVersionUID = 1L;
 	 
@@ -37,7 +37,7 @@ public class FileSort extends HttpServlet{
 
 			if ("yes".equalsIgnoreCase(userchoice)) {
 				tempOutput.add(resultes[i]);
-				count++; i++;
+				i++;
 				if(i < resultes.length) {PritResult(request, response);}
 				else {
 					i=0; 
@@ -71,16 +71,26 @@ public class FileSort extends HttpServlet{
 			    
 			    //Format Variables 
 			    box = (Reports[][]) request.getSession().getAttribute(ObjectId);
-			    request.getSession().removeAttribute(ObjectId); 
+			    request.getSession().removeAttribute(ObjectId);
+			    String[] temp=ReadWriteFileDemo.dynamicparse (req);
 			    
 			    //Perform operations
 			    if(file==null) {
 			    	SendPackage(request, response, "You forgot to select witch file you wanted to search through");
 			    }else {
-			    	resultes=SwitchBoard.search(box, req, file);
-			    	if(resultes[0].getreportId().equalsIgnoreCase("flag")) {
-			    		SendPackage(request, response, "Your Search produesd no matching results");
-			    	}else {PritResult(request, response);}
+			    	for(int j=0; j<=temp.length; j++) {
+			    		if(j==3) {
+			    			resultes=SwitchBoard.search(box, req, file);
+					    	if(resultes[0].getreportId().equalsIgnoreCase("flag")) {
+					    		SendPackage(request, response, "Your Search produesd no matching results");
+					    	}else {PritResult(request, response);}
+			    		}else {
+			    			if(ReadWriteFileDemo.SpellCheck(temp[j],j)==false){
+						    	SendPackage(request, response, temp[j]+" dose not mach any Words that I know");
+						    	break;
+			    			}
+			    		}
+			    	}
 			    }
 	}
 	

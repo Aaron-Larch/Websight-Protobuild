@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
-	public void doPut(HttpServletRequest request, HttpServletResponse response)
+	public void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException{
 		//String value=request.getParameter("choice");
  		//request.setAttribute("Record", Value);

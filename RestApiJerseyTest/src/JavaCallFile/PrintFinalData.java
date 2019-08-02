@@ -20,7 +20,7 @@ import javaDemo.Statistics;
 
 /**
  * @author gce
- *http://localhost:8080/RestApiJerseyTest/PrintFinalData
+ *http://localhost:8080/RestApiJerseyTest/
  */
 @WebServlet("/PrintFinalData")
 public class PrintFinalData extends HttpServlet{
@@ -86,9 +86,8 @@ public class PrintFinalData extends HttpServlet{
 		}
 		
 
-		int numberOfBins = tempMap.size();
-		String[] barXaxis = new String[numberOfBins];
-		double[] barYaxis = new double[numberOfBins];
+		String[] barXaxis = new String[tempMap.size()];
+		double[] barYaxis = new double[tempMap.size()];
 		
 		int j=0;
 		for (Map.Entry<String, Double> entry : tempMap.entrySet()) {

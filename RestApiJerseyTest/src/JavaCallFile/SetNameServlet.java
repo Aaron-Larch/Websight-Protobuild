@@ -19,7 +19,7 @@ import javaDemo.Reports;
 
 /**
  * @author gce
- *http://localhost:8080/RestApiJerseyTest/SetNameServlet
+ *http://localhost:8080/RestApiJerseyTest/
  *
  */
 @WebServlet("/SetNameServlet")

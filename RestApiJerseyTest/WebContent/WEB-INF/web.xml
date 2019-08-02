@@ -50,4 +50,13 @@ id="WebApp_ID" version="4.0"
  	 <servlet-name>PrintFinalData</servlet-name>
  	 <url-pattern>/PrintFinalData</url-pattern>
  </servlet-mapping>
+ 
+    <servlet>
+  	 <servlet-name>DeleteServlet</servlet-name>
+  	 <servlet-class>JavaCallFile.DeleteServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>DeleteServlet</servlet-name>
+ 	 <url-pattern>/DeleteServlet</url-pattern>
+ </servlet-mapping>
 </web-app>

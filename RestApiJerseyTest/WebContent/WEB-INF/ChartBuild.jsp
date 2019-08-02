@@ -29,10 +29,23 @@
 			font-size: 12pt;
 		}
 		/* Style the footer */
-		footer {
-  		background-color: #777;
-  		padding: 20px;
-  		}
+		footer{
+    		width: 100%;
+    		background-color: #777;
+ 			padding: 15px;
+    		float: left;
+    		border: solid 1px blue;
+    		text-align: center;
+		}
+		.container button{
+    		display: inline-block;
+		}
+		#btn1{
+   			float:left;
+		}
+		#btn3{
+    		float:right;
+		}
 	</style>
 	
 </head>
@@ -40,8 +53,7 @@
 <body>
 	<jsp:include page="${LoadPage}"/>
 	<div id="header" style="text-align:center">
-		<h1>Graphs Generated for the object: </h1>
-		<h1>${Label}</h1>
+		<h1>Graphs Generated for the object: ${Label}</h1>
 	</div>
 		<div id="divName" style="display: none;">${Label}</div>
 
@@ -166,8 +178,9 @@
 </body>
 <footer>
 	<form action="PrintFinalData" id="Servlet" method="post">
-		<button type="submit" name="action" style= "float: left;" value="-1">Back</button>
-		<button type="submit" name="action" style= "float: Right;" value="1">Next</button>
+		<button type="submit" id="btn1" name="action" value="-1">Back</button>
+		<button type="submit" id="btn3" name="action" value="1">Next</button>
 	</form>
+	 <button id="btn2" name="action" value="1">print</button>
 </footer>
 </html>

@@ -20,7 +20,7 @@ import javaDemo.SwitchBoard;
 
 /**
  * @author gce
- * http://localhost:8080/RestApiJerseyTest/BuildRecord
+ * http://localhost:8080/RestApiJerseyTest/
  *
  */
 @WebServlet("/BuildRecord")
