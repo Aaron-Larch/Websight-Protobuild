@@ -27,7 +27,7 @@ public class ReadWriteFileDemo {
 	    fileOut.close();
 	    
 	    String [] Collums= {"EmployeeID", "LastName", "FirstName", "Rank", "SvcBranch", "DutyStatusCode", "EligibilityCode", "RemainingBenefits"};  
-	    System.out.println("please enter a field you whish to search for in the file. You can search in the following caigories"+
+	    System.out.println("please enter a field you whish to search for in the file. You can search in the following categories"+
 	    	    "\n"+Arrays.toString(Collums));
 	    String Search =input.nextLine();
 	    
@@ -90,8 +90,8 @@ public class ReadWriteFileDemo {
 	public static boolean SpellCheck(String input, int h) {
 		String[][] Library= {
 		 {"Average","Mean","Median","Mode","Min","Max","Name"},
-		 {">","<","=","!=","<=",">=","contains","of","less than","grater than","equal to",
-		  "less than or equal to","Grater than or equal to","dose not equal","equals"},
+		 {">","<","=","!=","<=",">=","contains","of","less than","Greater than","equal to",
+		  "less than or equal to","Greater than or equal to","does not equal","equals"},
 		 {"\\d*\\.?\\d+"}
 		};
 		boolean flag=false;

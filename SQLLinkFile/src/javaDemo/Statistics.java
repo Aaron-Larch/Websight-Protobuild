@@ -89,7 +89,7 @@ public class Statistics {
 				Count = temp; // mode is the most accruing number this logic makes the number of reacuring numbers as high as possible
 				mode.clear(); //prevents multiple mode sizes from being collected by reseting the list
 				mode.add(i);
-			} else if (temp == Count && mode.contains(i)==false) {//a list could have multiple modes
+			} else if (temp == Count) {//a list could have multiple modes && mode.contains(i)==false for a single mode build
 				mode.add(i);
 			}
 		}
@@ -177,10 +177,10 @@ public class Statistics {
 		Map<String, Double> displayMap= new LinkedHashMap<String, Double>();
 		
 		//Find the smallest size of bins that create less than 15 bins 5 seems like a good place to start
-		for(int i=5; i<(file.getmax()/5); i++) {//this is here to save memory. so where not going through the loop 50 times.
+		for(int i=4; i<(file.getmax()/5); i++) {//this is here to save memory. so where not going through the loop 50 times.
 			int count=(int) ((file.getmax())/i);
-			if (count<15) {
-				System.out.println("there will be "+(count+1)+" bins each bin has "+i+" values");
+			if (count<=18) {
+				System.out.println("There will be "+(count+1)+" bins. Each bin has "+i+" values.");
 				sourceMap=buildHisto(file, i);
 				break;//this is important. without this the loop starts again
 			}
@@ -192,7 +192,7 @@ public class Statistics {
 		return displayMap;
 	}
 	
-	private static Map<List<Integer>, Integer> buildHisto(Reports file, int width) { //pass in length of bins and file
+	public static Map<List<Integer>, Integer> buildHisto(Reports file, int width) { //pass in length of bins and file
 		Map<List<Integer>, Integer> histo = new HashMap<List<Integer>,Integer>(); //set up array to count
 		double[] data = file.getlowC();	// extract the data
 		List<Integer> BinName= new ArrayList<Integer>();
@@ -245,7 +245,7 @@ public class Statistics {
 		}	
 	}
 	
-	private static Map<String, Double> SortStingsNumericly(Map<List<Integer>, Integer> map) {
+	public static Map<String, Double> SortStingsNumericly(Map<List<Integer>, Integer> map) {
 		 Map<String, Double> sortedEntries = new LinkedHashMap<String, Double>();
 		 double[] StoredSort = new double[map.size()];
 		 int i=0;
