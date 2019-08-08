@@ -63,7 +63,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <div class="modal-content">
     <span class="close">&times;</span>
     <form action="SetNameServlet" method="post">
-    	<p>Please select the Name of the file you wish to create</p>
+    	<p>Please select the Name of the file you wish to create then click the Submit File button</p>
 		<label for="name">Name:</label>
     	<input type="text" name="FileInput" id=name/>
     	<input type="hidden" name="flagValue" value="0" /><br>

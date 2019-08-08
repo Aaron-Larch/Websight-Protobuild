@@ -14,17 +14,17 @@
     	<br>
 	<div class = "Results">
 		<div id="modal-isi-body"></div>
-    	<p id="tital2">Do you Wish to continue working with the ${Name} set of Arrays?</p>
-    	
+    	<p id="tital2">Please decide if you wish to continue to store functions with the this ${Name} set of Arrays?</p>
     	<!-- Trigger for object Switch -->
-  		<button id="BuildRecord" onclick="SwichLoadout()">yes</button>
+  		<button id="BuildRecord" onclick="SwichLoadout()">continue</button>
 
+ 		<p id="tital3">or do you want to create a new record set.</p>
   		<!-- Trigger the modal with a button -->
-  		<button id="LoadFile" onclick="loadModal('0')">No</button>
+  		<button id="LoadFile" onclick="loadModal('0')">new file</button>
 	</div>
 
     <div Class="setInputs">
-    <p id="tital3">Which Array do you wish continue to use Next?:</p>
+    <p id="tital4">Please select a new record to work with and click Submit:</p>
   	<form action="BuildRecord" id="Servlet" method="get">
   		<select id="arrayList" name="choice"></select>
     	<input type="submit" value="Submit"/>
