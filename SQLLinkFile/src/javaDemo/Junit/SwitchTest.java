@@ -198,10 +198,4 @@ class SwitchTest {
 		assertNull(file.getmode());
 		assertNull(file.getreportId());
 	}
-
-	/**
-	 * Test method for {@link javaDemo.SwitchBoard#Operaton(Object obj, String input, String opr)}.
-	 */
-	
-
 }
