@@ -42,12 +42,30 @@ id="WebApp_ID" version="4.0"
  	 <url-pattern>/FileSort</url-pattern>
  </servlet-mapping>
  
-   <servlet>
+ <servlet>
   	 <servlet-name>PrintFinalData</servlet-name>
   	 <servlet-class>JavaCallFile.PrintFinalData</servlet-class>
  </servlet>
  <servlet-mapping>
  	 <servlet-name>PrintFinalData</servlet-name>
  	 <url-pattern>/PrintFinalData</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+  	 <servlet-name>DeleteServlet</servlet-name>
+  	 <servlet-class>JavaCallFile.DeleteServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>DeleteServlet</servlet-name>
+ 	 <url-pattern>/DeleteServlet</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+  	 <servlet-name>FinalPagePrintFile</servlet-name>
+  	 <servlet-class>JavaCallFile.FinalPagePrintFile</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>FinalPagePrintFile</servlet-name>
+ 	 <url-pattern>/FinalPagePrintFile</url-pattern>
  </servlet-mapping>
 </web-app>

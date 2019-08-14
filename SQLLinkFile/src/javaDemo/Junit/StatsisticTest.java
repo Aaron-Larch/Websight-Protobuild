@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ class StatsisticTest {
 	protected String variabule;
 	protected static double[] input = {1, 4, 3, 6, 2, 5, 1, 9, 11, 8, 7, 12, 10};
 	protected static double[] even = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+	protected static double[] histogram = {0.0, 1.0, 4.0, 4.0, 4.0, 6.0, 7.0, 8.0, 9.0, 10.0, 10.0, 18.0, 20.0, 21.0, 22.0};
 	protected static double value=79.0/13.0;
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -90,6 +92,7 @@ class StatsisticTest {
 
 		//Then
 		assertArrayEquals(input, result, 0.0);
+		//and
 		assertThat(outContent.toString(), is(message));
 	}
 
@@ -176,8 +179,9 @@ class StatsisticTest {
 		
 		//then
 		assertEquals(map, result);
+		//and
 		assertThat(outContent.toString(), is("the Sample Variance of name is: 14.243589743589743\r\n"
-		+"the Standard Deveation of name is: 3.7740680629249046\r\n"));	    
+		+"the Standard Deviation of name is: 3.7740680629249046\r\n"));	    
 	}
 
 	/**
@@ -194,11 +198,8 @@ class StatsisticTest {
 		file.setmin(1.0);
 		file.setmedian(6.0);
 		
-		map.put("min", 1.0);
 		map.put("lower interquartile range", 2.5);
-		map.put("median", 6.0);
 		map.put("upper interquartile range", 9.5);
-		map.put("max", 12.0);
 		map.put("interquartile range", 7.0);
 		
 		//When
@@ -206,12 +207,10 @@ class StatsisticTest {
 		
 		//Then
 		assertEquals(map, result);
+		//and
 		assertThat(outContent.toString(), is(
-				"min: 1.0"+"\r\n"
-				+"lower interquartile range: 2.5"+"\r\n"
-				+"median: 6.0"+"\r\n"
+				"lower interquartile range: 2.5"+"\r\n"
 				+"upper interquartile range: 9.5"+"\r\n"
-				+"max: 12.0"+"\r\n"
 				+"interquartile range: 7.0"+"\r\n"
 				+"range: 11.0"+"\r\n"
 				));
@@ -227,11 +226,9 @@ class StatsisticTest {
 		file.setmin(1.0);
 		file.setmedian(6.5);
 		
-		map.put("min", 1.0);
+
 		map.put("lower interquartile range", 3.5);
-		map.put("median", 6.5);
 		map.put("upper interquartile range", 9.5);
-		map.put("max", 12.0);
 		map.put("interquartile range", 6.0);
 		
 		//When
@@ -239,12 +236,10 @@ class StatsisticTest {
 		
 		//Then
 		assertEquals(map, result);
+		//and
 		assertThat(outContent.toString(), is(
-				"min: 1.0"+"\r\n"
-				+"lower interquartile range: 3.5"+"\r\n"
-				+"median: 6.5"+"\r\n"
+				"lower interquartile range: 3.5"+"\r\n"
 				+"upper interquartile range: 9.5"+"\r\n"
-				+"max: 12.0"+"\r\n"
 				+"interquartile range: 6.0"+"\r\n"
 				+"range: 11.0"+"\r\n"
 				));
@@ -269,6 +264,103 @@ class StatsisticTest {
 		
 		//Then
 		assertEquals(map, result);
+		//and
 		assertThat(outContent.toString(), is("{1.0=2}"+"\r\n"));	
 	}
+	
+	/**
+	 * Test method for {@link javaDemo.Statistics#buildHisto(javaDemo.Reports[])}.
+	 */
+	@Test
+	void testbuildHisto() {
+		//Given
+		Map<List<Integer>, Integer> map= new HashMap<List<Integer>, Integer>();
+		map.put(Arrays.asList(0,1,2,3,4),5);
+		map.put(Arrays.asList(5,6,7,8,9),4);
+		map.put(Arrays.asList(10,11,12,13,14),2);
+		map.put(Arrays.asList(15,16,17,18,19),1);
+		map.put(Arrays.asList(20,21,22,23,24),3);
+		
+		Reports file=new Reports();
+		file.setlowC(histogram);
+		file.setmax(22);
+		
+		//When
+		Map<List<Integer>, Integer> result=Statistics.buildHisto(file, 5);
+		
+		//Then
+		assertEquals(map, result);
+	}
+	
+	@Test
+	void testSortStingsNumericly() {
+		//Given
+		Map<List<Integer>, Integer> map= new HashMap<List<Integer>, Integer>();
+		map.put(Arrays.asList(0,1,2,3,4),5);
+		map.put(Arrays.asList(5,6,7,8,9),4);
+		map.put(Arrays.asList(10,11,12,13,14),2);
+		map.put(Arrays.asList(15,16,17,18,19),1);
+		map.put(Arrays.asList(20,21,22,23,24),3);
+
+		
+		Map<String, Double> Stringmap= new LinkedHashMap<String, Double>();
+		Stringmap.put("[0, 1, 2, 3, 4]", 5.0);
+		Stringmap.put("[5, 6, 7, 8, 9]", 4.0);
+		Stringmap.put("[10, 11, 12, 13, 14]", 2.0);
+		Stringmap.put("[15, 16, 17, 18, 19]", 1.0);
+		Stringmap.put("[20, 21, 22, 23, 24]",3.0);
+
+				
+		Reports file=new Reports();
+		file.setlowC(histogram);
+		file.setmax(22);
+				
+		//When
+		Map<String, Double> result=Statistics.SortStingsNumericly(map);
+		
+		//Then
+		assertEquals(Stringmap, result);
+		//and
+		assertThat(outContent.toString(), is("[0, 1, 2, 3, 4]=5.0"+"\r\n"
+											+"[5, 6, 7, 8, 9]=4.0"+"\r\n"
+											+"[10, 11, 12, 13, 14]=2.0"+"\r\n"
+											+"[15, 16, 17, 18, 19]=1.0"+"\r\n"
+											+"[20, 21, 22, 23, 24]=3.0"+"\r\n"
+													));
+		
+	}
+	
+	@Test
+	void testHistogramTable() {
+		//Given
+		Reports file=new Reports();
+		file.setlowC(histogram);
+		file.setmax(22);
+
+		Map<String, Double> Stringmap= new LinkedHashMap<String, Double>();
+		Stringmap.put("[0, 1, 2, 3]", 2.0);
+		Stringmap.put("[4, 5, 6, 7]", 5.0);
+		Stringmap.put("[8, 9, 10, 11]", 4.0);
+		Stringmap.put("[12, 13, 14, 15]",0.0);
+		Stringmap.put("[16, 17, 18, 19]", 1.0);
+		Stringmap.put("[20, 21, 22, 23]", 3.0);
+				
+		//When
+		Map<String, Double> result=Statistics.HistogramTable(file);
+		
+		//Then
+		assertEquals(Stringmap, result);
+		//and
+		assertThat(outContent.toString(), is("There will be 6 bins. Each bin has 4 values.\r\n"
+											+"[0, 1, 2, 3]=2.0\r\n"
+											+"[4, 5, 6, 7]=5.0\r\n"
+											+"[8, 9, 10, 11]=4.0\r\n"
+											+"[12, 13, 14, 15]=0.0\r\n"
+											+"[16, 17, 18, 19]=1.0\r\n"
+											+"[20, 21, 22, 23]=3.0\r\n"
+													));
+		
+	}
+	
+	
 }

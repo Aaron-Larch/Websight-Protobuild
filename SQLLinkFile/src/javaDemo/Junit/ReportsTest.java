@@ -300,7 +300,7 @@ class ReportsTest {
         //then
         assertThat(outContent.toString(), is(
         		"The name given to this record is: "+name+"\n"
-        		+"your record was sorted high low and now reads " + Arrays.toString(value)+"\n"
+        		+"your record was sorted high low and now reads: " + Arrays.toString(value)+"\n"
         		));
     }
     
@@ -317,7 +317,7 @@ class ReportsTest {
         //then
         assertThat(outContent.toString(), is(
         		"The name given to this record is: "+name+"\n"
-        		+"your record was sorted low high and now reads " + Arrays.toString(value)+"\n"
+        		+"your record was sorted low high and now reads: " + Arrays.toString(value)+"\n"
         		));
     }
     

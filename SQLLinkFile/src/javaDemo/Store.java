@@ -16,7 +16,16 @@ public class Store {
 	private static String Input;
 	private static Random rand = new Random();
 	
+	/*A series of methods that emulate the functions or the scanner class in java. using system.in
+	 * the following methods will collect keystrokes made by a user and convert them into one of the 4 primary data types
+	 * Character
+	 * Integer
+	 * double
+	 * float
+	 * the methods also auto format number values and ignore any return/enter keystrokes until a keystroke has been saved.
+	 */
 	
+	//store user input as a Character and then resetting the buffer to store a new value
 	public char symbol() {
 		try {
 			i=System.in.read(); // get a char
@@ -29,11 +38,13 @@ public class Store {
 		return (char)i;
 		}
 	
+	//store user input as a String and then resetting the buffer to store a new value
 	public String words(){
 		//reset stored value to blank
 		Input="";
 		check=true;
 		try {
+			//by using a nested do loop the code can safely isolate a key as an invalid input preventing a null value from being entered
 			do {
 				//the askey value for the "enter/return" key is 10
 				do { //do...While loop required to set the flag value after the return key is hit a second time
@@ -54,11 +65,13 @@ public class Store {
 		return Input.trim();
 	}
 	
+	//store user input as a Integer and then resetting the buffer to store a new value
 	public int number(){
 		//reset stored value to blank
 		Input="";
 		check=true;
 		try {
+			//by using a nested do loop the code can safely isolate a key as an invalid input preventing a null value from being entered
 			do {
 				//the askey value for the "enter/return" key is 10
 				do { //do...While loop required to set the flag value after the return key is hit a second time
@@ -81,11 +94,13 @@ public class Store {
 		return value;
 	}
 	
+	//store user input as a double and then resetting the buffer to store a new value
 	public double complex(){
 		//reset stored value to blank
 		Input="";
 		check=true;
 		try {
+			//by using a nested do loop the code can safely isolate a key as an invalid input preventing a null value from being entered
 			do { 
 				//the askey value for the "enter/return" key is 10
 				do { //do...While loop required to set the flag value after the return key is hit a second time
@@ -108,11 +123,13 @@ public class Store {
 		return value;
 	}
 	
+	//store user input as a float and then resetting the buffer to store a new value
 	public float value(){
 		//reset stored value to blank
 		Input="";
 		check=true;
 		try {
+			//by using a nested do loop the code can safely isolate a key as an invalid input preventing a null value from being entered
 			do {
 				//the askey value for the "enter/return" key is 10
 				do { //do...While loop required to set the flag value after the return key is hit a second time
@@ -135,6 +152,7 @@ public class Store {
 		return value;
 	}
 	
+	//This method will build an array of any size and any configuration of random integer values
 	public int[] rArrayInt(int size, int range) {
 		// build an array of random integer values 
 		int[] array = new int[Math.abs(size)]; //Use Math.abs() to prevent a negative array length
@@ -143,7 +161,8 @@ public class Store {
 		}
 		return array;
 	}
-
+	
+	//This method will build an array of any size and any configuration of random double values
 	public double[] rArrayDouble(int size, int range) {
 		// build an array of random double values
 		double[] array = new double[Math.abs(size)]; //Use Math.abs() to prevent a negative array length
@@ -153,6 +172,7 @@ public class Store {
 		return array;
 	}
 	
+	//This method will build an array of any size and any configuration of random float values
 	public float[] rArrayFloat(int size, int range) {
 		// build an array of random float values
 		float[] array = new float[Math.abs(size)]; //Use Math.abs() to prevent a negative array length
@@ -162,6 +182,7 @@ public class Store {
 		return array;
 	}
 	
+	//This method is a prototype scanner build
 	public String altstyle() throws IOException { //use throw instead of a try catch block
 		Input="";  //buffer for input string
 		// Read multiple characters 

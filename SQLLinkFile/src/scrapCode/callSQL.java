@@ -3,7 +3,6 @@
  */
 package scrapCode;
 
-import java.io.IOException;
 import java.sql.*;
 
 /**
