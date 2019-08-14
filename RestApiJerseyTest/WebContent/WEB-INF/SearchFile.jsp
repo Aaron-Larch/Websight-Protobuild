@@ -24,6 +24,7 @@
 						<c:set var="name" value="${file.getreportId().substring(0, place)}"/>
 					</c:if>
 				</c:forEach>
+				<c:set var="hidden" value="${hidden+1}"/>
 				<input type="radio" name="Record" value="${name}" form="Servlet">
 				<c:out value="${name}"/>: <c:out value="${count}"/><br> 
 			</c:if>
