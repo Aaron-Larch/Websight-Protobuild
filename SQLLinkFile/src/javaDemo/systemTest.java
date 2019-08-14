@@ -16,7 +16,7 @@ public class systemTest {
 		int[] length = {26,35,20,15,25};
 		int[] random = {50,45,40,35,30};
 		BuildPath Build = new BuildPath();
-		Reports[][] box = Build.buildNetwork(length, random); //use the data to populate the objects
+		Reports[][] box = Build.JavaInterFaceBuildArray(length, random); //use the data to populate the objects
 		System.out.println("The titles of the files stroed and the number of records in each file are:");
 		for(int j=0; j < box.length; j++) {
 			int count=0;
@@ -26,7 +26,7 @@ public class systemTest {
 				System.out.println(box[j][0].getreportId().substring(0, a)+": "+count);
 			}
 		}
-		SwitchBoard.SearchEngein(box);
+		SimpleSerch.JavaInterFaceSearch(box);
 	}
 	
 	public static void Export(){
@@ -34,7 +34,7 @@ public class systemTest {
 		int[] length = {26,35,20,15,25};
 		int[] random = {50,45,40,35,30};
 		BuildPath Build = new BuildPath();
-		Reports[][] box = Build.buildNetwork(length, random); //use the data to populate the objects
+		Reports[][] box = Build.JavaInterFaceBuildArray(length, random); //use the data to populate the objects
 		System.out.println("The titles of the files stroed and the number of records in each file are:");
 		for(int j=0; j < box.length; j++) {
 			int count=0;
@@ -44,6 +44,6 @@ public class systemTest {
 				System.out.println(box[j][0].getreportId().substring(0, a)+": "+count);
 				}
 		}
-		SwitchBoard.SearchEngein(box);
+		SimpleSerch.JavaInterFaceSearch(box);
 	}
 }
