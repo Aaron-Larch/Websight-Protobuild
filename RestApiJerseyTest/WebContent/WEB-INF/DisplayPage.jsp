@@ -17,6 +17,11 @@
 
 .Calculate {color: dodgerblue;}
 .Restart {color: orange;}
+
+fieldset { position: relative; padding: 0.35em 0.625em 0.75em; }
+.legend2 { position: absolute; bottom: -1.4ex; left: 10px; background: white  }
+caption, .legend2 { padding: 0 2px }
+
 </style>
 <jsp:include page="Modal.jsp" />
 </head>
@@ -32,7 +37,7 @@
     <p id="tital3" style= "float: left;"> To generate statistical data with ${Name}, click</p>
     <!-- Trigger for object Switch -->
   	<button class="astext Calculate" id="BuildRecord" style= "float: left;" onclick="SwichLoadout(1)"> Calculate</button> <p>.</p>
-	<p id="tital4" style= "float: left;">To obtain data under a different name, click</p>
+	<p id="tital4" style= "float: left;">Otherwise, obtain data under a different name by clicking</p>
   	<!-- Trigger the modal with a button -->
   	<button class="astext Restart" id="LoadFile" style= "float: left;" onclick="loadModal('1')"> Restart</button> <p>.</p>
   	<br>
@@ -43,7 +48,8 @@
     <div id="Display"></div>
 	<form action="BuildRecord" id="Servlet" method="post">
     	<fieldset>
-    		<legend>you can perform one or more of the following operations:</legend>
+    		<legend>Please select which statistical operations you want displayed:
+    		<span class=legend2>Then click submit.</span></legend>
     		<input type="checkbox" name="operation" id="srth" value="SortHi" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
     		<label for="srth">Sort Highest to Lowest</label><br />
     		<input type="checkbox" name="operation" id="srtl" value="SortLo" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
@@ -60,7 +66,9 @@
     		<label for="max">Find the Highest value</label><br />
     		<input type="checkbox" onclick="checkAll(this)" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
     		<label for="all">Select All</label><br />
+		<br>
 		</fieldset>
+		<br>
 		<input type="hidden" name="file" value= "${Record}">
 		<input type="hidden" name="name" value= "${Name}">
 		<input type="hidden" name="reset" value= "${Count}">

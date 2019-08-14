@@ -41,7 +41,7 @@ public class SwitchBoard {
 					}
 					
 				}else {// user Error handling
-					System.out.println("Report is at capasity. No more files can be stored. Exiting program.");
+					System.out.println("Report is at capacity. No more files can be stored. Exiting program.");
 					break;
 				}	
 			}else {count++; if(k>0) {k--;}}//Decrementing the array value
@@ -54,7 +54,7 @@ public class SwitchBoard {
 		int count=0;
 		System.out.println("What files do you want to look at? If you want to look at every file type all.");
 		String Record = scan.words(); //file choice
-		System.out.println("what paramiter do you want to sort by? Name, Average, Median, Mode, Min, Max"+"\n"
+		System.out.println("what parameter do you want to sort by? Name, Average, Median, Mode, Min, Max"+"\n"
 				+"Please Format your responce in the following format 'Average >= 20' or 'Name contains 3'");
 		String userinput = scan.words(); //user search requirements submited as a string 
 		Reports[] resultes=search(file, userinput, Record); //run the search
@@ -142,44 +142,44 @@ public class SwitchBoard {
 		switch(inputOP.toLowerCase()){ //match inputary[i] with it's matching Switch case
 		case"sorthi":
 			//call operation and print result 
-			System.out.print("you list was sorted high low and now reads " + Arrays.toString(Statistics.sortEX(temp, "hi"))+"\n");
+			System.out.print("Your Data was sorted high low and now reads: " + Arrays.toString(Statistics.sortEX(temp, "hi"))+"\n");
 			rep.sethighC(temp); //save value in object
 			break;
 			
 		case"sortlo":
 			//call operation and print result 
-			System.out.print("you list was sorted low high and now reads " + Arrays.toString(Statistics.sortEX(temp, "lo"))+"\n");
+			System.out.print("Your Data was sorted low high and now reads: " + Arrays.toString(Statistics.sortEX(temp, "lo"))+"\n");
 			rep.setlowC(temp); //save value in object
 			break;
 			
 		case"average":
 			rep.setaverage(Statistics.average(temp)); //save value in object
 			//call operation and print result 
-			System.out.printf("the average of your list is: %.4f %n", rep.getaverage());
+			System.out.printf("The average of your Data is: %.4f%n", rep.getaverage());
 			break;
 			
 		case"median":
 			rep.setmedian(Statistics.median(temp));//save value in object
 			//call operation and print result 
-			System.out.printf("the median of your list is: %.1f %n", rep.getmedian());
+			System.out.printf("The median of your Data is: %.1f%n", rep.getmedian());
 			break;
 			
 		case"mode":
 			rep.setmode(Statistics.mode(temp));//save value in object
 			//call operation and print result
-			System.out.print("the mode(s) of your list is: " + rep.getmode() + "\n");
+			System.out.print("The mode(s) of your Data is: " + rep.getmode() + "\n");
 			break;
 			
 		case"max":
 			rep.setmax(Statistics.minMax(temp, inputOP)); //save value in object
 			//call operation and print result
-			System.out.print("the highest value of your list is: " + rep.getmax() + "\n");
+			System.out.print("The highest posibule value of your Data is: " + rep.getmax() + "\n");
 			break;
 			
 		case"min":
 			rep.setmin(Statistics.minMax(temp, inputOP)); //save value in object
 			//call operation and print result
-			System.out.print("the lowest value of your list is: " + rep.getmin() +"\n");
+			System.out.print("The lowest posibule value of your Data is: " + rep.getmin() +"\n");
 			break;
 			
 		default:
@@ -203,7 +203,7 @@ public class SwitchBoard {
 			break;		
 			
 		case">":
-		case"grater than":
+		case"greater than":
 			flag=((double)obj>value); //check values
 			break;
 		
@@ -214,7 +214,7 @@ public class SwitchBoard {
 			break;
 		
 		case">=":
-		case"Grater than or equal to":
+		case"Greater than or equal to":
 			flag=((double)obj>=value); //check values
 			break;	
 		
@@ -224,7 +224,7 @@ public class SwitchBoard {
 			break;
 		
 		case"!=":
-		case"dose not equal":	
+		case"does not equal":	
 			flag=((double)obj!=value); //check values
 			break;
 			

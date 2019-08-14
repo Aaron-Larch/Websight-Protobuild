@@ -1,8 +1,6 @@
 package JavaCallFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -18,7 +16,7 @@ import javaDemo.SwitchBoard;
 
 /**
  * @author gce
- *http://localhost:8080/RestApiJerseyTest/
+ *http://localhost:8181/RestApiJerseyTest/
  *${jboss.bind.address:127.0.0.1}
  */
 
@@ -35,18 +33,18 @@ public class FileSort extends HttpServlet{
 			throws IOException, ServletException{
 			String userchoice = request.getParameter("choice");
 
-			if ("yes".equalsIgnoreCase(userchoice)) {
+			if ("add".equalsIgnoreCase(userchoice)) {
 				tempOutput.add(resultes[i]);
 				i++;
 				if(i < resultes.length) {PritResult(request, response);}
 				else {
 					i=0; 
-					Reports[] statement = tempOutput.toArray(new Reports[tempOutput.size()]);;
+					Reports[] statement = tempOutput.toArray(new Reports[tempOutput.size()]);
 				 	request.getSession().setAttribute("Final", statement);
 				 	request.setAttribute("LoadPage", "/PrintFinalData");
 				 	request.getRequestDispatcher("/WEB-INF/ChartBuild.jsp").forward(request, response);//page b
 				 }
-			}else if ("no".equalsIgnoreCase(userchoice)){
+			}else if ("discard".equalsIgnoreCase(userchoice)){
 				i++;
 				if(i < resultes.length) {PritResult(request, response);}
 				else {
@@ -77,16 +75,16 @@ public class FileSort extends HttpServlet{
 			    //Perform operations
 			    if(file==null) {
 			    	SendPackage(request, response, "You forgot to select witch file you wanted to search through");
-			    }else {
+			    }else { 
 			    	for(int j=0; j<=temp.length; j++) {
-			    		if(j==3) {
+			    		if(j==temp.length) {
 			    			resultes=SwitchBoard.search(box, req, file);
 					    	if(resultes[0].getreportId().equalsIgnoreCase("flag")) {
 					    		SendPackage(request, response, "Your Search produesd no matching results");
 					    	}else {PritResult(request, response);}
 			    		}else {
 			    			if(ReadWriteFileDemo.SpellCheck(temp[j],j)==false){
-						    	SendPackage(request, response, temp[j]+" dose not mach any Words that I know");
+						    	SendPackage(request, response, temp[j]+" dose not mach any Words or Numbers that I know");
 						    	break;
 			    			}
 			    		}
@@ -96,23 +94,16 @@ public class FileSort extends HttpServlet{
 	
 	private void PritResult(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//Create a stream to hold the output
-	 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	 	PrintStream ps = new PrintStream(baos);
-	 	// IMPORTANT: Save the old System.out!
-	 	PrintStream old = System.out;
-	 	// Tell Java to use your special stream
-	 	System.setOut(ps);
-	 	// Print some output: goes to your special stream
+		ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
+	 	
+	 	runSoftware.start();
 	 	resultes[i].showRecord();
-		// Put things back
-		System.out.flush();
-		System.setOut(old);
+	 	String printOutputValue=runSoftware.stop();
 		
 		//print output
 		request.setAttribute("Page", "page3");
 		request.setAttribute("NumHits", resultes.length-i);
-		request.setAttribute("Message", baos.toString());
+		request.setAttribute("Message", printOutputValue);
 		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);//page a
 	}
 	

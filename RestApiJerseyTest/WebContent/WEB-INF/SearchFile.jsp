@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +12,8 @@
     <div Class="SearchStatement">
     	<div id="proofofRecord" style="display: none;">${Message}</div>
 		<h2>The titles of the files stored and the number of records in each file are:</h2>
-		<div id="title1">What file do you want to look at? If you want to look at every file Select all.</div>
-		
+		<div id="title1">Please select a file do you want to look at. Or if you want to look at every file Select all.</div>
+		<c:set var="hidden" value="0"/>
 		<c:forEach items="${Record}" var="block">
 			<c:set var="count" value="0"/>
 			<c:if test="${not empty block}">
@@ -28,9 +28,20 @@
 				<c:out value="${name}"/>: <c:out value="${count}"/><br> 
 			</c:if>
 		</c:forEach>
-		<input type="radio" name="Record" value="all" form="Servlet">all
-
-   		<p id="tital2">what paramiter do you want to sort by? Name, Average, Median, Mode, Min, or Max<br>
+		<c:choose>
+    		<c:when test="${hidden > '1'}">
+        		<div id="Optional" style="display: block;">
+					<input type="radio" name="Record" value="all" form="Servlet">Search All
+				</div>
+    		</c:when>    
+    		<c:otherwise>
+        		<div id="Optional" style="display: none;">
+					<input type="radio" name="Record" value="all" form="Servlet">Search All
+				</div>
+    		</c:otherwise>
+		</c:choose>
+		
+   		<p id="tital2">what parameters do you want to sort the records by? Name, Average, Median, Mode, Min, or Max<br>
 				Please Format your response in the following format: 'Average >= 20', 'Name contains 3', or 'Mode of 4'</p>
   		<form action="FileSort" id="Servlet" method="post">
   			<input type="text" name="input">
@@ -40,13 +51,13 @@
 			<div id="FailedResult">${Result}</div>
 	</div>
 	<div Class="BuildTepfile">
-		<h2>There are ${NumHits} enteries matching your request</h2>
+		<h2>There are ${NumHits} entries matching your request</h2>
 		<textarea id="message" rows="12" cols="150">${Message}</textarea>
 		<form action="FileSort" id="Servlet" method="get">
-			<p>Do you wish to make a graph of this record?</p>
+			<p>Do you wish to add this record to the final graph report. Or do you want to discard the record.</p>
 			<div id="buttons">
-  			<input type="submit" name="choice" value="yes">
-  			<input type="submit" name="choice" value="no">
+  			<input type="submit" name="choice" value="add">
+  			<input type="submit" name="choice" value="discard">
   			</div>
 		</form>
 	</div>

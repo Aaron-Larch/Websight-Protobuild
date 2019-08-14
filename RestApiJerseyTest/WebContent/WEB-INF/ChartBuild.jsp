@@ -37,15 +37,11 @@
     		border: solid 1px blue;
     		text-align: center;
 		}
-		.container button{
-    		display: inline-block;
-		}
-		#btn1{
-   			float:left;
-		}
-		#btn3{
-    		float:right;
-		}
+		
+		.container button{display: inline-block;}
+		#btn1{float:left;}
+		#btn3{float:right;}
+		
 	</style>
 	
 </head>
@@ -177,10 +173,12 @@
 </script>
 </body>
 <footer>
-	<form action="PrintFinalData" id="Servlet" method="post">
+	<form action="PrintFinalData" id="Servlet1" method="post">
 		<button type="submit" id="btn1" name="action" value="-1">Back</button>
 		<button type="submit" id="btn3" name="action" value="1">Next</button>
 	</form>
-	 <button id="btn2" name="action" value="1">print</button>
+	<form action="FinalPagePrintFile" id="Servlet2" method="get">
+		<input type="submit" id="btn2" name="action" value="Print File"/>
+	</form>
 </footer>
 </html>
