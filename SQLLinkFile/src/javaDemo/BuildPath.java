@@ -1,15 +1,36 @@
 package javaDemo;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 
 public class BuildPath {
 	public static Store scan=new Store();
 	public static BuildPath Build = new BuildPath();
 	
+	//This is a Java interface to run through all of the properties for building an multi-dimensional
+	// arrays for for testing purposes In the Java console.
+	public  Reports[][] JavaInterFaceBuildArray(int[] length, int[] random){
+		Reports[][] box =new Reports[3][]; //by leavening the second field empty it can be dynamically filled with later methods
+		
+		//the main build loop to generate arrays and create objects
+		for(int i=0; i<box.length; i++) {
+			System.out.println("Enter the name of Your Array:");//prompt the user to create the primary key value
+			String name = scan.words(); // Scans the next token of the input as a String.
+			
+			//build a multi-dimensional set of arrays for the user to work with
+			double[][] array =Build.arrayBoxInt(length,random, name); 
+			System.out.println("do you want to analize " + name + ":");//Confirmation line
+			String choice = scan.words(); // Scans the next token of the input as a String.
+			if ("yes".equalsIgnoreCase(choice)|"y".equalsIgnoreCase(choice)) 
+			{box[i]=SwitchBoard.JavaInterFaceBuildObject(array,name);} //create and populate an array of objects
+			else if("no".equalsIgnoreCase(choice)|"n".equalsIgnoreCase(choice)) {i--;} //by decrementing i the for loop becomes infinite  
+			else {break;}//cut off point to ease testing
+		}
+		return box;
+	}
+	
+	//build a multi-dimensional set of arrays of integer values and then convert the values to a doubles
 	public double[][] arrayBoxInt(int[] size, int[] range, String name){
 		double[][] arrayBox = new double [size.length][];
 		for(int i=0; i<arrayBox.length; i++) {//create a variable that represents each outter array
@@ -26,6 +47,7 @@ public class BuildPath {
 		return arrayBox;
 	}
 	
+	//build a multi-dimensional set of arrays of double values
 	public double[][] arrayBoxDouble(int[] size, int[] range, String name){
 		double[][] arrayBox = new double [size.length][];
 		for(int i=0; i<arrayBox.length; i++) { //create a variable that represents each outter array
@@ -37,6 +59,7 @@ public class BuildPath {
 		return arrayBox;
 	}
 	
+	//build a array of integer values
 	public static int[] buildArray(String name) {
 		System.out.println("Enter the size of Your Array:");
 		int size = scan.number(); // Scans the next token of the input as an int.
@@ -49,67 +72,16 @@ public class BuildPath {
 		return array;
 	}
 	
+	//prototype java interface
 	public Reports[] BuildRecord(int[] length, int[] random ){
 		System.out.println("Enter the name of Your Array:");
 		String name = scan.words(); // Scans the next token of the input as a String.
 		double[][] array =Build.arrayBoxInt(length,random, name);//create a double array
-		Reports[] box=SwitchBoard.StatbuildEX10(array,name);//create and populate an array of objects
+		Reports[] box=SwitchBoard.JavaInterFaceBuildObject(array,name);//create and populate an array of objects
 		return box;
 	}
 	
-	public  Reports[][] buildNetwork(int[] length, int[] random){
-		Reports[][] box =new Reports[3][]; //this value must match the Switch value or else error
-		for(int i=0; i<box.length; i++) {
-			System.out.println("Enter the name of Your Array:");
-			String name = scan.words(); // Scans the next token of the input as a String.
-			double[][] array =Build.arrayBoxInt(length,random, name); //create a double array
-			System.out.println("do you want to analize " + name + ":");
-			String choice = scan.words(); // Scans the next token of the input as a String.
-			if ("yes".equalsIgnoreCase(choice)|"y".equalsIgnoreCase(choice)) 
-			{box[i]=SwitchBoard.StatbuildEX10(array,name);} //create and populate an array of objects
-			else if("no".equalsIgnoreCase(choice)|"n".equalsIgnoreCase(choice)) {i--;} //by decrementing i the for loop becomes infinite  
-			else {break;}//cut off point to ease testing
-		}
-		return box;
-	}
-	
-	public static Reports[] searchAllFiles(Reports[][] file, String name, String field1, String sort, String field2 ) {
-		ArrayList<Reports> tmp = new ArrayList<Reports>(); //use this to create an array of dynamic size
-		Reports[] array=new Reports[1];
-		Method val;
-		for(int i=0; i < file.length; i++) { //search all available arrays
-			//search for a single array or search trough all arrays
-			if(file[i] != null && (file[i][0].getreportId().contains(field1) | field1.equalsIgnoreCase("all"))) {
-				//Search through the array of objects 
-				for(int j=0; j < file[i].length; j++) {
-					try {
-						if(file[i][j] != null) {
-							val = file[i][j].getClass().getDeclaredMethod(name); //declare a reflected method
-							Object space = val.invoke(file[i][j]); //use invoke to execute the method, and store the results in an object
-							if(SwitchBoard.Operaton(space, sort , field2)) {
-								tmp.add(file[i][j]); //build a result file
-							}	
-						}
-					} catch (NoSuchMethodException | SecurityException e) {
-						// TODO Auto-generated catch block
-						//e.printStackTrace();
-						System.out.println("This Method cannot be accesed or dose not exist");
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		if(tmp.isEmpty()) { //check to see if the result returns empty. set flag value if true.
-			array[0] =  new Reports();
-			array[0].setreportId("flag");
-			return array;
-		}else {
-			Reports[] statement = tmp.toArray(new Reports[tmp.size()]); //convert into an array of objects
-			return statement;}	
-	}
-	
+	//a stored method containing all secondary calculations method calls
 	public static void complexOps(Reports[] temp) {
 		//Execute secondary calculations on every saved search result object
 		if (temp.length==0) {System.out.println("There are no records matching your query");}

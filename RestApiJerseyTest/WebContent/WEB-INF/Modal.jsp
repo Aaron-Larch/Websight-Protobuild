@@ -21,7 +21,7 @@
         <div class="modal-body">
         	<button type="button" class="close" data-dismiss="modal">&times;</button>
 			<form action="SetNameServlet" method="post">
-				<p>Please select the Name of the file you wish to create</p>
+				<p>Please Type in the New Name of the file you wish to create</p>
 				<label for="name">Name:</label>
     			<input type="text" name="FileInput" id=name/>
 				<input type="hidden" id="DynamicVariabule" name="flagValue"/><br>

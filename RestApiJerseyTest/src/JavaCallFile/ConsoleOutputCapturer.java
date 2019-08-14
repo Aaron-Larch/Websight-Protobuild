@@ -77,4 +77,3 @@ public class ConsoleOutputCapturer {
         }
     }
 }
-//Really nice solution, though I would suggest one little addition, call the close() method on baos stream in stop() method just before setting it to null to release all the resources

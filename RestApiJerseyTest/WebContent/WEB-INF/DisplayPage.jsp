@@ -4,8 +4,6 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="Modal.jsp" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <title>Create Records</title>
 <style>
 .astext {
@@ -19,23 +17,30 @@
 
 .Calculate {color: dodgerblue;}
 .Restart {color: orange;}
+
+fieldset { position: relative; padding: 0.35em 0.625em 0.75em; }
+.legend2 { position: absolute; bottom: -1.4ex; left: 10px; background: white  }
+caption, .legend2 { padding: 0 2px }
+
 </style>
+<jsp:include page="Modal.jsp" />
 </head>
 <body>
 <div id="divLoad" style="display: none;">${Page}</div>
 <div class= "display">
+
 <div id="modal-isi-body"></div>
 <h1 id="tital1">Data created for the ${Name} file</h1>
     <textarea id="message" rows="12" cols="200">${Message}</textarea>
     <br>
    	<p id="tital2">Data associated with set ${Name} ready for statistical calculations.</p>
-    <p id="tital3" style= "float: left;"> To generate statistical data with ${Name}, click </p>
+    <p id="tital3" style= "float: left;"> To generate statistical data with ${Name}, click</p>
     <!-- Trigger for object Switch -->
-  	<button class="astext Calculate" id="BuildRecord" style= "float: left;" onclick="SwichLoadout(1)">Calculate</button> <p>.</p>
-	
-	<p id="tital4" style= "float: left;">To obtain data under a different name, click </p>
+  	<button class="astext Calculate" id="BuildRecord" style= "float: left;" onclick="SwichLoadout(1)"> Calculate</button> <p>.</p>
+	<p id="tital4" style= "float: left;">Otherwise, obtain data under a different name by clicking</p>
   	<!-- Trigger the modal with a button -->
-  	<button class="astext Restart" id="LoadFile" style= "float: left;" onclick="loadModal('1')">Restart</button> <p>.</p>
+  	<button class="astext Restart" id="LoadFile" style= "float: left;" onclick="loadModal('1')"> Restart</button> <p>.</p>
+  	<br>
 </div>
 
 <div class = "Populate">
@@ -43,23 +48,34 @@
     <div id="Display"></div>
 	<form action="BuildRecord" id="Servlet" method="post">
     	<fieldset>
-    		<legend>you can perform one or more of the following operations:</legend>
-    		<input type="checkbox" name="operation" id="srth" value="SortHi" /><label for="srth">Sort Highest to Lowest</label><br />
-    		<input type="checkbox" name="operation" id="srtl" value="SortLo"  /><label for="srtl">Sort Lowest to Highest</label><br />
-    		<input type="checkbox" name="operation" id="ave" value="Average" /><label for="ave">Find the Average</label><br />
-    		<input type="checkbox" name="operation" id="mid" value="Median" /><label for="mid">Find the Median</label><br />
-    		<input type="checkbox" name="operation" id="mode" value="Mode"  /><label for="mode">Find the Mode</label><br />
-    		<input type="checkbox" name="operation" id="min" value="Min" /><label for="min">Find the Lowest value</label><br />
-    		<input type="checkbox" name="operation" id="max" value="Max" /><label for="max">Find the Highest value</label><br />
-    		<input type="checkbox" onclick="checkAll(this)" /><label for="all">Select All</label><br />
+    		<legend>Please select which statistical operations you want displayed:
+    		<span class=legend2>Then click submit.</span></legend>
+    		<input type="checkbox" name="operation" id="srth" value="SortHi" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="srth">Sort Highest to Lowest</label><br />
+    		<input type="checkbox" name="operation" id="srtl" value="SortLo" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="srtl">Sort Lowest to Highest</label><br />
+    		<input type="checkbox" name="operation" id="ave" value="Average" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="ave">Find the Average</label><br />
+    		<input type="checkbox" name="operation" id="mid" value="Median" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="mid">Find the Median</label><br />
+    		<input type="checkbox" name="operation" id="mode" value="Mode" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="mode">Find the Mode</label><br />
+    		<input type="checkbox" name="operation" id="min" value="Min" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="min">Find the Lowest value</label><br />
+    		<input type="checkbox" name="operation" id="max" value="Max" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="max">Find the Highest value</label><br />
+    		<input type="checkbox" onclick="checkAll(this)" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
+    		<label for="all">Select All</label><br />
+		<br>
 		</fieldset>
+		<br>
 		<input type="hidden" name="file" value= "${Record}">
 		<input type="hidden" name="name" value= "${Name}">
 		<input type="hidden" name="reset" value= "${Count}">
 		<input type="hidden" id="data" name="data">
 		<input type="hidden" id="ArraySize" name="length">
 		<input type="hidden" id="ArrayPosition" name="place">
-  		<input type="submit" value="Submit" id="CheckTest">
+  		<input type="submit" value="Submit" id="CheckTest" disabled="disabled" >
 	</form>
 		<button id="placeholder" onclick="SwichLoadout(2)">Back</button>
 </div>
@@ -114,12 +130,12 @@ function SwichLoadout(a){
 	}
 
 function loadModal(i){
-		$(document).ready(function(){
-    		$("#myModal").modal().on('shown.bs.modal', function (e) {setValues(i);});
-    		load_page('/WEB-INF/Modal.jsp #container');
-		});
-		function load_page(url){$('modal-isi-body').load(url) ;}
-	}
+	$(document).ready(function(){
+		$("#myModal").modal().on('shown.bs.modal', function (e) {setValues(i);});
+		load_page('/WEB-INF/Modal.jsp #container');
+	});
+	function load_page(url){$('modal-isi-body').load(url) ;}
+}
 
 function checkAll(source) {
 	  checkboxes = document.getElementsByName('operation');
@@ -127,23 +143,6 @@ function checkAll(source) {
 	    checkboxes[i].checked = source.checked;
 	  }
 	}
-	
-var checkbox = $('input[type="checkbox"]');
-var button = $('#CheckTest');
-
-if(checkbox.is(':checked')){  
-  button.removeProp('disabled');
-}else{  
-  button.prop('disabled', 'disabled');
-}
-
-checkbox.on('change', function(){
- if(checkbox.is(':checked')){  
-  button.removeProp('disabled');
-}else{  
-  button.prop('disabled', 'disabled');
-} 
-});
 </script>
 
 </body>

@@ -27,7 +27,7 @@ public class ReadWriteFileDemo {
 	    fileOut.close();
 	    
 	    String [] Collums= {"EmployeeID", "LastName", "FirstName", "Rank", "SvcBranch", "DutyStatusCode", "EligibilityCode", "RemainingBenefits"};  
-	    System.out.println("please enter a field you whish to search for in the file. You can search in the following caigories"+
+	    System.out.println("please enter a field you whish to search for in the file. You can search in the following categories"+
 	    	    "\n"+Arrays.toString(Collums));
 	    String Search =input.nextLine();
 	    
@@ -87,35 +87,37 @@ public class ReadWriteFileDemo {
 		array.displayArrayValue(num, CH1, CH2);
 	}
 
-	public static void SpellCheck(String[] input) {
+	public static boolean SpellCheck(String input, int h) {
 		String[][] Library= {
 		 {"Average","Mean","Median","Mode","Min","Max","Name"},
-		 {">","<","=","!=","<=",">=","contains","of","less than","grater than","equal to",
-		  "less than or equal to","Grater than or equal to","dose not equal","equals"},
-		 {"1","2","3","4","5","6","7","8","9","0"}
+		 {">","<","=","!=","<=",">=","contains","of","less than","Greater than","equal to",
+		  "less than or equal to","Greater than or equal to","does not equal","equals"},
+		 {"\\d*\\.?\\d+"}
 		};
-		int h=0;
 		boolean flag=false;
-		for(int i=0; i<input.length; i++) {
 			for(int j=0; j<Library[h].length; j++) {
-				if(input[i].equalsIgnoreCase(Library[h][j])) {flag=true;}
-			}
-			if(flag==false) {
-				System.out.println("This word dose not mach any that I know");
-				break;
-				}else {
-					flag=false;
-					h++;
+				if(h==2) {
+					if(input.matches(Library[h][j])) {flag=true;}
+				}else if(input.equalsIgnoreCase(Library[h][j])) {
+					flag=true;
+					break;
 				}
-		}
+			}
+
+		return flag;
 	}
-	public static void dynamicparse (String[] words) {
-		String[] output= new String[3];
-		if(words.length==3) {output=words;}
+	public static String[] dynamicparse (String words) {
+		String[] feild= new String[3];
+		String[] inputary=words.split(" "); //split the sentence into relevant pieces  
+		
+		//change format to meet method parameters 
+		if(inputary.length==3) {feild=inputary;}//check to see if the format is already there
 		else {
-			output[0]=words[0];
-			for(int i=1; i<words.length-1; i++) {output[1].concat(words[i]);}
-			output[2]=words[words.length-1];
+			feild[0]=inputary[0]; //the first value is always the operation we wish to s
+			feild[1]=inputary[1]; //Set the Value to the first word you wish to combine
+			for(int i=2; i<inputary.length-1; i++) {feild[1]+=" "+inputary[i].toString();}//concainate the rest of the phrase into one array value
+			feild[2]=inputary[inputary.length-1]; //the last variable is the value 
 		}
+		return feild;
 	}
 }

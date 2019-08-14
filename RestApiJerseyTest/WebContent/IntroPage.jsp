@@ -55,7 +55,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 <!-- Trigger/Open The Modal -->
 <button id="myBtn" onclick="loadModal('0')">Open Modal</button>
-
+<br>
+<br>
+<p>This is a blank page to highlight the fact the is program is set to a button.</p>
+<p>The program is designed to work for BA's and other presentation materials by taking third party data</p>
+<p> analizeing it and generating aestetic reports for presentations and printable hand outs</p>
 <!-- The Modal -->
 <div id="myModal" class="modal">
 
@@ -63,7 +67,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <div class="modal-content">
     <span class="close">&times;</span>
     <form action="SetNameServlet" method="post">
-    	<p>Please select the Name of the file you wish to create</p>
+    	<p>Please select the Name of the file you wish to create then click the Submit File button</p>
 		<label for="name">Name:</label>
     	<input type="text" name="FileInput" id=name/>
     	<input type="hidden" name="flagValue" value="0" /><br>

@@ -19,7 +19,7 @@ import javaDemo.Reports;
 
 /**
  * @author gce
- *http://localhost:8080/RestApiJerseyTest/SetNameServlet
+ *http://localhost:8181/RestApiJerseyTest/
  *
  */
 @WebServlet("/SetNameServlet")
@@ -41,7 +41,8 @@ public class SetNameServlet extends HttpServlet{
  		request.setAttribute("Record", box);
  		request.setAttribute("Message", Exit);
  		request.getRequestDispatcher("/WEB-INF/SearchFile.jsp").forward(request, response);
-		
+		box=new Reports[3][];
+		i=0;
 			}	
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) 
