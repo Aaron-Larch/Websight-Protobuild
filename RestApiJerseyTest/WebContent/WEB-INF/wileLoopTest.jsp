@@ -18,9 +18,9 @@
     	<!-- Trigger for object Switch -->
   		<button id="BuildRecord" onclick="SwichLoadout()">continue</button>
 
- 		<p id="tital3">or do you want to create a new record set.</p>
+ 		<p id="tital3">or do you want to close this file.</p>
   		<!-- Trigger the modal with a button -->
-  		<button id="LoadFile" onclick="loadModal('0')">new file</button>
+  		<button id="LoadFile" onclick="loadModal('0')">Close file</button>
 	</div>
 
     <div Class="setInputs">

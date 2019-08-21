@@ -1,11 +1,5 @@
 package com.jwt.rest;
 
-/**
- * @author Crunchify.com
- * * Description: This program converts unit from Centigrade to Fahrenheit.
- * Last updated: 12/28/2018
- */
- 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

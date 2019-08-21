@@ -198,4 +198,12 @@ class SwitchTest {
 		assertNull(file.getmode());
 		assertNull(file.getreportId());
 	}
+	
+	/**
+	 * Test method for {@link javaDemo.SwitchBoard#JavaInterFaceBuildObject(double[][] input, String name)}.
+	 */
+	@Test
+	void testJavaInterFaceBuildObject_produeseOneObject() {
+		
+	}
 }

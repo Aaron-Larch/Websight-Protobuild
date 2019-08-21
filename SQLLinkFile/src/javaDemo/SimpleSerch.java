@@ -7,6 +7,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SimpleSerch {
+	//the Library is split into 5 zones each one representing one or the fields needed to perform the search for better processing
+	private static String[][] Library= {
+			 {"Average","Mean","Median","Mode","Min","Max","Name","report id","record name","primary key"},
+			 {">","<","=","!=","<=",">=","contains","of","less than","Greater than","equal to",
+			  "less than or equal to","Greater than or equal to","does not equal","equals"},
+			 {"\\d*\\.?\\d+"}, //use RegX to make sure that the user only entered a double or an integer
+			 {"Error"},//Check value for incomplete statements
+			 {"primary", "record", "report", "key", "id", "name"}
+			};
 	static Store scan=new Store();
 	
 	//This is a Java interface to run through all of the properties of the search method for testing purposes In the Java console.
@@ -53,8 +62,6 @@ public class SimpleSerch {
 	public static Reports[] search( Reports[][] file, String userinput, String Record) { 
 		//create a results record
 		Reports[] storedval = null;
-		String[] feild= new String[3];
-		String[] inputary=userinput.split(" "); //split the sentence into relevant pieces  
 		
 		/*The goal of the section of code is to create a logic operation that will format the user's input string into a 
 		 * form that the search engine will recognize to do this the The code will change the input string into
@@ -66,14 +73,7 @@ public class SimpleSerch {
 		 * rest back into a string for the final value.
 		 */
 		
-		if(inputary.length<3) {feild[0]="Error";}
-		else if(inputary.length==3) {feild=inputary;}//check to see if the format is already there
-		else {
-			feild[0]=inputary[0]; //the first value is always the operation we wish to s
-			feild[1]=inputary[1]; //Set the Value to the first word you wish to combine
-			for(int i=2; i<inputary.length-1; i++) {feild[1]+=" "+inputary[i].toString();}//concainate the rest of the phrase into one array value
-			feild[2]=inputary[inputary.length-1]; //the last variable is the value 
-		}
+		String[] feild=dynamicparse(userinput);
 		
 		/*By using a Switch operation the code can quickly look for a matching value from a library of stored string values
 		 *once a match is found the code will assine the method call that will fetch the required search parameter to the string a value
@@ -81,6 +81,9 @@ public class SimpleSerch {
 		 */
 		
 		switch(feild[0].toLowerCase()){
+		case"record name":
+		case"primary key":
+		case"report id":
 		case"name":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
 			storedval=searchFiles(file, "getreportId", Record, feild[1].toLowerCase(), feild[2]);
@@ -215,6 +218,7 @@ public class SimpleSerch {
 			break;
 			
 		case"contains":
+		case"contains the number":
 			flag=(obj.toString().contains(opr)); //strings are different so require a different state
 			break;
 			
@@ -236,14 +240,6 @@ public class SimpleSerch {
 	
 	//to counter user error there This method has a library of stored words that the code will recognize as 'real words'
 	public static boolean SpellCheck(String input, int h) {
-		//the Library is split into 4 zones each one representing one or the fields needed to perform the search for better processing
-		String[][] Library= {
-		 {"Average","Mean","Median","Mode","Min","Max","Name"},
-		 {">","<","=","!=","<=",">=","contains","of","less than","Greater than","equal to",
-		  "less than or equal to","Greater than or equal to","does not equal","equals"},
-		 {"\\d*\\.?\\d+"}, //use RegX to make sure that the user only entered a double or an integer
-		 {"Error"} //Check value for incomplete statements
-		};
 		boolean flag=false;
 			for(int j=0; j<Library[h].length; j++) {
 				//do to Regx requiring a different form of comparison the code needs to check to make sure the library call is correct
@@ -266,10 +262,25 @@ public class SimpleSerch {
 		if(inputary.length < 3) {feild[0]="Error";}
 		else if(inputary.length==3) {feild=inputary;}//check to see if the format is already there
 		else {
-			feild[0]=inputary[0]; //the first value is always the operation we wish to s
-			feild[1]=inputary[1]; //Set the Value to the first word you wish to combine
-			for(int i=2; i<inputary.length-1; i++) {feild[1]+=" "+inputary[i].toString();}//concainate the rest of the phrase into one array value
-			feild[2]=inputary[inputary.length-1]; //the last variable is the value 
+			int count=0;
+			for(int i=0; i<feild.length; i++) {
+				feild[i]=inputary[count]; //the first value is always the operation we wish to search for
+				count ++;
+				if(i==0) {
+					for(int j=0; j<Library[4].length; j++) {
+						if(inputary[count].equalsIgnoreCase(Library[4][j])) {
+							feild[i]+=" "+inputary[count].toString();
+							count ++;
+						}
+					}
+				}else if(i==1) {
+					for(int j=count; j<inputary.length-1; j++) {
+						feild[i]+=" "+inputary[j].toString();
+						count++;
+					}
+				}
+				
+			}
 		}
 		return feild;
 	}
