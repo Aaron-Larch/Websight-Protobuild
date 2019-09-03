@@ -27,6 +27,10 @@
   		background-color: #dddddd;
 	}
 	
+	.container Servlet2{display: inline-block;}
+  		#btnSave {float: right;}
+  		#tital2 {float: right;}
+ 		#btnEnd {float: center;}
 </style>
 </head>
 <body>
@@ -37,7 +41,7 @@
     <th>Mode</th>
     <th>Number of Hits</th>
   </tr>
-  <thead>
+  </thead>
   <tbody>
   	<c:forEach items="${table}" var="frequency">
 		<tr>

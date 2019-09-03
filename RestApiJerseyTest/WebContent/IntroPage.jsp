@@ -67,7 +67,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <div class="modal-content">
     <span class="close">&times;</span>
     <form action="SetNameServlet" method="post">
-    	<p>Please select the Name of the file you wish to create then click the Submit File button</p>
+    	<p>What Item or items do you want to track in the stock Market Today?</p>
+    	<p>Type in the empty text field the name of the product who's stock values you wish to track.</p>
+    	<p>Then click the "Submit" button to retrieve the related stock information.</p>
 		<label for="name">Name:</label>
     	<input type="text" name="FileInput" id=name/>
     	<input type="hidden" name="flagValue" value="0" /><br>

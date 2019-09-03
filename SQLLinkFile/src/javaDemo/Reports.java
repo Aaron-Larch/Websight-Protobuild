@@ -53,7 +53,7 @@ public class Reports {
     public void showRecord() {
     	if(reportID!=null) { //check to see if value exists before printing
     		System.out.print("The name given to this record is: "+reportID+"\n");
-    		
+
     		if(highcount!=null) { //check to see if value exists before printing
     			System.out.print("your record was sorted high low and now reads: " + Arrays.toString(highcount)+"\n");
     		}

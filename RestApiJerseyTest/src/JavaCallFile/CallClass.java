@@ -5,8 +5,11 @@ package JavaCallFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
+
 //import javax.ws.rs.*;
 import javaDemo.BuildPath;
+import javaDemo.SimpleSerch;
 import javaDemo.systemTest;
 
 /**
@@ -20,6 +23,10 @@ public class CallClass {
 	 */
 	public static void main(String[] args) {
 		//System.out.println("hello World");
+		String someItems= "report id contains the number 5";
+		String[] field=new String[3];
+		field=SimpleSerch.dynamicparse(someItems);
+		System.out.println(Arrays.toString(field));
 		systemTest.Export();
 	}
 	

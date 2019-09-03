@@ -2,6 +2,7 @@ package JavaCallFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -62,7 +63,22 @@ public class FileSort extends HttpServlet{
 			    //Perform operations
 			    if(file==null) {
 			    	SendPackage(request, response, "You forgot to select witch file you wanted to search through");
-			    }else { 
+			    }else if(file!=null && req.isEmpty()) {
+			    	List<Reports> holdingzone = new ArrayList<Reports>();
+			    	for(int k=0;  k<box.length; k++) {
+						if(box[k]!=null) {
+							int stop=box[k][0].getreportId().indexOf('-');
+							String CheckValue=box[k][0].getreportId().substring(0, stop);
+							if(CheckValue.equalsIgnoreCase(file) || file.equalsIgnoreCase("all")) {
+								for(int j=0; j<box[k].length; j++) {
+									if(box[k][j]!=null) {holdingzone.add(box[k][j]);}
+								}
+							}
+						}
+					}
+			    	resultes=holdingzone.toArray(new Reports[holdingzone.size()]);
+					PritResult(request, response);
+			    }else{ 
 			    	for(int j=0; j<=temp.length; j++) {
 			    		if(j==temp.length || SimpleSerch.SpellCheck(temp[0],3)==true) {
 			    			resultes=SimpleSerch.search(box, req, file);

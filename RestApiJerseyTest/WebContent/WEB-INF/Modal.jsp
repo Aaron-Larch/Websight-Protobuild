@@ -18,6 +18,11 @@
     
       <!-- Modal content-->
       <div class="modal-content">
+        <div Class="modal-headder">
+        <h1 id="reset-page">Product Stock Record will be Closed after your next operation is selected</h1>
+        <p>to exit back to the Stock profile you were already working with click off the window</p>
+        <p> or click the close(x) icon in the upper right of the window.</p>
+        </div>
         <div class="modal-body">
         	<button type="button" class="close" data-dismiss="modal">&times;</button>
 			<form action="SetNameServlet" method="post">

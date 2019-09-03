@@ -41,8 +41,9 @@ public class BuildPath {
 			}
 			arrayBox[i]=tempd;//add the inner array to the multi array
 			//print out the results to confirm results 
-			System.out.print("This is your array " + name + ". This array has " + Math.abs(size[i])
-			+ " enteries and the largest number is " + range[i] + "\n" + name + ": " + Arrays.toString(arrayBox[i]) + "\n");
+			System.out.print("The sample size taken for this week was " + Math.abs(size[i]) + 
+					". The highest recorded value for this stock was " + range[i] + "\n" +
+					"The stock values for " + name + " in Region "+i+": " + Arrays.toString(arrayBox[i]) + "\n");
 		}
 		return arrayBox;
 	}

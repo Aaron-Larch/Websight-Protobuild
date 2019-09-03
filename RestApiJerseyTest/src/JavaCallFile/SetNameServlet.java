@@ -3,9 +3,8 @@
  */
 package JavaCallFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -19,11 +18,12 @@ import javaDemo.Reports;
 
 /**
  * @author gce
- *http://localhost:8181/RestApiJerseyTest/
+ *http://localhost:8181/Websight-Protobuild/
  *
  */
 @WebServlet("/SetNameServlet")
 public class SetNameServlet extends HttpServlet{
+	private static ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
 	private static BuildPath CallApplet=new BuildPath();
 	public Reports[][] box=new Reports[3][];
 	private static int i=0;
@@ -32,10 +32,26 @@ public class SetNameServlet extends HttpServlet{
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException{
-	 	String Exit="Report Compiled. Files stored for futher operation";
+		String Exit="Report Compiled. Files stored for futher operation";
 		String ObjectId = UUID.randomUUID().toString();
  		request.getSession().setAttribute(ObjectId, box);
+ 		ArrayList<String> storage= new ArrayList<String>();
  		
+ 		for(int j=0; j<box.length; j++) {
+ 			if(box[j]!=null) {
+ 				for(int k=0; k<box[j].length; k++) {
+ 					if(box[j][k]!=null) {
+ 						runSoftware.start();
+ 						box[j][k].showRecord();
+ 					 	String printOutputValue=runSoftware.stop();
+ 					 	storage.add(printOutputValue);
+ 					}
+ 				}
+ 			}
+ 		}
+ 		String[] PopUp=storage.toArray(new String[storage.size()]);
+ 		
+ 		request.getSession().setAttribute("PopUp", PopUp);
  		request.setAttribute("mailbox", ObjectId);
  		request.setAttribute("Page", "page1");
  		request.setAttribute("Record", box);
@@ -62,18 +78,9 @@ public class SetNameServlet extends HttpServlet{
 	    int flagValue = Integer.parseInt(request.getParameter("flagValue"));
 	    
 	    //Perform operations
-	    //Create a stream to hold the output
-	 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	 	PrintStream ps = new PrintStream(baos);
-	 	// IMPORTANT: Save the old System.out!
-	 	PrintStream old = System.out;
-	 	// Tell Java to use your special stream
-	 	System.setOut(ps);
-	 	// Print some output: goes to your special stream
-	 	double[][] array=CallApplet.arrayBoxInt(length, random, name);
-	 	// Put things back
-	 	System.out.flush();
-	 	System.setOut(old);
+		runSoftware.start();
+		double[][] array=CallApplet.arrayBoxInt(length, random, name);
+		String printOutputValue=runSoftware.stop();
 	 	
 	 	// Show what happened
 	 	if(i<box.length) {
@@ -85,7 +92,7 @@ public class SetNameServlet extends HttpServlet{
 	 		request.setAttribute("Record", ObjectId);
 	 		request.getSession().setAttribute("Data", array);
 	 		request.getSession().setAttribute("Name", name);
-	 		request.setAttribute("Message", baos.toString());
+	 		request.setAttribute("Message", printOutputValue);
 	 		request.setAttribute("Page", "page1, 0");
 	 		request.setAttribute("Count", newFile);
 	 		request.getRequestDispatcher("/WEB-INF/DisplayPage.jsp").forward(request, response);
