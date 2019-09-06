@@ -76,7 +76,7 @@ public class SwitchBoard {
 			double[] temp= new double[input.length]; //refresh temporary array
 			for(int j=0; j<temp.length; j++) {temp[j]=input[j];} //populate temp array with input array
 			inputOP=inputary[i];
-			
+		rep.setoriginal(temp); //save original Data for backup purposes 	
 		switch(inputOP.toLowerCase()){ //match inputary[i] with it's matching Switch case
 		case"sorthi":
 			//call operation and print result 

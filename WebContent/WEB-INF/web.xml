@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" 
+id="WebApp_ID" version="4.0"
+>
+  <display-name>RestApiJerseyTest</display-name>
+  <welcome-file-list>
+  	<welcome-file>IntroPage.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+  	 <servlet-name>SetNameServlet</servlet-name>
+  	 <servlet-class>JavaCallFile.SetNameServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+ 	 <servlet-name>SetNameServlet</servlet-name>
+ 	 <url-pattern>/SetNameServlet</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+  	 <servlet-name>BuildRecord</servlet-name>
+  	 <servlet-class>JavaCallFile.BuildRecord</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>BuildRecord</servlet-name>
+ 	 <url-pattern>/BuildRecord</url-pattern>
+ </servlet-mapping>
+ 
+  <servlet>
+  	 <servlet-name>FileSort</servlet-name>
+  	 <servlet-class>JavaCallFile.FileSort</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>FileSort</servlet-name>
+ 	 <url-pattern>/FileSort</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+  	 <servlet-name>PrintFinalData</servlet-name>
+  	 <servlet-class>JavaCallFile.PrintFinalData</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>PrintFinalData</servlet-name>
+ 	 <url-pattern>/PrintFinalData</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+  	 <servlet-name>DeleteServlet</servlet-name>
+  	 <servlet-class>JavaCallFile.DeleteServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>DeleteServlet</servlet-name>
+ 	 <url-pattern>/DeleteServlet</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+  	 <servlet-name>FinalPagePrintFile</servlet-name>
+  	 <servlet-class>JavaCallFile.FinalPagePrintFile</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ 	 <servlet-name>FinalPagePrintFile</servlet-name>
+ 	 <url-pattern>/FinalPagePrintFile</url-pattern>
+ </servlet-mapping>
+</web-app>

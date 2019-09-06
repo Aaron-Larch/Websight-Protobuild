@@ -71,6 +71,7 @@ public class FinalPagePrintFile extends HttpServlet{
 			 	statement[i].showRecord();
 				Statistics.SampleVariance(statement[i]);
 				Statistics.Range(statement[i]);
+				System.out.print("\n");
 			 	String printStatement=runSoftware.stop();
 			 	System.out.println(printStatement);
 				writer.write(printStatement);

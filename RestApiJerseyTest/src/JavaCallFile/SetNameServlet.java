@@ -43,6 +43,7 @@ public class SetNameServlet extends HttpServlet{
  					if(box[j][k]!=null) {
  						runSoftware.start();
  						box[j][k].showRecord();
+ 						System.out.print("break");
  					 	String printOutputValue=runSoftware.stop();
  					 	storage.add(printOutputValue);
  					}

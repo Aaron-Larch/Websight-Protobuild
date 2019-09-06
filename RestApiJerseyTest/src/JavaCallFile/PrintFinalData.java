@@ -3,9 +3,7 @@
  */
 package JavaCallFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import javaDemo.Reports;
 import javaDemo.Statistics;
+import javaDemo.SwitchBoard;
 
 /**
  * @author gce
@@ -27,6 +26,7 @@ public class PrintFinalData extends HttpServlet{
 	Map<String, Double> chartinfo= new HashMap<String, Double>();
 	public int i=0;
 	public static Reports[] statement;
+	public static ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,38 +49,32 @@ public class PrintFinalData extends HttpServlet{
 	private void DisplayPage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	    statement = (Reports[]) request.getSession().getAttribute("Final");
-	    double[] bellCurveGraph=new double[statement[i].getlowC().length];
-		int[] Xaxis =new int[statement[i].getlowC().length+1];
+	    double[] bellCurveGraph=new double[statement[i].getoriginal().length];
+		int[] Xaxis =new int[statement[i].getoriginal().length+1];
 		double[] BoxPlot=new double[5];
 		chartinfo.clear();
 		
 		for(int j=0; j<Xaxis.length; j++) {Xaxis[j]=j;}
+		Reports temp=new Reports();
+		String[] populate = {"sorthi","sortlo","average","median","mode","max","min"};
+		SwitchBoard.buildReports(temp, populate, statement[i].getoriginal());
 		
-		//Create a stream to hold the output
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintStream ps = new PrintStream(baos);
-		// IMPORTANT: Save the old System.out!
-		PrintStream old = System.out;
-		// Tell Java to use your special stream
-		System.setOut(ps);
-		// Print some output: goes to your special stream
+		runSoftware.start();
 		statement[i].showRecord();
-		chartinfo=Statistics.SampleVariance(statement[i]);
-		chartinfo.putAll(Statistics.Range(statement[i]));
-		Map<String, Double> tempMap=Statistics.HistogramTable(statement[i]);
-		// Put things back
-		System.out.flush();
-		System.setOut(old);
+		chartinfo=Statistics.SampleVariance(temp);
+		chartinfo.putAll(Statistics.Range(temp));
+		Map<String, Double> tempMap=Statistics.HistogramTable(temp);
+		String output=runSoftware.stop();
 		
-		BoxPlot[0]=statement[i].getmin();
+		BoxPlot[0]=temp.getmin();
 		BoxPlot[1]=chartinfo.get("lower interquartile range");
 		BoxPlot[2]=chartinfo.get("upper interquartile range");
-		BoxPlot[3]=statement[i].getmax();
-		BoxPlot[4]=statement[i].getmedian();
+		BoxPlot[3]=temp.getmax();
+		BoxPlot[4]=temp.getmedian();
 		
 		double part1 = 1/(chartinfo.get("Standard Deveation") * Math.sqrt(2 * Math.PI));
-		for(int j=0; j<statement[i].getlowC().length; j++) {
-			double part2= Math.pow((statement[i].getlowC()[j]-statement[i].getaverage()),2);
+		for(int j=0; j<temp.getlowC().length; j++) {
+			double part2= Math.pow((temp.getlowC()[j]-temp.getaverage()),2);
 			double part3= 2*chartinfo.get("Sample Variance");
 			bellCurveGraph[j]=part1*Math.exp(-1*part2 /part3); //*statement[i].getlowC().length; 
 		}
@@ -97,11 +91,11 @@ public class PrintFinalData extends HttpServlet{
 		}
 		
 		//print output
-		request.setAttribute("Message", baos.toString());
+		request.setAttribute("Message", output);
 		request.setAttribute("Label", statement[i].getreportId());
 		request.setAttribute("Xaxis", Xaxis);
-		request.setAttribute("YaxisHigh", statement[i].gethighC());
-		request.setAttribute("YaxisLow", statement[i].getlowC());
+		request.setAttribute("YaxisHigh", temp.gethighC());
+		request.setAttribute("YaxisLow", temp.getlowC());
 		request.setAttribute("BellCurveGraph", bellCurveGraph);
 		request.setAttribute("BoxAndWhiskersGraph", BoxPlot);
 		request.setAttribute("Histogram", barYaxis);

@@ -85,7 +85,7 @@ public class FileSort extends HttpServlet{
 					    	if(resultes[0].getreportId().equalsIgnoreCase("flag")) {
 					    		SendPackage(request, response, "Your Search produesd no matching results");
 					    	}else if(resultes[0].getreportId().equalsIgnoreCase("Incomplete")) {
-					    		SendPackage(request, response, req+" Is an Incompete statement the I cannot act upon");
+					    		SendPackage(request, response, req+" Is an Incorect statement that I cannot act upon");
 					    		break;
 					    	}else {PritResult(request, response);}
 			    		}else {

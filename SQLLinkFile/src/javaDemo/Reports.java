@@ -17,6 +17,7 @@ import java.util.List;
 
 public class Reports {
     private String reportID;  //primary key value
+    private double[] originaldata;
     private double[] highcount;
     private double[] lowcount;
     private double max;
@@ -25,6 +26,9 @@ public class Reports {
     private double mid;
     private List<Double> mode;
 
+    public double[] getoriginal() {return this.originaldata;}//Retrieve a value
+    public void setoriginal(double[] orD) {this.originaldata = orD;}// save a value
+    
     public String getreportId() {return this.reportID;}//Retrieve a value
     public void setreportId(String rID) {this.reportID = rID;}// save a value
     
@@ -53,7 +57,7 @@ public class Reports {
     public void showRecord() {
     	if(reportID!=null) { //check to see if value exists before printing
     		System.out.print("The name given to this record is: "+reportID+"\n");
-
+    		
     		if(highcount!=null) { //check to see if value exists before printing
     			System.out.print("your record was sorted high low and now reads: " + Arrays.toString(highcount)+"\n");
     		}

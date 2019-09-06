@@ -80,7 +80,7 @@ public class Statistics {
 	public static double median(double...array) {
 		double n1, n2;
 		//Median: y=n/2 for lists of an odd length or (X(y-1)+X(y))/2 for lists of an even length
-		int HalfWay = array.length / 2; //set y
+		int HalfWay = array.length / 2; //by setting the half way mark to an integer it will auto format out the .5 for lists of odd numbers
 		sort(array, "lo");
         if (array.length % 2 == 0){// if the remainder is 0 n is an even number
             n1 = array[HalfWay - 1];

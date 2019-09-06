@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="Websight-Protobuild">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/SQLLinkFile/src"/>
+        <wb-resource deploy-path="/" source-path="/RestApiJerseyTest"/>
+        <property name="context-root" value="Websight-Protobuild"/>
+        <property name="java-output-path" value="/Websight-Protobuild/build/classes"/>
+    </wb-module>
+</project-modules>

@@ -11,10 +11,11 @@ public class SimpleSerch {
 	private static String[][] Library= {
 			 {"Average","Mean","Median","Mode","Min","Max","Name","report id","record name","primary key"},
 			 {">","<","=","!=","<=",">=","contains","of","less than","Greater than","equal to",
-			  "less than or equal to","Greater than or equal to","does not equal","equals"},
+			  "less than or equal to","Greater than or equal to","does not equal","equals", "equal", "contains the number"},
 			 {"\\d*\\.?\\d+"}, //use RegX to make sure that the user only entered a double or an integer
-			 {"Error"},//Check value for incomplete statements
-			 {"primary", "record", "report", "key", "id", "name"}
+			 {"Error", "illigal"},//Check value for incomplete statements or invalid statements
+			 {"primary", "record", "report", "key", "id", "name"},
+			 {"primary key", "record name", "report id", "name"}//bank of words that must pair with precise actions
 			};
 	static Store scan=new Store();
 	
@@ -199,6 +200,7 @@ public class SimpleSerch {
 		case"=": //with multiple cases per statement the code can account for synonyms and alternate wordings
 		case"equal to":
 		case"equals":
+		case"equal":
 			flag=((double)obj==value); //check values
 			break;
 		
@@ -265,7 +267,7 @@ public class SimpleSerch {
 			int count=0;
 			for(int i=0; i<feild.length; i++) {
 				feild[i]=inputary[count]; //the first value is always the operation we wish to search for
-				count ++;
+				count ++;//By setting count equal to the total number of strings we can have the first and last entry use the same line of code
 				if(i==0) {
 					for(int j=0; j<Library[4].length; j++) {
 						if(inputary[count].equalsIgnoreCase(Library[4][j])) {
@@ -278,6 +280,13 @@ public class SimpleSerch {
 						feild[i]+=" "+inputary[j].toString();
 						count++;
 					}
+					for(int ii=0; ii < Library[5].length; ii++) {
+						if(feild[0].equals(Library[5][ii]) && 
+							(feild[2].equals("contains")==false || feild[2].equals("contains the number")==false)
+								) {feild[0]="illigal"; break;}
+
+					}
+					if(feild[0].equals("mode") && feild[2].equals("of")==false) {feild[0]="illigal"; break;}
 				}
 				
 			}

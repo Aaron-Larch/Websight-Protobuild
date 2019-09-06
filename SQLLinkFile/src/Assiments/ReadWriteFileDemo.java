@@ -13,7 +13,7 @@ public class ReadWriteFileDemo {
 		File fileIn= new File("C:\\Users\\gce\\Downloads\\PersonInfoDataFile.txt");
 		File fileOutc= new File("C:\\Users\\gce\\Downloads\\InfoFileCopy.txt");
 		FileWriter fileOut= new FileWriter("C:\\Users\\gce\\Downloads\\InfoFileCopy.txt");
-		FileWriter fileOut2= new FileWriter("C:\\Users\\gce\\Downloads\\InfoFileCopy.txt");
+		//FileWriter fileOut2= new FileWriter("C:\\Users\\gce\\Downloads\\InfoFileCopy.txt");
 	    Scanner table1 = new Scanner(fileIn); 
 	    Scanner tableIn = new Scanner(fileIn);
 	    Scanner tableOut = new Scanner(fileOutc);
