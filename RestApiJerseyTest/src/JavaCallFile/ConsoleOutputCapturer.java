@@ -1,5 +1,6 @@
-/**
- * 
+/**This class is a self contained way to take the Java console output and convert it.
+ * the principle behind this is simaler to a IO read/write where i disable the console and redirectct 
+ * it to a global class byte stream and then a separate method to stop steaming and convert the bytestream into a string 
  */
 package JavaCallFile;
 
@@ -15,10 +16,9 @@ public class ConsoleOutputCapturer {
     private PrintStream previous;
     private boolean capturing;
 
-    public void start() {
-        if (capturing) {
-            return;
-        }
+    
+   public void start() {
+        if (capturing) {return;}
 
         capturing = true;
         previous = System.out;      
@@ -32,9 +32,7 @@ public class ConsoleOutputCapturer {
     }
 
     public String stop() {
-        if (!capturing) {
-            return "";
-        }
+        if (!capturing) {return "";}
 
         System.setOut(previous);
 

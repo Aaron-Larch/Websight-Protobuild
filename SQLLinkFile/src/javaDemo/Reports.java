@@ -6,6 +6,7 @@ import java.util.List;
 /*This is an object used to store an array and all related Statistical information about that array
  * The information that can be stored is
  * A Report ID, -This value is going to be the primary key of this object so i needs to be unique
+ * originaldata a back up control statement for preservation and backup purposes.
  * The Array sorted from Highest value to the lowest value. -This is here to make finding the Max value easier to find
  * The Array sorted from Lowest value to the Highest value.
  * The Highest value of the array
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class Reports {
     private String reportID;  //primary key value
-    private double[] originaldata;
+    private double[] originaldata;//recovery value should not be givin as a choise to the user to populate.
     private double[] highcount;
     private double[] lowcount;
     private double max;

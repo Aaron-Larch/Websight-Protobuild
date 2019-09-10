@@ -14,7 +14,7 @@ import javaDemo.systemTest;
 
 /**
  * @author gce
- *
+ *Scrap code file for testing methods and other ideas
  */
 public class CallClass {
 	private static BuildPath CallApplet=new BuildPath();

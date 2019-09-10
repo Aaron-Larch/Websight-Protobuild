@@ -255,7 +255,8 @@ public class SimpleSerch {
 		return flag;
 	}
 	
-	//a remote call for the parse string operation from the search method
+	//a remote call for the parse string operation from the search method 
+	//the method is set to check 3 fields what you want to search, a comparison statement, and a value to compare to.
 	public static String[] dynamicparse (String words) {
 		String[] feild= new String[3];
 		String[] inputary=words.split(" "); //split the sentence into relevant pieces  
@@ -269,26 +270,30 @@ public class SimpleSerch {
 				feild[i]=inputary[count]; //the first value is always the operation we wish to search for
 				count ++;//By setting count equal to the total number of strings we can have the first and last entry use the same line of code
 				if(i==0) {
-					for(int j=0; j<Library[4].length; j++) {
+					//Check to see if any of preceding words need to be paired with the first word stored for more complex search options
+					for(int j=0; j<Library[4].length; j++) { //library 4 has a bank of words that are supposed to be paired together in the field 1 row
 						if(inputary[count].equalsIgnoreCase(Library[4][j])) {
 							feild[i]+=" "+inputary[count].toString();
 							count ++;
 						}
 					}
 				}else if(i==1) {
+					//To make the second value start from where the first count sequence ended and store all values except for the last value
 					for(int j=count; j<inputary.length-1; j++) {
 						feild[i]+=" "+inputary[j].toString();
 						count++;
 					}
+					//some words must be paired with certen words. "name contains"/ "mode of" if these parings are not made it will create errors in the comparison section of the code  
 					for(int ii=0; ii < Library[5].length; ii++) {
 						if(feild[0].equals(Library[5][ii]) && 
-							(feild[2].equals("contains")==false || feild[2].equals("contains the number")==false)
-								) {feild[0]="illigal"; break;}
+							(feild[2].equals("contains")==false || feild[2].equals("contains the number")==false)//set to false for a less complex check statemnt
+								) {feild[0]="illigal"; break;}//throw a error flag that will kill the search program
 
 					}
+					//mode is a spatial case that only has one pairing. all fixed pairs must be tested indavigualy to prevent a "name of" error
 					if(feild[0].equals("mode") && feild[2].equals("of")==false) {feild[0]="illigal"; break;}
 				}
-				
+				//By going back through the loop you can have the rules for the first and last values use the same action.
 			}
 		}
 		return feild;
