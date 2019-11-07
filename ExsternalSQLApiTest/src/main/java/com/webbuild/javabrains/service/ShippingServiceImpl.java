@@ -86,57 +86,34 @@ public class ShippingServiceImpl implements ShippingRepository {
 	public double[][] collectdata(String collum) {
 		double[][] databox= new double[shipping.length][];
 		double maxVal = 0;
+		double [] temp;
 		
 		for(int i=0; i < shipping.length; i++) {
 			databox[i] = new double[shipping[i].size()];
-			switch(collum.toLowerCase()){
-			case"orderid":
-				for(int ii=0; ii < shipping[i].size(); ii++) {
-					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getORDERID().trim());
-					}
-				maxVal=Statistics.minMax(databox[i], "max");
-				break;
-				
-			case"customerid":
-				for(int ii=0; ii < shipping[i].size(); ii++) {
-					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getCUSTOMERID().trim());
-					}
-				maxVal=Statistics.minMax(databox[i], "max");
-				break;
-				
+			switch(collum.toLowerCase()){	
+			
 			case"employeeid":
 				for(int ii=0; ii < shipping[i].size(); ii++) {
 					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getEMPLOYEEID().trim());
 					}
-				maxVal=Statistics.minMax(databox[i], "max");
+				temp=databox[i];
+				maxVal=Statistics.minMax(temp, "max");
 				break;
 				
 			case"shipVia":
 				for(int ii=0; ii < shipping[i].size(); ii++) {
 					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getSHIPVIA());
 					}
-				maxVal=Statistics.minMax(databox[i], "max");
+				temp=databox[i];
+				maxVal=Statistics.minMax(temp, "max");
 				break;
 				
 			case"freight":
 				for(int ii=0; ii < shipping[i].size(); ii++) {
 					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getFREIGHT().trim());
 					}
-				maxVal=Statistics.minMax(databox[i], "max");
-				break;
-				
-			case"shipName":
-				for(int ii=0; ii < shipping[i].size(); ii++) {
-					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getSHIPNAME().trim());
-					}
-				maxVal=Statistics.minMax(databox[i], "max");
-				break;
-				
-			case"shipCountry":
-				for(int ii=0; ii < shipping[i].size(); ii++) {
-					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getSHIPCOUNTRY().trim());
-					}
-				maxVal=Statistics.minMax(databox[i], "max");
+				temp=databox[i];
+				maxVal=Statistics.minMax(temp, "max");
 				break;
 				
 			default:

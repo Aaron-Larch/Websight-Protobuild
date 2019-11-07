@@ -23,6 +23,7 @@ import com.webbuild.javabrains.repository.ShippingRepository;
 public class SpainShippingController {
 	private static ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
 	public String pageflag="home";
+	static String Namesave;
 	static double[][] array;
 	
 	@Autowired //call data table and all stored functions
@@ -41,7 +42,6 @@ public class SpainShippingController {
 			  pageflag=id;
 			  ordersList = shippingservice.getAllOrders(id); //run a sql query
 		  } 
-		  
 		  model.addObject("ordersList", ordersList); //send objects to jsp page
 		  model.addObject("listCategory", headders); //send objects to jsp page
 		  return model; //load page command
@@ -50,8 +50,7 @@ public class SpainShippingController {
 	@RequestMapping(value = "/SingleObject/{id}")
 	public ModelAndView getTableObject(@PathVariable String id) {
 		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
-		TableObjects temp = shippingservice.getOrders(id); //run a sql query
-		
+		TableObjects temp = shippingservice.getOrders(id); //run a sql query	
 		//a form of user error handling to prevent error
 		if(temp==null) {
 			 model.addObject("order", "No such Id found");
@@ -106,17 +105,17 @@ public class SpainShippingController {
 	
 	//request mapping for modals/pop-up windows 
 	@RequestMapping(value = "/switchup", method=RequestMethod.POST)
-	public ModelAndView SwitchControlers(@RequestParam("cn") String cn) {
+	public ModelAndView SwitchControlers(@RequestParam("cn") String cn, @RequestParam("Product") String product) {
 		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
-
+		Namesave=cn;
 		//Perform operations
 		runSoftware.start();
-		array=shippingservice.collectdata("freight");
+		array=shippingservice.collectdata(product);
 		String printOutputValue=runSoftware.stop();
 
 		model.addObject("Message", printOutputValue);
 		model.addObject("Information", array[0]);
-		model.addObject("Name", cn);
+		model.addObject("Name", Namesave);
 		model.addObject("Page", "page1");
 		model.addObject("id", "0");
 		
@@ -125,8 +124,7 @@ public class SpainShippingController {
 	}
 	
 	//Collect the the processed data and send it over to another Controller file 
-	public static double[][] FetchValues(){
-		return (array);
-	}
+	public static double[][] FetchValues(){return (array);}
+	public static String FetchNameValues(){return Namesave;}
 
 }
