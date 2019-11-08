@@ -12,6 +12,7 @@ public class systemTest {
 	 * @throws IOException 
 	 */
 	
+	//Java testing location
 	public static void main(String[] args){
 		//raw data
 		int[] length = {26,35,20,15,25};
@@ -30,6 +31,7 @@ public class systemTest {
 		SimpleSerch.JavaInterFaceSearch(box);
 	}
 	
+	//run project as a method
 	public static void Export(){
 		//raw data
 		int[] length = {26,35,20,15,25};

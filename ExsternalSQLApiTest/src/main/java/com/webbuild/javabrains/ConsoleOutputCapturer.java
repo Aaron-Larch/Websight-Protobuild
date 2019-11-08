@@ -15,6 +15,7 @@ public class ConsoleOutputCapturer {
     private PrintStream previous;
     private boolean capturing;
 
+    //Start collecting Information
     public void start() {
         if (capturing) {
             return;
@@ -22,23 +23,27 @@ public class ConsoleOutputCapturer {
 
         capturing = true;
         previous = System.out;      
-        baos = new ByteArrayOutputStream();
+        
+        baos = new ByteArrayOutputStream(); //Create a stream to hold the output
 
         OutputStream outputStreamCombiner = 
                 new OutputStreamCombiner(Arrays.asList(previous, baos)); 
-        PrintStream custom = new PrintStream(outputStreamCombiner);
+        PrintStream custom = new PrintStream(outputStreamCombiner);	// IMPORTANT: Save the old System.out!
 
-        System.setOut(custom);
+        System.setOut(custom); // Tell Java to use your special stream
     }
 
+    //Stop collecting information
     public String stop() {
         if (!capturing) {
             return "";
         }
 
-        System.setOut(previous);
+        
+        System.setOut(previous); //return output back to system.out console
 
         String capturedValue = baos.toString();             
+        //Release all stored values for better data management 
         try {
 			baos.close();
 			baos = null;
@@ -48,12 +53,14 @@ public class ConsoleOutputCapturer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-        return capturedValue;
+        return capturedValue; // Show what happened
     }
 
+    //library of stored functions
     private static class OutputStreamCombiner extends OutputStream {
         private List<OutputStream> outputStreams;
 
+        // Print some output: goes to your special stream
         public OutputStreamCombiner(List<OutputStream> outputStreams) {
             this.outputStreams = outputStreams;
         }
@@ -64,16 +71,18 @@ public class ConsoleOutputCapturer {
             }
         }
 
+	 	// Put things back
         public void flush() throws IOException {
             for (OutputStream os : outputStreams) {
                 os.flush();
             }
         }
 
+        //Release Resources  
         public void close() throws IOException {
             for (OutputStream os : outputStreams) {
                 os.close();
             }
         }
-    }
+    }	
 }

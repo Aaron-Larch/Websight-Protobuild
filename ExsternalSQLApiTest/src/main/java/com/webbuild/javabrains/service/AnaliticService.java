@@ -16,21 +16,24 @@ import com.webbuild.javabrains.model.Reports;
 
 
 public class AnaliticService{// implements AnaliticsRepository{
+	//Declare all Required Global Variables
 	private static ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
 	static Map<String, Double> chartinfo= new HashMap<String, Double>();
 	static double[][] databox=SpainShippingController.FetchValues();
-	static String Name=SpainShippingController.FetchNameValues();
-	private static Reports[][] box=new Reports[3][databox.length];
-	private static int i=0;
+	private static Reports[][] box=new Reports[3][];
+	private static int i=-1;
 	private static int ii=0;
 	
-	
-	public static String BuildRecord(String[] choices, String Countery, int location){
+	//build a single object
+	public static String BuildRecord(String[] choices, String Countery, String Name, int location){
+		//Start the Record creation process
+		if(i==-1) {UpdateRecord();}
+		
 		//Create a stream to hold the output
 	    if(i < box.length && ii < databox.length) {
 	    	box[i][ii] =  new Reports(); //create new report
 	    	box[i][ii].setreportId(Name+"-"+Countery+"."+(ii+1)); //unique flag or primary key for report
-	    	
+	    	/*For predictive models will probably make a storage object or arry and populate it here */
 	    	runSoftware.start();
 	    	System.out.println("The Report Created For Record "+ box[i][ii].getreportId()+" Is: ");
 		 	SwitchBoard.buildReports(box[i][ii], choices, databox[location]);//populate the Report
@@ -43,6 +46,7 @@ public class AnaliticService{// implements AnaliticsRepository{
 		 }
 	}
 	
+	//Store a print out of every object currently stored
 	public static String[] getObjInfo() {
 		ArrayList<String> storage= new ArrayList<String>();
 		for(int j=0; j<box.length; j++) {
@@ -62,6 +66,7 @@ public class AnaliticService{// implements AnaliticsRepository{
 		return PopUp;
 	}
 	
+	//gather all the required variables needed to print a Report
 	public static ModelAndView DisplayPage(ModelAndView model, Reports[] statement, int j){
 	    double[] bellCurveGraph=new double[statement[j].getoriginal().length];
 		int[] Xaxis =new int[statement[j].getoriginal().length+1];
@@ -100,7 +105,11 @@ public class AnaliticService{// implements AnaliticsRepository{
 		
 		int jj=0;
 		for (Map.Entry<String, Double> entry : tempMap.entrySet()) {
-			barXaxis[jj] = entry.getKey();
+			 String[] format = entry.getKey().substring(1, entry.getKey().length()-1).split(", ");
+			 if(format.length > 10) {
+				 String lable ="["+ format[0]+" - - "+format[format.length]+"]";
+				 barXaxis[jj]=lable;
+			 }
 			barYaxis[jj] = entry.getValue();
 			jj++;
 		}
@@ -119,29 +128,27 @@ public class AnaliticService{// implements AnaliticsRepository{
 		return model;
 	}
 	
-	public static double[] getData(int array) {
-		return databox[array];
-	}
+	//Return Stored values to the controller for display
+	public static double[] getData(int array) {return databox[array];}
+	public static Reports[][] getFile(){return (box);}
 	
+	//Create a new row it the custom records table
 	public static void UpdateRecord() {
 		i++;
 		ii=0;
-		Name=null;
+		box[i]=new Reports[databox.length];
 	}
-	
+
+	//erase all saved values to start collect new data
 	public static void CloseRecord() {
-		i=0;
+		i=-1;
 		ii=0;
-	}
-	public static Reports[][] getFile(){
-		return box;
 	}
 	
 	public static void releaseresources() {
-		i=0;
+		i=-1;
 		ii=0;
 		databox=null;
-		Name=null;
-		box=null;
+		box=new Reports[3][];
 	}
 }

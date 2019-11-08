@@ -17,13 +17,13 @@ import com.webbuild.javabrains.model.Reports;
 import com.webbuild.javabrains.service.AnaliticService;
 
 
-
 @Controller
 @RequestMapping(value = "/Stats")
 public class AnaliticsController {
+	//Declare global variables
 	String[] headders=ExternalConnection.SetSortParamiters();
 	ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
-	String Name = SpainShippingController.FetchNameValues();
+	String Name;
 	Reports[] printout;
 	ArrayList<Reports> tempOutput = new ArrayList<Reports>();
 	int j=0;
@@ -32,8 +32,9 @@ public class AnaliticsController {
 	@RequestMapping(value = "/BuildRecord/{id}") //web site control statement
 	public ModelAndView CreateRecord(@RequestParam("operation") String[] choices, @PathVariable int id ) {
 		  ModelAndView model = new ModelAndView("Analitics/Display_Record"); //first load a named .jsp file
-		  String placehoder = AnaliticService.BuildRecord(choices, headders[id], id);
-		  model.addObject("Message", placehoder);
+		  Name = SpainShippingController.FetchNameValues(); //call name value from Other controller
+		  String placehoder = AnaliticService.BuildRecord(choices, headders[id], Name, id); //run program
+		  model.addObject("Message", placehoder); //Arsine output to a web variable
 		  model.addObject("listCategory", headders); //send objects to jsp page
 		  return model;
 	}
@@ -42,7 +43,9 @@ public class AnaliticsController {
 	@RequestMapping(value = "/chosenewdata/{id}") //web site control statement
 	public ModelAndView ChooseNewDataset(@PathVariable int id ) {
 		  ModelAndView model = new ModelAndView(); //first load a named .jsp file
-		  	model.addObject("Information", AnaliticService.getData(id));
+		  	
+		  	//set object for web page
+		  	model.addObject("Information", AnaliticService.getData(id) );
 			model.addObject("Page", "page2");
 			model.addObject("Name", Name);
 			model.addObject("id", id);
@@ -53,6 +56,7 @@ public class AnaliticsController {
 	//create a new object group
 	@RequestMapping(value = "/createnewrec") //web site control statement
 	public ModelAndView CreateNewRec() {
+		//reset all values
 		Name=null;
 		AnaliticService.UpdateRecord();
 		return new ModelAndView("redirect:/Shipping/home");
@@ -62,8 +66,8 @@ public class AnaliticsController {
 	@RequestMapping(value = "/closerecords") //web site control statement
 	public ModelAndView CloseRecords() {
 		ModelAndView model = new ModelAndView(); //first load a named .jsp file
-		AnaliticService.CloseRecord();
-		return SendPackage(model, " ");
+		AnaliticService.CloseRecord(); //run program
+		return SendPackage(model, " ");  //print method
 	}
 
 	//Perform one of several type of search operations
@@ -74,26 +78,26 @@ public class AnaliticsController {
 	    String[] temp=SimpleSerch.dynamicparse (input);
 	    
 	    //forgot to select a row to search
-	    if(row==null) {
-	    	model = SendPackage(model, "You forgot to select witch file you wanted to search through");
+	    if(row==null) { //Check to see if the user has set the minimal required values for a search
+	    	model = SendPackage(model, "You forgot to select witch file you wanted to search through"); //print method
 	    }
 	    
 	    //Selected the display all objects button
 	    else if(row!=null && input.isEmpty()) {
 	    	List<Reports> holdingzone = new ArrayList<Reports>();
-	    	for(int i=0;  i<File.length; i++) {
-				if(File[i]!=null) {
+	    	for(int i=0;  i<File.length; i++) {	//Search ALL possible object
+				if(File[i]!=null) { //collect information to compare to user choice
 					int stop=File[i][0].getreportId().indexOf('-');
 					String CheckValue=File[i][0].getreportId().substring(0, stop);
 					if(CheckValue.equalsIgnoreCase(row) || row.equalsIgnoreCase("all")) {
 						for(int ii=0; ii < File[i].length; ii++) {
-							if(File[i][ii]!=null) {holdingzone.add(File[i][ii]);}
+							if(File[i][ii]!=null) {holdingzone.add(File[i][ii]);} //collect all objects that match requirements
 						}
 					}
 				}
 			}
 	    	printout=holdingzone.toArray(new Reports[holdingzone.size()]);
-	    	model = PritResult(model);
+	    	model = PritResult(model); //run successful print statement
 	    }
 	    
 	    //Perform a user generated search query
@@ -104,14 +108,14 @@ public class AnaliticsController {
 			    	
 	    			//check input statement for user Error
 	    			if(printout[0].getreportId().equalsIgnoreCase("flag")) {
-	    				model = SendPackage(model, "Your Search produesd no matching results");
+	    				model = SendPackage(model, "Your Search produesd no matching results"); //run basic print statement
 			    		break;
 			    	}else if(printout[0].getreportId().equalsIgnoreCase("Incomplete")) {
-			    		model = SendPackage(model, input+" Is an Incorect statement that I cannot act upon");
+			    		model = SendPackage(model, input+" Is an Incorect statement that I cannot act upon"); //run basic print statement
 			    		break;
-			    	}else {model = PritResult(model);}
+			    	}else {model = PritResult(model);} //run successful print statement
 	    		}
-	    		//Error handling
+	    		//Error handling for incorrect spelling
 	    		else {
 	    			if(SimpleSerch.SpellCheck(temp[j],j)==false){
 	    				model = SendPackage(model, temp[j]+" dose not mach any Words or Numbers that I know");
@@ -120,7 +124,6 @@ public class AnaliticsController {
 	    		}
 	    	}
 	    }
-		
 		return model;
 	}
 	
@@ -129,42 +132,51 @@ public class AnaliticsController {
 	public ModelAndView buildfolder(@RequestParam("choice") String choice) {
 		ModelAndView model = new ModelAndView(); //first load a named .jsp file
 		if ("add".equalsIgnoreCase(choice)) {
-			tempOutput.add(printout[j]);
+			tempOutput.add(printout[j]); //sore object
 			j++;
 			if(j < printout.length) {return PritResult(model);}
 			else {
+				//once last value is added or ignored got to print statement to view graphs
 				j=0;
-				AnaliticService.releaseresources();
+				AnaliticService.releaseresources(); //clear stored values for better data management
 				return new ModelAndView("redirect:/Stats/chart");
 			}
-		}else if ("discard".equalsIgnoreCase(choice)){
+		}else if ("discard".equalsIgnoreCase(choice)){	//ignore object
 			j++;
 			if(j < printout.length) {return PritResult(model);}
 			else {
+				//once last value is added or ignored got to print statement to view graphs
 				j=0;
-				AnaliticService.releaseresources();
-				return new ModelAndView("redirect:/Stats/chart");
+				AnaliticService.releaseresources(); //clear stored values for better data management
+				return new ModelAndView("redirect:/Stats/chart");  //go to other controller instead of page valuer
 			}
 		}else {return null;}
 	}
 	
 	//gather all the data needed to make a graph out of the record object
 	@RequestMapping(value = "/chart") //web site control statement
-	public ModelAndView chartbuild() {
+	public ModelAndView chartbuild(@RequestParam(value = "action", required=false) int value) {
 		ModelAndView model = new ModelAndView(); //first load a named .jsp file
 		Reports[] statement  = tempOutput.toArray(new Reports[tempOutput.size()]);
-		model=AnaliticService.DisplayPage(model,statement,j);
-		model.setViewName("Analitics/Display_Chart");
+		//Determine which object to view by keeping track of the array position
+		if(j>=0 && j<statement.length) {
+			j += value;
+			if(j==-1) {j=statement.length-1;}//make sure the back value can never go below 0
+			else if(j==statement.length) {j=0;}//make sure the next value can never go above max stored value
+		}
+		model=AnaliticService.DisplayPage(model,statement,j); //generate graph data
+		model.setViewName("Analitics/Display_Chart"); //go to page
 		return model;
 	}
 	
 	//stored print file
 	private ModelAndView PritResult(ModelAndView model) {
-	 	runSoftware.start();
-	 	printout[j].showRecord();
+		//collect new stream
+		runSoftware.start();
+	 	printout[j].showRecord(); //run program
 	 	String printOutputValue=runSoftware.stop();
 		
-		//print output
+		//page output
 	 	model.addObject("Page", "page2");
 	 	model.addObject("NumHits", printout.length-j);
 	 	model.addObject("Message", printOutputValue);
@@ -172,12 +184,13 @@ public class AnaliticsController {
 	 	return model;
 	}
 	
-	//stored search result file
+	//stored failed search result file
 	private ModelAndView SendPackage(ModelAndView model, String Error) { 
+		//page output
 		model.addObject("Page", "page1");
 		model.addObject("PopUp", Arrays.toString(AnaliticService.getObjInfo()));
 		model.addObject("Record", AnaliticService.getFile());
-		model.addObject("Result", Error);
+		model.addObject("Result", Error); //custom error line leave empty and can also load page basec state
 		model.setViewName("Analitics/Display_Table");
 		return model;
 	}

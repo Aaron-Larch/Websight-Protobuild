@@ -24,18 +24,19 @@ public class ShippingServiceImpl implements ShippingRepository {
 	//select * from orders where shipcity= 'spain'
 	@Override
 	public List<TableObjects> getAllOrders(String country){
+		//search for match 
 		for(int i=0; i < shipping.length; i++) {
 			if(shipping[i].get(0).getSHIPCOUNTRY().equalsIgnoreCase(country)) {
-				return shipRegion=shipping[i];
+				return shipRegion=shipping[i]; //set temp table to make editing essayer to perform
 		     }
 		}
 		return null;
 	}
 
-	//select * from orders
+	//select * from orders where shipcity= '{id}'
 	@Override
-	public List<TableObjects> getSingleTable(){
-		return shipRegion=ExternalConnection.SpainShipping();
+	public List<TableObjects> getSingleTable(String id){
+		return shipRegion=ExternalConnection.Shipping(id); //run program
 		}
 	
 	//select * from orders where shipcity= 'spain' and orderid = '{id}'
@@ -75,10 +76,10 @@ public class ShippingServiceImpl implements ShippingRepository {
 		shipRegion.removeIf(t -> t.getORDERID().equals(id));
 	}
 	
-	//COMMIT shipSpain
+	//COMMIT shipSpain table
 	@Override
 	public void updateTable() {	
-		for(int i=0; i < shipping.length; i++) {ExternalConnection.ShippingUpdate(shipping[i]);}
+		for(int i=0; i < shipping.length; i++) {ExternalConnection.Update(shipping[i]);}
 	}
 	
 	//Bring user choice back into the equation. Decide on witch collum of information the user wants to work with

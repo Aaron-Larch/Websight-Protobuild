@@ -29,24 +29,29 @@ public class SpainShippingController {
 	@Autowired //call data table and all stored functions
 	ShippingRepository shippingservice;
 	
+	//table information for BA home page
 	@RequestMapping(value = {"/home", "/{id}"}) //web site control statement
 	public ModelAndView getAllTableObjects(@PathVariable(required=false) String id) {
 		  ModelAndView model = new ModelAndView("orders_list"); //first load a named .jsp file
 		  List<TableObjects> ordersList;
 		  String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
+		  //check for starting flag
 		  if(id==null) {
 			  pageflag="Spain";
 			  ordersList = shippingservice.getAllOrders("Spain"); //run a default sql  query 
 		  } 
 		  else{
-			  pageflag=id;
+			  pageflag=id; //save state flag for place keeping
 			  ordersList = shippingservice.getAllOrders(id); //run a sql query
 		  } 
+		  
+		  //set object for web page
 		  model.addObject("ordersList", ordersList); //send objects to jsp page
 		  model.addObject("listCategory", headders); //send objects to jsp page
 		  return model; //load page command
 	}
 	
+	//Single object call
 	@RequestMapping(value = "/SingleObject/{id}")
 	public ModelAndView getTableObject(@PathVariable String id) {
 		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
@@ -73,6 +78,7 @@ public class SpainShippingController {
 		return model;
 	}
 	
+	//update a single object
 	@RequestMapping(value = {"/tableUpdate", "/tableUpdate/{id}"}, method=RequestMethod.POST) //a way to make two pages run off of the same method
 	public ModelAndView updateTableObjects(@ModelAttribute("order") TableObjects Topic, @PathVariable(required=false) String id) {
 		//check for a flag value to see if which query the user wants to run
@@ -81,6 +87,7 @@ public class SpainShippingController {
 		return new ModelAndView("redirect:/Shipping/"+pageflag); //load a previous page command
 	}
 	
+	//delete object
 	@RequestMapping(value = "/SpainDelete/{id}")
 	public ModelAndView deleteTableObjects(@PathVariable String id) {
 		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
@@ -103,16 +110,17 @@ public class SpainShippingController {
 		shippingservice.updateTable();	
 	}
 	
-	//request mapping for modals/pop-up windows 
+	//request mapping for models/pop-up windows 
 	@RequestMapping(value = "/switchup", method=RequestMethod.POST)
 	public ModelAndView SwitchControlers(@RequestParam("cn") String cn, @RequestParam("Product") String product) {
 		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
-		Namesave=cn;
+		Namesave=cn;  //reset stored user given record
 		//Perform operations
 		runSoftware.start();
 		array=shippingservice.collectdata(product);
 		String printOutputValue=runSoftware.stop();
 
+		//set object for web page
 		model.addObject("Message", printOutputValue);
 		model.addObject("Information", array[0]);
 		model.addObject("Name", Namesave);

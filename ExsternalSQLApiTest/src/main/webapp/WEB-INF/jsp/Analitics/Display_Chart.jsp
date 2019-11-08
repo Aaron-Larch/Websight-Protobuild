@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1" import= "java.util.Arrays"%>
+    <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,7 +48,6 @@
 </head>
 
 <body>
-	<jsp:include page="${LoadPage}"/>
 	<div id="header" style="text-align:center">
 		<h1>Graphs Generated for the object: ${Label}</h1>
 	</div>
@@ -156,7 +156,7 @@
 			text: "Box And Whisker Plot"
 		},
 		axisY: {
-			interval: 10
+			interval: 40
 		},
 		data: [{
 			type: "boxAndWhisker",
@@ -173,7 +173,8 @@
 </script>
 </body>
 <footer>
-	<form action="PrintFinalData" id="Servlet1" method="post">
+	<spring:url value="/Stats/chart" var="ScrollURL" />
+	<form id="Servlet" method="post" action="${ScrollURL }" >
 		<button type="submit" id="btn1" name="action" value="-1">Back</button>
 		<button type="submit" id="btn3" name="action" value="1">Next</button>
 	</form>

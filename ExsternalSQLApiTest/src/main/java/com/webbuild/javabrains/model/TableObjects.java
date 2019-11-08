@@ -6,30 +6,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+@Entity //declare data layer
 public class TableObjects {
 	
 	
-	@Id
+	@Id  //Declare primary key
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String ORDERID;
 	
-	@Column(name="customerId")
+	@Column(name="customerId") //declare column header
 	private String CUSTOMERID;
 	
-	@Column(name="employeeId")
+	@Column(name="employeeId") //declare column header
 	private String EMPLOYEEID;
 	
-	@Column(name="shipVia")
+	@Column(name="shipVia") //declare column header
 	private String SHIPVIA;
 	
-	@Column(name="freight")
+	@Column(name="freight") //declare column header
 	private String FREIGHT;
 	
-	@Column(name="shipName")
+	@Column(name="shipName") //declare column header
 	private String SHIPNAME;
 	
-	@Column(name="shipCountry")
+	@Column(name="shipCountry") //declare column header
 	private String SHIPCOUNTRY;
 
 	
@@ -37,6 +37,7 @@ public class TableObjects {
 		
 	}
 	
+	//collect group of object to form a table for better organization
 	public TableObjects(String odrId, String custId, String empId, String shiped, String frate, String shName, String shCountery) {
 		super();
 		this.ORDERID=odrId;
@@ -49,59 +50,59 @@ public class TableObjects {
 	}
 	
 	public String getORDERID() {
-		return ORDERID;
+		return ORDERID; //Retrieve a value
 	}
 
 	public void setORDERID(String oRDERID) {
-		this.ORDERID = oRDERID;
+		this.ORDERID = oRDERID; //Store a value
 	}
 	
 	public String getCUSTOMERID() {
-		return CUSTOMERID;
+		return CUSTOMERID; //Retrieve a value
 	}
 
 	public void setCUSTOMERID(String cUSTOMERID) {
-		this.CUSTOMERID = cUSTOMERID;
+		this.CUSTOMERID = cUSTOMERID; //Store a value
 	}
 
 	public String getEMPLOYEEID() {
-		return EMPLOYEEID;
+		return EMPLOYEEID; //Retrieve a value
 	}
 
 	public void setEMPLOYEEID(String eMPLOYEEID) {
-		this.EMPLOYEEID = eMPLOYEEID;
+		this.EMPLOYEEID = eMPLOYEEID; //Store a value
 	}
 
 	public String getSHIPVIA() {
-		return SHIPVIA;
+		return SHIPVIA; //Retrieve a value
 	}
 
 	public void setSHIPVIA(String sHIPVIA) {
-		this.SHIPVIA = sHIPVIA;
+		this.SHIPVIA = sHIPVIA; //Store a value
 	}
 
 	public String getFREIGHT() {
-		return FREIGHT;
+		return FREIGHT; //Retrieve a value
 	}
 
 	public void setFREIGHT(String fREIGHT) {
-		this.FREIGHT = fREIGHT;
+		this.FREIGHT = fREIGHT; //Store a value
 	}
 
 	public String getSHIPNAME() {
-		return SHIPNAME;
+		return SHIPNAME; //Retrieve a value
 	}
 
 	public void setSHIPNAME(String sHIPNAME) {
-		this.SHIPNAME = sHIPNAME;
+		this.SHIPNAME = sHIPNAME; //Store a value
 	}
 
 	public String getSHIPCOUNTRY() {
-		return SHIPCOUNTRY;
+		return SHIPCOUNTRY; //Retrieve a value
 	}
 
 	public void setSHIPCOUNTRY(String sHIPCOUNTERY) {
-		this.SHIPCOUNTRY = sHIPCOUNTERY;
+		this.SHIPCOUNTRY = sHIPCOUNTERY; //Store a value
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.webbuild.javabrains.model.TableObjects;
 
+//Interface controlling the System database
 public interface ShippingRepository {
 	public List<TableObjects> getAllOrders(String country);
 	public TableObjects getOrders(String id);
@@ -11,7 +12,7 @@ public interface ShippingRepository {
 	public void updateOrder(TableObjects order, String id);
 	public void deleteOrder(String id); 
 	public void updateTable();
-	public List<TableObjects> getSingleTable();
+	public List<TableObjects> getSingleTable(String id);
 	public double[][] collectdata(String collum);
 }
 

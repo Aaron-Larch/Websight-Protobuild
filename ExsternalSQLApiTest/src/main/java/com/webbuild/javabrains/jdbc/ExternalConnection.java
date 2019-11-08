@@ -20,6 +20,7 @@ public class ExternalConnection{
 		private static String password = "student";
 		static List<TableObjects>Topics;
 
+		//connect to a remote server
 		public static Connection dbConnect() {
 			try {
 				// create a handshake connection between java and the desired SQL server. 
@@ -36,13 +37,14 @@ public class ExternalConnection{
 			}
 		}
 		
-		public static List<TableObjects> SpainShipping() {
+		//populate data layer
+		public static List<TableObjects> Shipping(String field) {
 			try {
 				// create the java statement to connect to a specific database 
 				Statement sta = dbConnect().createStatement();
 				Topics = new ArrayList<>(Arrays.asList());
 				// execute the query just like any normal SQL , and get a java result set
-				String query = "SELECT * FROM ORDERS WHERE SHIPCOUNTRY='Spain'";
+				String query = "SELECT * FROM ORDERS WHERE SHIPCOUNTRY='"+field+"'";
 				ResultSet rs = sta.executeQuery(query);
 				
 				//populate the object with the returned results
@@ -68,7 +70,8 @@ public class ExternalConnection{
 			return null;
 		}
 		
-		public static void ShippingUpdate(List<TableObjects> TableData) {
+		//update a table with the information on the data layer
+		public static void Update(List<TableObjects> TableData) {
 			try {
 				// create the java statement
 				Statement sta = dbConnect().createStatement();
@@ -121,6 +124,7 @@ public class ExternalConnection{
 			}
 		}
 		
+		//delete a table row
 		public static void DeleteRow(List<TableObjects> TableData, String Orderid) {
 			try {
 				// create the java statement to connect to a specific database 
@@ -140,6 +144,7 @@ public class ExternalConnection{
 			}
 		}
 		
+		//Determine method by which to organize large amounts of dat to save on memory space
 		public static String[] SetSortParamiters() {
 			try {
 				// create the java statement to connect to a specific database 
@@ -171,39 +176,16 @@ public class ExternalConnection{
 			}
 		}
 		
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //Create a catalog of tables sorting Data by the populate and sort methods
 		public static ArrayList<TableObjects>[] SortedShipping() {
 			try {
-				// create the java statement to connect to a specific database 
-				Statement sta = dbConnect().createStatement();
-				String[] SortList = SetSortParamiters();
+				String[] SortList = SetSortParamiters(); //collect parameters
 				ArrayList<TableObjects>[] SortDatabase = new ArrayList[SortList.length];
 		        
-				
 				for(int i=0; i < SortList.length; i++) {
 					SortDatabase[i] = new ArrayList<TableObjects>(); 
-					Topics = new ArrayList<>(Arrays.asList());
-					
-					// execute the query just like any normal SQL , and get a java result set
-					String query = "SELECT * FROM ORDERS WHERE SHIPCOUNTRY='"+SortList[i]+"'";
-					ResultSet rs = sta.executeQuery(query);
-					
-					//populate the object with the returned results
-					while (rs.next()) {
-						Topics.add(new TableObjects(
-								rs.getString("ORDERID"),
-								rs.getString("CUSTOMERID"),
-								rs.getString("EMPLOYEEID"),
-								rs.getString("SHIPVIA"),
-								rs.getString("FREIGHT"),
-								rs.getString("SHIPNAME"),
-								rs.getString("SHIPCOUNTRY")
-								));
-					}
-					
-					SortDatabase[i].addAll(Topics);
+					SortDatabase[i].addAll(Shipping(SortList[i])); //populate table
 				}
-				sta.close();//close off server connection. release use resources 
 				return SortDatabase;
 				
 			}catch(Exception e){

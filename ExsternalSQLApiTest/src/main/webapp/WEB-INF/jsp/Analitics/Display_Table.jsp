@@ -39,7 +39,7 @@
 		<c:set var="count" value="0"/>
 		<table>
 		<c:forEach items="${Record}" var="block" varStatus="row">
-			<c:if test="${not empty block[0].getreportId()}">
+			<c:if test="${not empty block[0]}">
 				<c:set var="place" value="${block[0].getreportId().indexOf('-')}"/>
   					<tr>
     				<th style="text-align:left">
