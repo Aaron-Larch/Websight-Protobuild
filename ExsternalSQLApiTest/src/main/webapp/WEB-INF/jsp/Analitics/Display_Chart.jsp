@@ -46,19 +46,23 @@
 	</style>
 	
 </head>
-
 <body>
+<!-- Report Headers Object to tell the viewer which object is being viewed   -->
 	<div id="header" style="text-align:center">
 		<h1>Graphs Generated for the object: ${Label}</h1>
 	</div>
 		<div id="divName" style="display: none;">${Label}</div>
 
+<!-- main object for charts organization  -->
 	<div class="main-display">
+		<!--Main report information, Bell curve Chart and Histogram Chart object  -->
 		<div class="column">
 			<textarea class="item" id="message">${Message}</textarea>
 			<canvas class="item" id="BellcurveChart"></canvas>
 			<canvas class="item" id="HistogramChart"></canvas>
-		</div><div class="column">
+		</div>
+		<!-- High Line Graph, Low Line Graph, Box and Whisker Chart object -->
+		<div class="column">
 			<canvas class="item" id="HighLineGraph"></canvas>
 			<canvas class="item" id="LowLineGraph"></canvas>
 			<div class="item" id="BoxandWhisker"></div>
@@ -66,6 +70,7 @@
 	</div>
 
 <script>
+	/*Collect all the requierd variabuls*/
 	var xAxsis= ${Arrays.toString(Xaxis)};
 	var bellData= ${Arrays.toString(BellCurveGraph)};
 	var highData= ${Arrays.toString(YaxisHigh)};
@@ -74,7 +79,7 @@
 	var barXAxis = ${Arrays.deepToString(BarGraph)};
 	var HistogramData= ${Arrays.toString(Histogram)};
 	
-	
+	/*Chart progam layouts as found on https://www.chartjs.org/samples/latest/*/
 	new Chart(document.getElementById("BellcurveChart"), {
 		  type: 'line',
 		  data: {
@@ -172,12 +177,14 @@
 	chart.render();
 </script>
 </body>
+<!-- Links to other objects Chart pages -->
 <footer>
 	<spring:url value="/Stats/chart" var="ScrollURL" />
 	<form id="Servlet" method="post" action="${ScrollURL }" >
 		<button type="submit" id="btn1" name="action" value="-1">Back</button>
 		<button type="submit" id="btn3" name="action" value="1">Next</button>
 	</form>
+	<!-- Save information and close the current project-->
 	<form action="FinalPagePrintFile" id="Servlet2" method="get">
 		<input type="submit" id="btn2" name="action" value="Print File"/>
 	</form>

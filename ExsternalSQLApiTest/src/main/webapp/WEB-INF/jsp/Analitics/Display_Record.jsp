@@ -21,8 +21,10 @@
 </head>
 </head>
 <body>
+<!-- Display The result of the users choices -->
 <textarea id="message" rows="12" cols="150" readonly>${Message}</textarea>
 
+<!-- A list of array choices to analyze -->
  <div class="container">
  <select name="category" onChange="window.location.href=this.value">
     <option value="none">Choose A region</option>
@@ -32,10 +34,13 @@
     </c:forEach>
 </select>
  </div>
+ 
+ <!-- button to launch the Save and quit button options modal  -->
 <div id="modal-isi-body"></div>
 <button id="LoadFile" onclick="loadModal('1')">Close file</button>
 
 <script type="text/javascript">
+//call modal function
 function loadModal(input){
 	$(document).ready(function(){
 		$("#CreateNewRecord").modal().on('shown.bs.modal', function (e) {loadValues(input)});

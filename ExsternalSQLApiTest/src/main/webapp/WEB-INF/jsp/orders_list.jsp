@@ -21,6 +21,7 @@
 </head>
 <body>
 
+<!-- Fixed list of country names to sort the database by -->
  <div class="container">
  <select name="category" onChange="window.location.href=this.value">
     <option value="none">Choose A region</option>
@@ -31,6 +32,7 @@
 </select>
  </div>
  
+ <!-- Table of all available information as well as a delete and update options  -->
  <div class="container">
   <h2>Article List</h2>
   <table class="table table-striped" id="Product Table">
@@ -70,6 +72,8 @@
   </table>
   <spring:url value="/Shipping/addneworder" var="addURL" />
   <a class="btn btn-primary" href="${addURL }" role="button" >Add New Article</a>
+  
+  <!-- button to launch Create reports modal  -->
   <div id="modal-isi-body"></div>
   <button type="button" class="btn btn-primary" onclick="loadModal('1')">Open Modal</button>
   

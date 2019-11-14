@@ -12,7 +12,7 @@ public class systemTest {
 	 * @throws IOException 
 	 */
 	
-	//Java testing location
+	//Java testing location Holds an execute method for purposes of development
 	public static void main(String[] args){
 		//raw data
 		int[] length = {26,35,20,15,25};

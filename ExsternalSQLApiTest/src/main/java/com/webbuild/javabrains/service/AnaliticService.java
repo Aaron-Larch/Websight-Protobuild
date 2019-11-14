@@ -21,10 +21,10 @@ public class AnaliticService{// implements AnaliticsRepository{
 	static Map<String, Double> chartinfo= new HashMap<String, Double>();
 	static double[][] databox=SpainShippingController.FetchValues();
 	private static Reports[][] box=new Reports[3][];
-	private static int i=-1;
+	private static int i=-1; //Start at -1 to run UpdateRecord and initialize array 0 location
 	private static int ii=0;
 	
-	//build a single object
+	//build a single object also the first method called in program
 	public static String BuildRecord(String[] choices, String Countery, String Name, int location){
 		//Start the Record creation process
 		if(i==-1) {UpdateRecord();}
@@ -66,7 +66,7 @@ public class AnaliticService{// implements AnaliticsRepository{
 		return PopUp;
 	}
 	
-	//gather all the required variables needed to print a Report
+	//gather all the required variables need to print a report. Including histogram, bell curve, box and whisker, and predictive models 
 	public static ModelAndView DisplayPage(ModelAndView model, Reports[] statement, int j){
 	    double[] bellCurveGraph=new double[statement[j].getoriginal().length];
 		int[] Xaxis =new int[statement[j].getoriginal().length+1];
@@ -141,13 +141,12 @@ public class AnaliticService{// implements AnaliticsRepository{
 
 	//erase all saved values to start collect new data
 	public static void CloseRecord() {
-		i=-1;
+		i=-1; //Start at -1 to run UpdateRecord and initialize array 0 location
 		ii=0;
 	}
 	
 	public static void releaseresources() {
-		i=-1;
-		ii=0;
+		CloseRecord();
 		databox=null;
 		box=new Reports[3][];
 	}

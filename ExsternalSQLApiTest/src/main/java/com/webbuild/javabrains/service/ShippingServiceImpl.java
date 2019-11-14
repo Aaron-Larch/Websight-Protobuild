@@ -63,13 +63,6 @@ public class ShippingServiceImpl implements ShippingRepository {
 		}
 	}
 	
-	//for a user controlled front end page
-	public void userAddOrder(TableObjects order, String country, String id) {
-		getAllOrders(country);
-		if(id==null) {shipRegion.add(order);}
-		else {updateOrder(order, id);}
-	}
-	
 	//delete from orders where ORDERID = 'insert row here'
 	@Override
 	public void deleteOrder(String id) {
@@ -91,8 +84,8 @@ public class ShippingServiceImpl implements ShippingRepository {
 		
 		for(int i=0; i < shipping.length; i++) {
 			databox[i] = new double[shipping[i].size()];
+			//gather data by product per region 
 			switch(collum.toLowerCase()){	
-			
 			case"employeeid":
 				for(int ii=0; ii < shipping[i].size(); ii++) {
 					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getEMPLOYEEID().trim());

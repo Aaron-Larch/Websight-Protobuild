@@ -30,6 +30,7 @@ class SwitchTest {
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 	private final Reports file=new Reports();
+	
 	private final double[] array = {16.0, 25.0, 37.0, 29.0, 10.0, 15.0, 13.0, 32.0, 37.0, 5.0, 32.0, 26.0, 31.0, 2.0, 37.0, 0.0, 10.0, 10.0, 35.0, 37.0};
 	
 	/**
@@ -202,8 +203,8 @@ class SwitchTest {
 	/**
 	 * Test method for {@link com.webbuild.javabrains.Operations.SwitchBoard#JavaInterFaceBuildObject(double[][] input, String name)}.
 	 */
-	@Test
+	@Test //test paths are n, y/y, y/n, y/end, error(back), error(start)
 	void testJavaInterFaceBuildObject_produeseOneObject() {
-		
+		//Reports[] JavaInterFaceBuildObject(double[][] input, String name)
 	}
 }

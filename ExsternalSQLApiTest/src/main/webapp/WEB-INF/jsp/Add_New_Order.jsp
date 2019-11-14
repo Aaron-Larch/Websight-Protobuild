@@ -13,12 +13,17 @@
  <script src="../../webjars/jquery/3.0.0/js/jquery.min.js"></script>
 </head>
 <body>
+<!--User Input class For all fields of the table object-->
  <div class="container">
   <spring:url value="/Shipping/tableUpdate" var="addURL" />
   <h2>Article</h2>
   <form:form modelAttribute="order" method="post" action="${addURL }" cssClass="form" >
+   
+   <!-- Fixed Id should not allow user interaction -->
    <form:hidden path="ORDERID" cssClass="form-control" id="orderId" Value="9919719"/>
    <div class="form-group">
+   
+   <!-- Fixed list of Values needs drop down menu -->
     <label>Customer Id</label>
     <form:input path="CUSTOMERID" cssClass="form-control" id="customerId"/>
    </div>
@@ -39,6 +44,8 @@
     <form:input path="SHIPNAME" cssClass="form-control" id="shipName"/>
    </div>
    <div class="form-group">
+   
+   <!-- Fixed list of Values needs drop down menu -->
     <label>Ship Country</label>
     <form:input path="SHIPCOUNTRY" cssClass="form-control" id="shipCountry"/>
    </div>

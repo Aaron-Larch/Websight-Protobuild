@@ -7,10 +7,13 @@
 <html>
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
- <title>Article Form</title>
+ <title>User Select Page</title>
  <link href="../../webjars/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
  <script src="../../webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
  <script src="../../webjars/jquery/3.0.0/js/jquery.min.js"></script>
+ 
+ <!-- To make the buttons look like hyperlink words in a normal sentence I modified a button style from the CSS style guide:
+	https://www.w3schools.com/howto/howto_css_text_buttons.asp -->
  <style>
 .astext {
     background:none;
@@ -31,8 +34,10 @@ caption, .legend2 { padding: 0 2px }
 </style>
 </head>
 <body>
+<!-- Hidden load value To dictate the form the page will take -->
 <div id="divLoad" style="display: none;">${Page}</div>
 
+<!-- Basic confirmation message to show the user the data collected by the sorted categories -->
 <div class= "display">
 	<h1 id="tital1">Data created for the ${Name} file</h1>
 	<textarea id="message" rows="22" cols="150" readonly>${Message}</textarea>
@@ -49,6 +54,7 @@ caption, .legend2 { padding: 0 2px }
   	<br>
 </div>
 
+<!-- A user select statement to create custom objects for the end user report -->
 <div class = "Populate">
  	<p id="intro">what operation do you wish to perform on array ${Name}-${id}</p>
 	<textarea id="Display" rows="3" cols="200" readonly>${Arrays.toString(Information)}</textarea>
@@ -56,7 +62,7 @@ caption, .legend2 { padding: 0 2px }
 	<form:form modelAttribute="operation" id="Servlet" method="post" action="${BuildRecordURL }" cssClass="form" >
     	<fieldset>
     		<legend>Please select which statistical operations you want displayed:
-    		<span class=legend2>Then click submit.</span></legend>
+    		<span class=legend2>Then click submit.</span></legend> <!-- Add a Disable function to prevent a null exception for 0 inputs -->
     		<input type="checkbox" name="operation" id="srth" value="SortHi" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
     		<label for="srth">Sort Highest to Lowest</label><br />
     		<input type="checkbox" name="operation" id="srtl" value="SortLo" onchange="document.getElementById('CheckTest').disabled = !this.checked;"/>
@@ -81,8 +87,10 @@ caption, .legend2 { padding: 0 2px }
 		<button id="placeholder" onclick="SwichLoadout(2)">Back</button>
 </div>	
 <script>
+/*Build page on load function*/
 window.onload = function () {loadValues(document.getElementById("divLoad").innerHTML);}
 
+/*Display a combination of clases based of a given variabule*/
 function loadValues(flag){
 	if(flag=="page1"){
 		[].forEach.call(document.querySelectorAll(".Populate"), function (i) {i.style.display="none";});
@@ -91,6 +99,7 @@ function loadValues(flag){
 		}
 }
 
+/*Switch states button*/
 function SwichLoadout(a){
 	if(a==1){
 		[].forEach.call(document.querySelectorAll(".Populate"), function (i) {
@@ -104,7 +113,8 @@ function SwichLoadout(a){
 		  		i.style.display="block";});
 		}
 	}
-	
+
+/*Check all function*/
 function checkAll(source) {
 	  checkboxes = document.getElementsByName('operation');
 	  for(var i=0; i<checkboxes.length; i++) {

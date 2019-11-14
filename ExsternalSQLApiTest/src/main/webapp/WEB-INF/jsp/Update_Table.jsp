@@ -13,6 +13,7 @@
  <script src="../../webjars/jquery/3.0.0/js/jquery.min.js"></script>
 </head>
 <body>
+<!-- List of all available fields of data for a given object  -->
  <div class="container">
   <spring:url value="/Shipping/tableUpdate/${order.ORDERID }" var="updateURL" />
   <h2>Article</h2>
