@@ -20,7 +20,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+  <h2>JBA Shipping Inc.</h2>
+  <p>We Deliver the Best to Deliver You Success</p>
 <!-- Fixed list of country names to sort the database by -->
  <div class="container">
  <select name="category" onChange="window.location.href=this.value">
@@ -34,15 +35,14 @@
  
  <!-- Table of all available information as well as a delete and update options  -->
  <div class="container">
-  <h2>Article List</h2>
   <table class="table table-striped" id="Product Table">
    <thead>
     <th scope="row">#ID</th>
     <th scope="row">CUSTOMERID</th>
     <th scope="row">EMPLOYEEID</th>
-	<th scope="row">SHIPVIA</th>
-    <th scope="row">FREIGHT</th>
-    <th scope="row">SHIPNAME</th>
+	<th scope="row">PRODUCT CODE</th>
+    <th scope="row">PROFET</th>
+    <th scope="row">PRODUCT NAME</th>
  	<th scope="row">SHIPCOUNTRY</th>
     <th scope="row">Update</th>
     <th scope="row">Delete</th>

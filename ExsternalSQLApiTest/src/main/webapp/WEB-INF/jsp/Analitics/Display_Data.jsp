@@ -84,7 +84,7 @@ caption, .legend2 { padding: 0 2px }
 		<br>
   		<input type="submit" value="Submit" id="CheckTest" disabled="disabled" >
 	</form:form>
-		<button id="placeholder" onclick="SwichLoadout(2)">Back</button>
+		<button id="placeholder" style="display: none" onclick="SwichLoadout(2)">Back</button>
 </div>	
 <script>
 /*Build page on load function*/

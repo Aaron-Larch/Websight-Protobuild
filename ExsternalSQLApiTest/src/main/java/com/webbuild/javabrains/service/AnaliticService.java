@@ -107,9 +107,9 @@ public class AnaliticService{// implements AnaliticsRepository{
 		for (Map.Entry<String, Double> entry : tempMap.entrySet()) {
 			 String[] format = entry.getKey().substring(1, entry.getKey().length()-1).split(", ");
 			 if(format.length > 10) {
-				 String lable ="["+ format[0]+" - - "+format[format.length]+"]";
+				 String lable ="["+ format[0]+", "+format[format.length/2] +", "+format[format.length-1]+"]";
 				 barXaxis[jj]=lable;
-			 }
+			 }else {barXaxis[jj] = entry.getKey();}
 			barYaxis[jj] = entry.getValue();
 			jj++;
 		}

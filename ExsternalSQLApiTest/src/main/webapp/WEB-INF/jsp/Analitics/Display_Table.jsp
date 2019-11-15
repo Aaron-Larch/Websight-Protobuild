@@ -45,15 +45,15 @@
 			<c:if test="${not empty block[0]}">
 				<c:set var="place" value="${block[0].getreportId().indexOf('-')}"/>
   					<tr>
+  					<!-- Create a stored value for a search engine -->
     				<th style="text-align:left">
-    				<!-- Create a stored value for a search engine -->
     					<input type="radio" name="Record" value="${block[0].getreportId().substring(0, place)}" form="Servlet">
 						<c:out value="${block[0].getreportId().substring(0, place)}"></c:out>
 					</th>
 				<c:forEach items="${block}" var="file">
 					<c:if test="${not empty file}">
+					<!-- Create a link for a pop up window modal to view the objects contents -->
 						<td style="text-align:center">
-						<!-- Create a link for a pop up window modal to view the objects contents -->
 							<a href="#" onclick="loadPopUp('${count}')">
 							<c:out value="${file.getreportId()}"/></a>
 						</td>
@@ -65,8 +65,8 @@
 			</c:if>
 		</c:forEach>
 		</table>
-		<c:choose>
 		<!-- A check test to display an optional button in the event of multiple Primary key types  -->
+		<c:choose>
     		<c:when test="${hidden > '0'}">
         		<div id="Optional" style="display: block;">
 					<input type="radio" name="Record" value="all" form="Servlet">Select All

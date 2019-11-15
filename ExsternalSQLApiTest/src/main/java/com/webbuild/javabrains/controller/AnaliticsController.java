@@ -26,6 +26,7 @@ public class AnaliticsController {
 	String Name;
 	Reports[] printout;
 	ArrayList<Reports> tempOutput = new ArrayList<Reports>();
+	int temp;
 	int j=0;
 	
 	//populate a Report object with user choice variables
@@ -138,7 +139,7 @@ public class AnaliticsController {
 			else {
 				//once last value is added or ignored got to print statement to view graphs
 				j=0;
-				AnaliticService.releaseresources(); //clear stored values for better data management
+				//AnaliticService.releaseresources(); //clear stored values for better data management
 				return new ModelAndView("redirect:/Stats/chart");
 			}
 		}else if ("discard".equalsIgnoreCase(choice)){	//ignore object
@@ -147,7 +148,7 @@ public class AnaliticsController {
 			else {
 				//once last value is added or ignored got to print statement to view graphs
 				j=0;
-				AnaliticService.releaseresources(); //clear stored values for better data management
+				//AnaliticService.releaseresources(); //clear stored values for better data management
 				return new ModelAndView("redirect:/Stats/chart");  //go to other controller instead of page valuer
 			}
 		}else {return null;}
@@ -155,12 +156,14 @@ public class AnaliticsController {
 	
 	//gather all the data needed to make a graph out of the record object
 	@RequestMapping(value = "/chart") //web site control statement
-	public ModelAndView chartbuild(@RequestParam(value = "action", required=false) int value) {
+	public ModelAndView chartbuild(@RequestParam(value = "action", required=false) String value) {
 		ModelAndView model = new ModelAndView(); //first load a named .jsp file
+		if(value==null) {temp=0;}
+		else { temp=Integer.parseInt(value.trim());}
 		Reports[] statement  = tempOutput.toArray(new Reports[tempOutput.size()]);
 		//Determine which object to view by keeping track of the array position
 		if(j>=0 && j<statement.length) {
-			j += value;
+			j += temp;
 			if(j==-1) {j=statement.length-1;}//make sure the back value can never go below 0
 			else if(j==statement.length) {j=0;}//make sure the next value can never go above max stored value
 		}

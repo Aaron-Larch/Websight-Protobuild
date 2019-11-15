@@ -42,8 +42,8 @@
     		<input type="text" name="cn" value="insert name here">
         	<!-- list of sortabule feilds could this be made dynamicly? -->
         	<p><input type="radio" name="Product" value="employeeid" onchange="document.getElementById('CheckTest').disabled = !this.checked;"> Employee id</input></p>
-    		<p><input type="radio" name="Product" value="shipVia" onchange="document.getElementById('CheckTest').disabled = !this.checked;"> Ship Via</input></p> 
-    		<p><input type="radio" name="Product" value="freight" onchange="document.getElementById('CheckTest').disabled = !this.checked;"> Freight</input></p>
+    		<p><input type="radio" name="Product" value="shipVia" onchange="document.getElementById('CheckTest').disabled = !this.checked;"> Product Code</input></p> 
+    		<p><input type="radio" name="Product" value="freight" onchange="document.getElementById('CheckTest').disabled = !this.checked;"> prophets</input></p>
     		
    		<button type="submit" class="btn btn-primary" id="CheckTest" disabled="disabled" >Save</button>
   		</form>
