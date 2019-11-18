@@ -94,9 +94,9 @@ public class ShippingServiceImpl implements ShippingRepository {
 				maxVal=Statistics.minMax(temp, "max");
 				break;
 				
-			case"shipVia":
+			case"shipvia":
 				for(int ii=0; ii < shipping[i].size(); ii++) {
-					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getSHIPVIA());
+					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getSHIPVIA().trim());
 					}
 				temp=databox[i];
 				maxVal=Statistics.minMax(temp, "max");
@@ -105,7 +105,8 @@ public class ShippingServiceImpl implements ShippingRepository {
 			case"freight":
 				for(int ii=0; ii < shipping[i].size(); ii++) {
 					databox[i][ii]=Double.parseDouble(shipping[i].get(ii).getFREIGHT().trim());
-					}
+					
+				}
 				temp=databox[i];
 				maxVal=Statistics.minMax(temp, "max");
 				break;

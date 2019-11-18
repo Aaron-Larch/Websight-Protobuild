@@ -73,7 +73,7 @@ public class SpainShippingController {
 		//need to add Select MAX(OrderID) from Orders + 1 declare as global maybe?
 		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
 		TableObjects article = new TableObjects(); //generate new object for table
-		model.addObject("NewOrder", article);
+		model.addObject("order", article);
 		model.setViewName("Add_New_Order"); //call a new jsp page to load the objects into
 		return model;
 	}
