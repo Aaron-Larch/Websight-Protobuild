@@ -1,0 +1,32 @@
+----------------------------------------------------------------
+Tue Oct 01 07:44:01 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-016d-8722-63c5-00000e5f6490 
+on database directory memory:C:\Users\gce\eclipse-workbook\springbootrestapitest\testdb with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/C:/Users/gce/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_221-b11
+user.dir=C:\Users\gce\eclipse-workbook\springbootrestapitest
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue Oct 01 07:46:14 EDT 2019:
+Shutting down instance a816c00e-016d-8722-63c5-00000e5f6490 on database directory memory:C:\Users\gce\eclipse-workbook\springbootrestapitest\testdb with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+----------------------------------------------------------------
+Tue Oct 01 07:46:16 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 89e800c0-016d-8722-63c5-00000e5f6490 
+on database directory memory:C:\Users\gce\eclipse-workbook\springbootrestapitest\testdb with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/C:/Users/gce/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_221-b11
+user.dir=C:\Users\gce\eclipse-workbook\springbootrestapitest
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue Oct 01 07:46:17 EDT 2019:
+Shutting down instance 89e800c0-016d-8722-63c5-00000e5f6490 on database directory memory:C:\Users\gce\eclipse-workbook\springbootrestapitest\testdb with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
