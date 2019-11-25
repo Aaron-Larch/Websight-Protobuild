@@ -1,0 +1,192 @@
+body {
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+
+/* Style the header */
+.headder{
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 10px;
+	background-color: #CE2B1C;	
+	border-style: outset;
+	border-radius: 15px;
+}
+
+/* Style the corporate logo */
+p.c {
+	color: gold;
+  	font-style: oblique;
+  	padding-left: 20px;
+}
+
+/*Standard user input format */
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+    font-weight: normal;
+}
+
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-signin input {
+    margin-top: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin button {
+    margin-top: 10px;
+}
+
+.has-error {
+    color: red
+}
+
+/*Main Page Layout format*/
+main{
+	float: left;
+	width:1000px;
+	padding-top: 5px;
+	padding-left: 60px;
+	padding-right: 50px;
+	
+	border-right: 1px solid black;
+}
+
+aside{
+	float:right;
+	width:350px;
+	padding-bottom:20px;
+	padding-left: 4px;
+	padding-right: 70px;
+}
+
+footer{
+	clear:both;
+	text-align:center;
+	font-size:.8em;
+	padding-top:50px;
+}
+
+#container, footer{
+	width:90%;
+	margin: 0 auto;
+	margin-bottom: 60px;
+}
+
+aside section {
+	display:block;
+	padding: 20px;
+	border-bottom: 1px solid black;
+	color:black;
+}
+
+/*Display Data Page*/
+/* To make the buttons look like hyperlink words in a normal sentence I modified a button style from the CSS style guide:
+	https://www.w3schools.com/howto/howto_css_text_buttons.asp*/
+.astext {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+}
+.astext:hover {background: #eee;}
+
+.Calculate {color: dodgerblue;}
+.Restart {color: orange;}
+
+fieldset { position: relative; padding: 0.35em 0.625em 0.75em; }
+.legend2 { position: absolute; bottom: -1.4ex; left: 10px; background: white  }
+caption, .legend2 { padding: 0 2px }
+
+#message{
+	background: #eee;
+}
+#tital1{
+	padding-left: 15px;
+}
+
+.display{
+	padding-left: 5px;
+}
+
+.Populate{
+	padding-left: 20px
+}
+#intro{
+	text-align: center;
+	font-size: large;
+}
+#arrayDisply{
+	padding-left: 90px;
+}
+
+fieldset
+{
+  background-color:#CCC;
+  max-width:700px;
+  padding:16px;	
+      border:2px black;
+    -moz-border-radius:8px;
+    -webkit-border-radius:8px;	
+    border-radius:8px;	
+}
+.legend1
+{
+  margin-bottom:0px;
+  margin-left:16px;
+}
+.legend2
+{
+	background:transparent;
+  margin-bottom:0px;
+  margin-left:16px;
+}
+
+/*Display record Page*/
+.printResult{
+	padding-top:5px;
+	padding-left: 145px;
+	padding-right: 145px;
+}
+#UserChoice1{
+	text-align: center;
+}
+#sizecontroll{
+	padding-right: 400px;
+}
+
+/*Modal format*/
+.modal-content{background: #eee;}
+.modal-title{float: left;}
+#SearchParamiters{float: right}
+  textarea.window {
+    display: block;
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
