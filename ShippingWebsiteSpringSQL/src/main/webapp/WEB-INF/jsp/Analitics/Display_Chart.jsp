@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import= "java.util.Arrays"%>
     <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,11 +27,11 @@
   			margin-right: auto;
 			min-height: 300px;
 		}
-		#message {
+		#message2 {
 			font-size: 12pt;
 		}
 		/* Style the footer */
-		footer{
+		footer2{
     		width: 100%;
     		background-color: #777;
  			padding: 15px;
@@ -48,6 +49,13 @@
 </head>
 <body>
 <!-- Report Headers Object to tell the viewer which object is being viewed   -->
+	  <c:if test="${pageContext.request.userPrincipal.name != null}">
+        <form id="logoutForm" method="POST" action="${contextPath}/logout">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+        <h2 style="text-align:right; float:right;">Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+    </c:if>
+    <hr>
 	<div id="header" style="text-align:center">
 		<h1>Graphs Generated for the object: ${Label}</h1>
 	</div>
@@ -57,7 +65,7 @@
 	<div class="main-display">
 		<!--Main report information, Bell curve Chart and Histogram Chart object  -->
 		<div class="column">
-			<textarea class="item" id="message">${Message}</textarea>
+			<textarea class="item" id="message2">${Message}</textarea>
 			<canvas class="item" id="BellcurveChart"></canvas>
 			<canvas class="item" id="HistogramChart"></canvas>
 		</div>
@@ -68,7 +76,6 @@
 			<div class="item" id="BoxandWhisker"></div>
 		</div>
 	</div>
-
 <script>
 	/*Collect all the requierd variabuls*/
 	var xAxsis= ${Arrays.toString(Xaxis)};
@@ -178,9 +185,9 @@
 </script>
 </body>
 <!-- Links to other objects Chart pages -->
-<footer>
+<footer2>
 	<spring:url value="/Stats/chart" var="ScrollURL" />
-	<form id="Servlet" method="post" action="${ScrollURL }" >
+	<form id="Servlet" method="GET" action="${ScrollURL }" >
 		<button type="submit" id="btn1" name="action" value="-1">Back</button>
 		<button type="submit" id="btn3" name="action" value="1">Next</button>
 	</form>
@@ -188,5 +195,5 @@
 	<form action="FinalPagePrintFile" id="Servlet2" method="get">
 		<input type="submit" id="btn2" name="action" value="Print File"/>
 	</form>
-</footer>
+</footer2>
 </html>

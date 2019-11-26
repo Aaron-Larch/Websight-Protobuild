@@ -31,7 +31,7 @@
         </form>
         <h2 style="text-align:right; float:right;">Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
     </c:if>
-    <hr style="clear:both;"/>
+    <hr style="background-color:white;"/>
 </div>
 
 <div class="printResult">
@@ -55,6 +55,11 @@
 <div id="modal-isi-body"></div>
 <button  style="float:right;" class="btn btn-primary" id="LoadFile" onclick="loadModal('1')">Close file</button>
 </div>
+
+<footer>
+	<hr style="background-color:black;"/>
+	Copyright &copy; 2020. All rights reserved
+</footer>
 
 <script type="text/javascript">
 //call modal function

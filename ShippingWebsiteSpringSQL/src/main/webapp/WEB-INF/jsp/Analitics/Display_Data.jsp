@@ -19,14 +19,16 @@
   <h2>JBA Shipping Inc.</h2>
   <p class="c" >We Deliver the Best to Deliver You Success</p>
   </div>
+  <!-- Call server for User information -->
   <c:if test="${pageContext.request.userPrincipal.name != null}">
         <form id="logoutForm" method="POST" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
         <h2 style="text-align:right; float:right;">Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
     </c:if>
-    <hr style="clear:both;"/>
+    <hr style="background-color:white;"/>
 </div>
+
 <!-- Hidden load value To dictate the form the page will take -->
 <div id="divLoad" style="display: none;">${Page}</div>
 
@@ -88,12 +90,16 @@
 		</fieldset>
 	</form:form>
 		<button id="placeholder" style="display: none" onclick="SwichLoadout(2)">Back</button>
-</div>	
-<script>
-/*Build page on load function*/
+</div>
+<footer>
+	<hr style="background-color:black;"/>
+	Copyright &copy; 2020. All rights reserved
+</footer>	
+<script type="text/javascript">
+//Build page on load function
 window.onload = function () {loadValues(document.getElementById("divLoad").innerHTML);}
 
-/*Display a combination of clases based of a given variabule*/
+//Display a combination of clases based of a given variabule
 function loadValues(flag){
 	if(flag=="page1"){
 		[].forEach.call(document.querySelectorAll(".Populate"), function (i) {i.style.display="none";});
@@ -102,7 +108,7 @@ function loadValues(flag){
 		}
 }
 
-/*Switch states button*/
+//Switch states button
 function SwichLoadout(a){
 	if(a==1){
 		[].forEach.call(document.querySelectorAll(".Populate"), function (i) {
@@ -117,7 +123,7 @@ function SwichLoadout(a){
 		}
 	}
 
-/*Check all function*/
+//Check all function
 function checkAll(source) {
 	  checkboxes = document.getElementsByName('operation');
 	  for(var i=0; i<checkboxes.length; i++) {

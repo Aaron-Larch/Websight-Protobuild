@@ -60,24 +60,26 @@
       <div class="modal-content">
         <div Class="modal-headder">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h1 id="reset-page">Product Stock Record will be Closed after your next operation is selected</h1>
-        <p>to exit back to the Stock profile you were already working with click off the window</p>
-        <p> or click the close(x) icon in the upper right of the window.</p>
+        <h1 id="reset-page">The Record will Now be Closed</h1>
+        <p>You will be unabel to add any more objects to this Record if you click any of the buttons below. 
+        To exit back to the Stock profile you were already working with click off the window or click 
+        the close(x) icon in the upper right of the window.</p>
         </div>
         <div class="modal-body">
 	        	<div id="saveandnew">
-				<p style= "float: left;">Save Data And Create new Record</p>
+				<p style= "float: left;">Save Data And Create new Record	
 				<spring:url value="/Stats/createnewrec" var="NewRecordURL" />
-  				<a class="btn btn-primary" href="${NewRecordURL }" role="button" style= "float: right;">Save & New</a>
-  				<br>
-  			</div>
-  			<div id="saveandclose">
-				<p style= "float: left;">Save Data And Build Report Folder</p>
+  				<a class="btn btn-primary" href="${NewRecordURL }" role="button" >Save & New</a>
+  				</p>
+  			<br>
+  			<br>
+  			<h4 id="spacer">or</h4>
+  			<br>
+				<p style= "float: left;">Save Data And Create Graph Folder	
 				<spring:url value="/Stats/closerecords" var="BuildreportURL" />
-  				<a class="btn btn-primary" href="${BuildreportURL }" role="button" style= "float: right;">Save & Quit</a>
-  				<br>
+  				<a class="btn btn-primary" href="${BuildreportURL }" role="button">Save & Quit</a>
+  				</p>
   			</div>
-  		 
         </div>
         <div class="modal-footer">
 

@@ -20,13 +20,14 @@
   <h2>JBA Shipping Inc.</h2>
   <p class="c" >We Deliver the Best to Deliver You Success</p>
   </div>
+  <!-- Call server for User information -->
   <c:if test="${pageContext.request.userPrincipal.name != null}">
         <form id="logoutForm" method="POST" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
         <h2 style="text-align:right; float:right;">Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
     </c:if>
-    <hr style="clear:both;"/>
+    <hr style="background-color:white;"/>
 </div>
 
 <!-- List of all available fields of data for a given object  -->
@@ -64,7 +65,7 @@
  </div>
  
  <footer>
-	<hr />
+	<hr style="background-color:black;"/>
 	Copyright &copy; 2020. All rights reserved
 </footer>
 </body>

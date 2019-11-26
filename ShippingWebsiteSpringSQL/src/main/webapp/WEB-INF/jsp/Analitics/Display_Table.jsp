@@ -7,30 +7,28 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Complete Report Collection</title>
-<style type="text/css">
-	#content {width: 50%;}
-	#piecanvas {width: 50%;}
-	
-	table {
-  		font-family: arial, sans-serif;
-  		border: 1;
-  		width: 95%;
-  		margin-left: 2.5%; 
-    	margin-right: 2.5%;
-	}
-
-	td, th {
-  		border: 1px solid #dddddd;
-  		padding: 8px;
-	}
-
-	tr:nth-child(even) {
-  		background-color: #dddddd;
-	}
-</style>
  <jsp:include page="ModelLibrary.jsp" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style><%@include file="../../resources/css/common.css"%></style>
 </head>
 <body>
+<!-- A stylish Header that contains all futuer user options -->
+    <div class="headder">
+  <div style="text-align:left; float:left;">
+  <h2>JBA Shipping Inc.</h2>
+  <p class="c" >We Deliver the Best to Deliver You Success</p>
+  </div>
+  <!-- Call server for User information -->
+  <c:if test="${pageContext.request.userPrincipal.name != null}">
+        <form id="logoutForm" method="POST" action="${contextPath}/logout">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+        <h2 style="text-align:right; float:right;">Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+    </c:if>
+    <hr style="background-color:white;"/>
+</div>
 <!-- Hidden load value To dictate the form the page will take -->
 <div id="divLoad" style="display: none;">${Page}</div>
 
@@ -40,7 +38,7 @@
 		<div id="title1">To Select a file to look at. Or if you want to look at every file, Select one of the options presented.</div>
 		<c:set var="hidden" value="0"/>
 		<c:set var="count" value="0"/>
-		<table>
+		<table class="table table-striped" id="MasterTable">
 		<c:forEach items="${Record}" var="block" varStatus="row">
 			<c:if test="${not empty block[0]}">
 				<c:set var="place" value="${block[0].getreportId().indexOf('-')}"/>
@@ -80,8 +78,10 @@
 		</c:choose>
 		
 		<!-- a select all option for the search engine -->
-		<input type="submit" value="Display all Selected objects" form="Servlet"/>
-				
+		<input class="btn btn-primary" type="submit" value="Display all Selected objects" form="Servlet"/>
+		<br>
+		 <hr style="background-color:black;"/>
+		 <br>		
    		<p id="tital2">To Select Which Record to turn into Graphs please preform one or more of the following action.<br>
 		First select one of the rows you wish to search through. If there is more than one row you wish to search through
 		 the choose the Select All option is available.<br>
@@ -92,27 +92,33 @@
 		<!-- A plain english search engine -->
   		<spring:url value="/Stats/SearchFile" var="FileSortURL" />
   		<form action="${FileSortURL }" id="Servlet" method="get">
-  			<input type="text" name="input">
-    		<input type="submit" value="Search"/>
+  			<div id="Searchbar">
+  			<input style="float:Right;" class="btn btn-primary" type="submit" value="Search"/>
+  			<input id="searcline" type="text" name="input" Class="form-control">
+    		</div>
 		</form>
 			<div id="FailedResult">${Result}</div>
 </div>
 
 <!-- Second Class to display User search results -->
 <div Class="BuildTepfile">
-	<h2>There are ${NumHits} entries matching your request</h2>
+	<h2>There are ${NumHits} entries matching your request:</h2>
 	<textarea id="message" rows="12" cols="150" readonly>${Message}</textarea>
 	<spring:url value="/Stats/buildFinalRecord" var="StoretURL" />
 	<!-- User Decides to keep or ignore returned Object from search -->
 	<form action="${StoretURL }" id="Servlet" method="get">
-		<p>Do you wish to add this record to the final graph report. Or do you want to discard the record.</p>
+		<p style="text-align:center;">Do you wish to add this record to the final graph report. Or do you want to discard the record.</p>
 		<div id="buttons">
-  		<input type="submit" name="choice" value="add">
-  		<input type="submit" name="choice" value="discard">
+  		<input  style="float:left;" class="btn btn-primary" type="submit" name="choice" value="add">
+  		<input  style="float:Right;" class="btn btn-primary" type="submit" name="choice" value="discard">
   		</div>
 	</form>
 </div>	
-		
+
+<footer>
+	<hr style="background-color:black;" />
+	Copyright &copy; 2020. All rights reserved
+</footer>
 <script type="text/javascript">
 /*Build page on load function*/
 window.onload = function () {loadValues(document.getElementById("divLoad").innerHTML);}

@@ -3,6 +3,14 @@ body {
     background-color: #eee;
 }
 
+hr {
+  border: 0;
+  clear:both;
+  display:block;
+  width: 96%;               
+  height: 1px;
+}
+
 /* Style the header */
 .headder{
     padding-bottom: 5px;
@@ -179,14 +187,55 @@ fieldset
 	padding-right: 400px;
 }
 
+/*Display Table*/
+.SearchStatement{
+	padding-left: 15px;
+}
+
+#MasterTable {
+  		font-family: arial, sans-serif;
+  		border: 2px solid black;
+  		width: 95%;
+  		margin-left: 2.5%; 
+    	margin-right: 2.5%;
+	}
+	
+#tital2{text-align: center;}
+#FailedResult{
+		width: 30%;
+  		margin-left: 35%; 
+    	margin-right: 35%;
+    	text-align: center; 
+    	color: red;	
+}
+
+#Searchbar{
+		width: 30%;
+  		margin-left: 35%; 
+    	margin-right: 35%; 	
+}
+#searcline{width: 83%;}
+
+.BuildTepfile{
+	padding-left: 15px;
+	padding-right: 280px;
+}
+
 /*Modal format*/
 .modal-content{background: #eee;}
 .modal-title{float: left;}
 #SearchParamiters{float: right}
   textarea.window {
+  	background: #eee;
     display: block;
     border: none;
     margin-left: auto;
     margin-right: auto;
 }
 
+#saveandnew{
+	padding-left: 260px;
+}
+#spacer{
+	padding-left: 120px;
+}

@@ -21,7 +21,7 @@
   <div class="headder">
   <h2>JBA Shipping Inc.</h2>
   <p class="c">We Deliver the Best to Deliver You Success</p>
-   <hr style="clear:both;"/>
+   <hr style="background-color:white;"/>
 </div>
 
     <div class="container">
@@ -68,7 +68,7 @@
     </div>
     
     <footer>
-	<hr />
+	<hr style="background-color:black;"/>
 	Copyright &copy; 2020. All rights reserved
 </footer>
   </body>
