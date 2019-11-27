@@ -15,6 +15,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <style><%@include file="../../resources/css/common.css"%></style>
+  <script><%@include file="../../resources/js/reportfunctions.js"%></script>
 </head>
 <body>
 <!-- A stylish Header that contains all futuer user options -->
@@ -86,7 +87,7 @@
   <aside>
   <section>
 	<h4>Shipping History</h4>
-	<p>Here you can Track, Manage, Or create a new shipping order as well as view your order history </p>
+	<p>Here you can Track, Manage, Or create a new shipping order as well as view your order history</p>
 </section>
 
 <section>
@@ -96,7 +97,7 @@
   
   <!-- button to launch Create reports modal  -->
   <div id="modal-isi-body"></div>
-  <button  style="display: ${role};" type="button" class="btn btn-primary" onclick="loadModal('1')">Create Report</button>
+  <button  style="display: ${role};" type="button" class="btn btn-primary" onclick="loadModal('page1')">Create Report</button>
   </section>
   </aside>
  </div>
@@ -105,16 +106,5 @@
 	<hr style="background-color:black;"/>
 	Copyright &copy; 2020. All rights reserved
 </footer>
- <script>
-	function myFunction() {alert(${update });}
-	// Get the modal
-	function loadModal(input){
-	$(document).ready(function(){
-		$("#AssineParamiters").modal().on('shown.bs.modal', function (e) {loadValues(input)});
-		load_page('/WEB-INF/ModelLibrary.jsp #container');
-	});
-	function load_page(url){$('modal-isi-body').load(url) ;}
-}
-</script>
 </body>
 </html>

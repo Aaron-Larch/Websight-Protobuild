@@ -32,7 +32,7 @@ public class AnaliticsController {
 	//populate a Report object with user choice variables
 	@RequestMapping(value = "/BuildRecord/{id}") //web site control statement
 	public ModelAndView CreateRecord(@RequestParam("operation") String[] choices, @PathVariable int id ) {
-		  ModelAndView model = new ModelAndView("jsp/Analitics/Display_Record"); //first load a named .jsp file
+		  ModelAndView model = new ModelAndView("Analitics/Display_Record"); //first load a named .jsp file
 		  Name = SpainShippingController.FetchNameValues(); //call name value from Other controller
 		  String placehoder = AnaliticService.BuildRecord(choices, headders[id], Name, id); //run program
 		  model.addObject("Message", placehoder); //Arsine output to a web variable
@@ -50,7 +50,7 @@ public class AnaliticsController {
 			model.addObject("Page", "page2");
 			model.addObject("Name", Name);
 			model.addObject("id", id);
-			model.setViewName("jsp/Analitics/Display_Data");
+			model.setViewName("Analitics/Display_Data");
 		  return model;
 	}
 	
@@ -60,7 +60,7 @@ public class AnaliticsController {
 		//reset all values
 		Name=null;
 		AnaliticService.UpdateRecord();
-		return new ModelAndView("redirect:/Shipping/home");
+		return new ModelAndView("redirect:/Shipping/manager");
 	}
 
 	//close out creating record objects and move on to the search engine
@@ -168,7 +168,7 @@ public class AnaliticsController {
 			else if(j==statement.length) {j=0;}//make sure the next value can never go above max stored value
 		}
 		model=AnaliticService.DisplayPage(model,statement,j); //generate graph data
-		model.setViewName("jsp/Analitics/Display_Chart"); //go to page
+		model.setViewName("Analitics/Display_Chart"); //go to page
 		return model;
 	}
 	
@@ -183,7 +183,7 @@ public class AnaliticsController {
 	 	model.addObject("Page", "page2");
 	 	model.addObject("NumHits", printout.length-j);
 	 	model.addObject("Message", printOutputValue);
-	 	model.setViewName("jsp/Analitics/Display_Table");
+	 	model.setViewName("Analitics/Display_Table");
 	 	return model;
 	}
 	
@@ -194,7 +194,7 @@ public class AnaliticsController {
 		model.addObject("PopUp", Arrays.toString(AnaliticService.getObjInfo()));
 		model.addObject("Record", AnaliticService.getFile());
 		model.addObject("Result", Error); //custom error line leave empty and can also load page basec state
-		model.setViewName("jsp/Analitics/Display_Table");
+		model.setViewName("Analitics/Display_Table");
 		return model;
 	}
 }

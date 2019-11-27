@@ -35,7 +35,7 @@ public class SpainShippingController {
 	//manager table information for BA home page
 	@RequestMapping(value = {"/manager", "/{id}"}) //web site control statement
 	public ModelAndView getManagerTableObjects(@PathVariable(required=false) String id) {
-		  ModelAndView model = new ModelAndView("jsp/UserInterFace/welcome"); //first load a named .jsp file
+		  ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		  List<TableObjects> ordersList;
 		  String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
 		  //check for starting flag
@@ -58,7 +58,7 @@ public class SpainShippingController {
 	//User table information for BA home page
 	@RequestMapping(value = "/user") //web site control statement
 	public ModelAndView getUserTableObjects() {
-		  ModelAndView model = new ModelAndView("jsp/UserInterFace/welcome"); //first load a named .jsp file
+		  ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		  pageflag="user";
 		  List<TableObjects> ordersList;
 		  ordersList = shippingservice.getUserTable("ANTON", "user"); //run a default sql  query 
@@ -79,7 +79,7 @@ public class SpainShippingController {
 			 model.addObject("order", "No such Id found");
 		}else {
 			model.addObject("order", temp);
-			model.setViewName("jsp/UserInterFace/Update_Table"); //call a new jsp page to load the objects into
+			model.setViewName("UserInterFace/Update_Table"); //call a new jsp page to load the objects into
 		}
 		
 		return model;
@@ -94,7 +94,7 @@ public class SpainShippingController {
 		neworder++;
 		model.addObject("order", article);
 		model.addObject("OrderID", neworder);
-		model.setViewName("jsp/UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
+		model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
 		return model;
 	}
 	
@@ -147,7 +147,7 @@ public class SpainShippingController {
 		model.addObject("Page", "page1");
 		model.addObject("id", "0");
 					
-		model.setViewName("jsp/Analitics/Display_Data"); //call a new jsp page to load the objects into
+		model.setViewName("Analitics/Display_Data"); //call a new jsp page to load the objects into
 		return model; //load a previous page command;
 	}
 				

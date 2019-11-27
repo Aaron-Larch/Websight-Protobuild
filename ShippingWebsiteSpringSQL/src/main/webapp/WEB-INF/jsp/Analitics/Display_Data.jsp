@@ -11,6 +11,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <style><%@include file="../../resources/css/common.css"%></style>
+  <script>
+  	<%@include file="../../resources/js/reportfunctions.js"%>
+	//Build page on load function
+  	window.onload = function () {loadValues(".display", ".Populate", document.getElementById("divLoad").innerHTML);}
+  </script>
 </head>
 <body>
  <!-- A stylish Header that contains all futuer user options -->
@@ -95,41 +100,5 @@
 	<hr style="background-color:black;"/>
 	Copyright &copy; 2020. All rights reserved
 </footer>	
-<script type="text/javascript">
-//Build page on load function
-window.onload = function () {loadValues(document.getElementById("divLoad").innerHTML);}
-
-//Display a combination of clases based of a given variabule
-function loadValues(flag){
-	if(flag=="page1"){
-		[].forEach.call(document.querySelectorAll(".Populate"), function (i) {i.style.display="none";});
-	}else if(flag=="page2"){
-		[].forEach.call(document.querySelectorAll(".display"), function (i) {i.style.display="none";});
-		}
-}
-
-//Switch states button
-function SwichLoadout(a){
-	if(a==1){
-		[].forEach.call(document.querySelectorAll(".Populate"), function (i) {
-		  	i.style.display="block";});
-		[].forEach.call(document.querySelectorAll(".display"), function (i) {
-		  	i.style.display="none";});
-		}else{
-			[].forEach.call(document.querySelectorAll(".Populate"), function (i) {
-		  		i.style.display="none";});
-			[].forEach.call(document.querySelectorAll('.display'), function (i) {
-		  		i.style.display="block";});
-		}
-	}
-
-//Check all function
-function checkAll(source) {
-	  checkboxes = document.getElementsByName('operation');
-	  for(var i=0; i<checkboxes.length; i++) {
-	    checkboxes[i].checked = source.checked;
-	  }
-	}
-</script>
 </body>
 </html>

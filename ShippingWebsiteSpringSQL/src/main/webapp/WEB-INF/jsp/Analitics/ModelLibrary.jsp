@@ -11,6 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <style><%@include file="../../resources/css/common.css"%></style>
+  <script><%@include file="../../resources/js/reportfunctions.js"%></script>
 </head>
 <body><!-- A jsp page to contain all the required Modal's for the build reports program -->
 
@@ -27,6 +28,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
+        <div class="PopUpModal" style="display: none;">
         <spring:url value="/Shipping/switchup" var="NewControllerURL" />
   		<form id="GatherData" method="get" action="${NewControllerURL }" class="form-signin">
     		<label>Column Report Name</label>
@@ -41,6 +43,10 @@
     		
    		<button type="submit" class="btn btn-primary" id="SearchParamiters" disabled="disabled" >Save</button>
   		</form>
+  		</div>
+  		<div class="CreateNewRecord" style="display: none;">
+  		<p>this is a test to see if this works</p>
+  		</div>
       </div>
       <div class="modal-footer">
       </div>
@@ -109,31 +115,7 @@
       </div>
     </div>
   </div>
-  </div>
-<script>
-//hide unused modals
-function loadValues(flag){
-	if(flag=="1"){
-		[].forEach.call(document.querySelectorAll(".PopUpModal"), function (i) {i.style.display="none";});
-	}else if(flag=="2"){
-		[].forEach.call(document.querySelectorAll(".CreateNewRecord"), function (i) {i.style.display="none";});
-		}
-}
-
-//Select a string from an array of strings based on user input 
-function loadContent(input) {
-	document.getElementById("Display").value = "";
-	//convert string into an array of strings
-	var JsArray = document.getElementById('DisplayValue').innerHTML;
-	var block = JsArray.substring(1, JsArray.length-1);
-	var string = block.split("break");
-	if(input > 0){ //Search array
-		var quickfix=string[input].substring(2, string[input].length);
-		document.getElementById('Display').value=quickfix;
-	}else{document.getElementById('Display').value=string[input];}
-}
-</script>  
-  
+  </div> 
 </body>
 </body>
 </html>

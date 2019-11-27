@@ -15,6 +15,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <style><%@include file="../../resources/css/common.css"%></style>
+  <script><%@include file="../../resources/js/reportfunctions.js"%></script>
 </head>
 </head>
 <body>
@@ -53,23 +54,12 @@
  
  <!-- button to launch the Save and quit button options modal  -->
 <div id="modal-isi-body"></div>
-<button  style="float:right;" class="btn btn-primary" id="LoadFile" onclick="loadModal('1')">Close file</button>
+<button  style="float:right;" class="btn btn-primary" id="LoadFile" onclick="getModal()">Close file</button>
 </div>
 
 <footer>
 	<hr style="background-color:black;"/>
 	Copyright &copy; 2020. All rights reserved
 </footer>
-
-<script type="text/javascript">
-//call modal function
-function loadModal(input){
-	$(document).ready(function(){
-		$("#CreateNewRecord").modal().on('shown.bs.modal', function (e) {loadValues(input)});
-		load_page('/WEB-INF/ModelLibrary.jsp #container');
-	});
-	function load_page(url){$('modal-isi-body').load(url) ;}
-}
-</script>
 </body>
 </html>

@@ -76,6 +76,7 @@ public class AnaliticService{// implements AnaliticsRepository{
 		//Create a temp object to gather all of the required data to make the graphs 
 		for(int i=0; i<Xaxis.length; i++) {Xaxis[i]=i;}
 		Reports temp=new Reports();
+		temp.setreportId(statement[j].getreportId());
 		String[] populate = {"sorthi","sortlo","average","median","mode","max","min"};
 		SwitchBoard.buildReports(temp, populate, statement[j].getoriginal());
 		

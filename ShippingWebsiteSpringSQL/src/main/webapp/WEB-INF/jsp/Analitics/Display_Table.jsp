@@ -12,6 +12,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <style><%@include file="../../resources/css/common.css"%></style>
+   <script>
+  	<%@include file="../../resources/js/reportfunctions.js"%>
+	//Build page on load function
+  	window.onload = function () {loadValues(".SearchStatement", ".BuildTepfile", document.getElementById("divLoad").innerHTML);}
+  </script>
 </head>
 <body>
 <!-- A stylish Header that contains all futuer user options -->
@@ -119,27 +124,5 @@
 	<hr style="background-color:black;" />
 	Copyright &copy; 2020. All rights reserved
 </footer>
-<script type="text/javascript">
-/*Build page on load function*/
-window.onload = function () {loadValues(document.getElementById("divLoad").innerHTML);}
-
-/*Display a combination of clases based of a given variabule*/
-function loadValues(flag){
-	if(flag=="page1"){
-		[].forEach.call(document.querySelectorAll(".BuildTepfile"), function (i) {i.style.display="none";});
-	}else if(flag=="page2"){
-		[].forEach.call(document.querySelectorAll(".SearchStatement"), function (i) {i.style.display="none";});
-	}
-}
-
-/*function to call popup window*/
-function loadPopUp(i){
-	$(document).ready(function(){
-		$("#PopUpModal").modal().on('shown.bs.modal', function (e) {loadContent(i);});
-		load_page('/WEB-INF/Objectcontent.jsp #container');
-	});
-	function load_page(url){$('modal-isi-body').load(url) ;}
-}
-</script>
 </body>
 </html>

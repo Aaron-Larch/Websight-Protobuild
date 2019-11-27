@@ -40,7 +40,7 @@ public class UserController {
     	List<Role>Rolelist=roleRepository.findAll(); //set roles to a list
     	model.addAttribute("userForm", new User()); //create new user object
     	model.addAttribute("Rolelist", Rolelist);
-        return "jsp/UserInterFace/registration";  //go to jsp page
+        return "UserInterFace/registration";  //go to jsp page
     }
 
     //Verify that collected data meets the required security parameters before saving to database
@@ -49,7 +49,7 @@ public class UserController {
         userValidator.validate(userForm, bindingResult); //Check Object for errors
 
         if (bindingResult.hasErrors()) {
-            return "jsp/UserInterFace/registration"; //If errors found retun to page with error message
+            return "UserInterFace/registration"; //If errors found retun to page with error message
         }
         userService.save(userForm); //if no errors found save
 
@@ -67,7 +67,7 @@ public class UserController {
         if (logout != null) //Message for confirmed log out
             model.addAttribute("message", "You have been logged out successfully.");
 
-        return "jsp/UserInterFace/login";
+        return "UserInterFace/login";
     }
 
     //Use the user roles to determine what to load in the user home page 
@@ -82,7 +82,7 @@ public class UserController {
         }else if(role.contains("Europe")){
         	return "redirect:/Shipping/manager"; //load all manager information
         }else if(role.contains("Pacific")){
-        	model.addAttribute("message", "You are a manager.");
+        	model.addAttribute("message", "You are a Admin.");
         }else {
         	return "redirect:/Shipping/manager"; //load all Admin information
         }
