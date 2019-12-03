@@ -16,8 +16,8 @@ public class SimpleSerch {
 			 {">","<","=","!=","<=",">=","contains","of","less than","Greater than","equal to",
 			  "less than or equal to","Greater than or equal to","does not equal","equals", "equal", "contains the number"},
 			 {"\\d*\\.?\\d+"}, //use RegX to make sure that the user only entered a double or an integer
-			 {"Error", "illigal"},//Check value for incomplete statements or invalid statements
-			 {"primary", "record", "report", "key", "id", "name"},
+			 {"Error", "ErrCollume", "ErrCompair", "ErrValue", "ErrOrder"},//Check value for incomplete statements or invalid statements
+			 {"primary", "record", "report", "id", "key", "name"},
 			 {"primary key", "record name", "report id", "name"}//bank of words that must pair with precise actions
 			};
 	static Store scan=new Store();
@@ -265,35 +265,64 @@ public class SimpleSerch {
 		
 		//change format to meet method parameters 
 		if(inputary.length < 3) {feild[0]="Error";}
-		else if(inputary.length==3) {feild=inputary;}//check to see if the format is already there
 		else {
 			int count=0;
 			for(int i=0; i<feild.length; i++) {
 				feild[i]=inputary[count]; //the first value is always the operation we wish to search for
 				count ++;//By setting count equal to the total number of strings we can have the first and last entry use the same line of code
 				if(i==0) {
+					//Check the second position of the array to see if the value matches any of the spatial stored words in the library
 					for(int j=0; j<Library[4].length; j++) {
 						if(inputary[count].equalsIgnoreCase(Library[4][j])) {
 							feild[i]+=" "+inputary[count].toString();
 							count ++;
 						}
 					}
+					//check to see if the word selected is a recognized word from the library
+					if(check(feild[0], Library[0])==false) {feild[0]="ErrCollume"; break;} //if error found end loop
+					
 				}else if(i==1) {
+					//collect all but the last stored array value to construct the comparison statement
 					for(int j=count; j<inputary.length-1; j++) {
 						feild[i]+=" "+inputary[j].toString();
 						count++;
 					}
-					for(int ii=0; ii < Library[5].length; ii++) {
-						if(feild[0].equals(Library[5][ii]) && 
-							(feild[2].equals("contains")==false || feild[2].equals("contains the number")==false)
-								) {feild[0]="illigal"; break;}
-
+					//check to see if the word selected is a recognized word from the library
+					if(check(feild[1], Library[1])==false) {feild[0]="ErrCompair"; break;} //if error found end loop
+					
+					//Some Words Must require a unique paring of field 1 and field 2 values
+					for(int jj=0; jj < Library[5].length; jj++) {
+						if(feild[0].equalsIgnoreCase(Library[5][jj])) { //Check to see if the stored word is a word that requires a paring
+							if(feild[1].equalsIgnoreCase("contains")==false && feild[1].equalsIgnoreCase("contains the number")==false)
+								 {feild[0]="ErrOrder"; break;} //if error found end loop
+							else {break;} //if there is a match then there is no need to go through the rest of the code
+							}
+							else if(jj==Library[5].length-1) {//Check to see if the mode is paired with its unique identifier
+								if(feild[0].equalsIgnoreCase("mode")) {
+									if(feild[1].equalsIgnoreCase("of")==false) {feild[0]="ErrOrder"; break;} //if error found end loop
+									else {break;}
+								//make sure that that that any of the recognized words are not using a reserved word
+								}else if(feild[1].equalsIgnoreCase("contains")==true 
+										|| feild[1].equalsIgnoreCase("contains the number")==true 
+										|| feild[1].equalsIgnoreCase("of")==true) 
+								{feild[0]="ErrOrder"; break;}//if error found end loop
+							}
 					}
-					if(feild[0].equals("mode") && feild[2].equals("of")==false) {feild[0]="illigal"; break;}
+				}else if(i==2) {
+					//check to see if the final value is a number value that is accepted by the library
+					if(feild[2].matches(Library[2][0].toString())==false) {feild[0]="ErrValue";}
 				}
-				
 			}
 		}
 		return feild;
+	}
+	
+	private static boolean check(String feild, String[] library) {
+		//Check word against all excepted words to prevent misspellings and other user errors
+		for(int ii=0; ii < library.length; ii++) {
+			if(feild.equalsIgnoreCase(library[ii])) {return true;}
+			else if(ii==library.length-1) {return false;}
+		}
+		return false;
 	}
 }

@@ -43,7 +43,7 @@ public class ShippingServiceImpl implements ShippingRepository {
 		}
 	
 	
-	//select * from orders where shipcity= 'spain' and orderid = '{id}'
+	//select * from orders where shipcity= '{region}' and orderid = '{id}'
 	@Override
 	public TableObjects getOrders(String id){
 		return shipRegion.stream().filter(t -> t.getORDERID().equals(id)).findFirst().get();
