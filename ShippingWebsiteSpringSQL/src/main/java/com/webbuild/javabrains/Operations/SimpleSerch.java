@@ -3,8 +3,6 @@ package com.webbuild.javabrains.Operations;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.webbuild.javabrains.Store;
 import com.webbuild.javabrains.model.Reports;
@@ -106,7 +104,7 @@ public class SimpleSerch {
 	
 		case"mode":
 			//Required search materials are: the object you are searching, the value you wish to retrieve, the primary key, the operation, and the parameter
-			storedval=searchFiles(file, "getmode", Record, "List", feild[2]);
+			storedval=searchFiles(file, "getmode", Record, feild[1], feild[2]);
 			break;
 	
 		case"max":
@@ -121,10 +119,9 @@ public class SimpleSerch {
 	
 		default:
 			// user error handling
-			System.out.println(userinput + " appears to be an invalid Search Parmiter.");
 			storedval= new Reports[1]; //make a new object
 			storedval[0]=new Reports();
-			storedval[0].setreportId("Incomplete");
+			storedval[0].setreportId(ErrorMessage(feild[0]));
 			break;
 		}
 		return storedval;
@@ -179,7 +176,8 @@ public class SimpleSerch {
 			return array;
 		}else {
 			Reports[] statement = tmp.toArray(new Reports[tmp.size()]); //convert into an array of objects
-			return statement;}	
+			return statement;
+		}	
 	}
 	
 	//use a switch statement to Create a dynamic comparison statement from a user string into a boolean true/false test
@@ -188,6 +186,7 @@ public class SimpleSerch {
 		boolean flag = false; //set the return value to see if the comparison is true
 		double value = Double.parseDouble(opr.trim()); //convert user input into a double
 		
+		if(obj != null) { //test for a populated field
 		//use the remaining string in a switch statement to find the correct comparison from a library of operations 
 		switch(input.toLowerCase()){
 		case"<": //with multiple cases per statement the code can account for synonyms and alternate wordings
@@ -228,11 +227,7 @@ public class SimpleSerch {
 			break;
 			
 		case"of": //Exclusive case for modes sense there can be multiple modes to a set of data a list contains operation is required
-		    List<Double> list = new ArrayList<Double>(); //create a temp mode variable 
-		    if (obj.getClass().isArray()) { 
-		        list = Arrays.asList((Double[])obj); //populate array
-		        flag=(list.contains(value)); //check values
-		    }else {flag=false;} //check to see if record has a mode value
+		    flag=(obj.toString().contains(opr)); //check values
 			break;	
 			
 		default:
@@ -240,22 +235,20 @@ public class SimpleSerch {
 			System.out.println(input+" appears to be an invalid operation. Please try again");
 			break;
 		}
+		}else {flag=false;} //check to see if record has a mode value
 		return flag;
 	}
 	
-	//to counter user error there This method has a library of stored words that the code will recognize as 'real words'
-	public static boolean SpellCheck(String input, int h) {
-		boolean flag=false;
-			for(int j=0; j<Library[h].length; j++) {
-				//do to Regx requiring a different form of comparison the code needs to check to make sure the library call is correct
-				if(h==2) {
-					if(input.matches(Library[h][j])) {flag=true;}
-				}else if(input.equalsIgnoreCase(Library[h][j])) {
-					flag=true;
-					break;
-				}
-			}
-		return flag;
+	//Error message library so that each error type has its own error code message
+	public static String ErrorMessage(String input) {
+		switch(input){
+		case"Error": return "This Is not a Statement that I understand";
+		case"ErrCollume": return "The Field you are trying to serch for dose not exist. \nPlease Try Again";
+		case"ErrCompair": return "I Do not Know how to preform this operation. Please try again";
+		case"ErrValue": return "Sorry but this is not a value i understand. I can only read Number values";
+		case"ErrOrder": return "The compairson you'r trying to make is useing a reserved word and can not be preformed";
+		default: return "";
+		}
 	}
 	
 	//a remote call for the parse string operation from the search method
@@ -279,7 +272,7 @@ public class SimpleSerch {
 						}
 					}
 					//check to see if the word selected is a recognized word from the library
-					if(check(feild[0], Library[0])==false) {feild[0]="ErrCollume"; break;} //if error found end loop
+					if(check(feild[0], 0)==false) {feild[0]="ErrCollume"; break;} //if error found end loop
 					
 				}else if(i==1) {
 					//collect all but the last stored array value to construct the comparison statement
@@ -288,7 +281,7 @@ public class SimpleSerch {
 						count++;
 					}
 					//check to see if the word selected is a recognized word from the library
-					if(check(feild[1], Library[1])==false) {feild[0]="ErrCompair"; break;} //if error found end loop
+					if(check(feild[1], 1)==false) {feild[0]="ErrCompair"; break;} //if error found end loop
 					
 					//Some Words Must require a unique paring of field 1 and field 2 values
 					for(int jj=0; jj < Library[5].length; jj++) {
@@ -308,6 +301,7 @@ public class SimpleSerch {
 								{feild[0]="ErrOrder"; break;}//if error found end loop
 							}
 					}
+					if(feild[0].equalsIgnoreCase("ErrOrder")) {break;} //when error is found there is no need to continue the code
 				}else if(i==2) {
 					//check to see if the final value is a number value that is accepted by the library
 					if(feild[2].matches(Library[2][0].toString())==false) {feild[0]="ErrValue";}
@@ -317,11 +311,11 @@ public class SimpleSerch {
 		return feild;
 	}
 	
-	private static boolean check(String feild, String[] library) {
+	public static boolean check(String feild, int i) {
 		//Check word against all excepted words to prevent misspellings and other user errors
-		for(int ii=0; ii < library.length; ii++) {
-			if(feild.equalsIgnoreCase(library[ii])) {return true;}
-			else if(ii==library.length-1) {return false;}
+		for(int ii=0; ii < Library[i].length; ii++) {
+			if(feild.equalsIgnoreCase(Library[i][ii])) {return true;}
+			else if(ii==Library[i].length-1) {return false;}
 		}
 		return false;
 	}

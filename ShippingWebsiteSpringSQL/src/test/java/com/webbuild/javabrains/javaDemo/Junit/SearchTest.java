@@ -1,323 +1,280 @@
 package com.webbuild.javabrains.javaDemo.Junit;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.webbuild.javabrains.Operations.SimpleSerch;
+import com.webbuild.javabrains.model.Reports;
 
 class SearchTest {
+
+	static Reports[][] test;
+	private static Reports[] result;
 	
-	//Test the library to see if it Knows all symbols used for comparison
-	@Test
-	void dynamicparsetest_AverageSymbol() {
-		//Given
-		String sample="Average >= 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Average", is(tstarray[0]));
-		assertThat(">=", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception { 
+		test = new Reports[2][1];
+		//New Array of objects
+		test[0]= new Reports[2]; //put in empty rows to test Null error handling
+		test[0][0]= new Reports();
+		test[0][0].setreportId("test1");
+		
+		//New Array of objects
+		test[1]= new Reports[2]; //put in empty rows to test Null error handling
+		test[1][0]= new Reports();
+		test[1][0].setreportId("test2");
 	}
 
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeEach
+	void setUp() throws Exception {
+		result = new Reports[2]; //test to prove rows are dropped
+	}
+	
+						//----Testing SimpleSerch.Operaton private method----\\
+	//Test less than operations
 	@Test
-	void dynamicparsetest_MedianSymbol() {
+	void Searchtest_lessthanSymbol() {
 		//Given
-		String sample="Median > 20";
+		test[0][0].setmedian(10); //Returned value
+		test[1][0].setmedian(20); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median < 15", "test");
 		//Then
-		assertThat("Median", is(tstarray[0]));
-		assertThat(">", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+		assertTrue(result[0].getmedian()==10);
+		assertTrue(result.length==1); //proof of record drop
 	}
 	
 	@Test
-	void dynamicparsetest_MaxSymbol() {
+	void Searchtest_lessthanWord() {
 		//Given
-		String sample="Max <= 20";
+		test[0][0].setmedian(10); //Returned value
+		test[1][0].setmedian(20); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median less than 15", "test");
 		//Then
-		assertThat("Max", is(tstarray[0]));
-		assertThat("<=", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-	
-	@Test
-	void dynamicparsetest_MinSymbol() {
-		//Given
-		String sample="Min = 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Min", is(tstarray[0]));
-		assertThat("=", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-	
-	@Test
-	void dynamicparsetest_MeanSymbol() {
-		//Given
-		String sample="Mean < 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Mean", is(tstarray[0]));
-		assertThat("<", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-	
-	@Test
-	void dynamicparsetest_Symbol() {
-		//Given
-		String sample="Mean != 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Mean", is(tstarray[0]));
-		assertThat("!=", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-	
-	//Test the library to see if it Knows all words associated with comparison
-	@Test
-	void dynamicparsetest_lessthan() {
-		//Given
-		String sample="Average less than 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Average", is(tstarray[0]));
-		assertThat("less than", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+		assertTrue(result[0].getmedian()==10);
+		assertTrue(result.length==1); //proof of record drop
 	}
 
+	//Test grater than operations
 	@Test
-	void dynamicparsetest_Greaterthan() {
+	void Searchtest_graterthanSymbol() {
 		//Given
-		String sample="Median Greater than 20";
+		test[0][0].setmedian(20); //Returned value
+		test[1][0].setmedian(10); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median > 15", "test");
 		//Then
-		assertThat("Median", is(tstarray[0]));
-		assertThat("Greater than", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+		assertTrue(result[0].getmedian()==20);
+		assertTrue(result.length==1); //proof of record drop
 	}
 	
 	@Test
-	void dynamicparsetest_equalto() {
+	void Searchtest_graterthanWord() {
 		//Given
-		String sample="Max equal to 20";
+		test[0][0].setmedian(20); //Returned value
+		test[1][0].setmedian(10); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median greater than 15", "test");
 		//Then
-		assertThat("Max", is(tstarray[0]));
-		assertThat("equal to", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+		assertTrue(result[0].getmedian()==20);
+		assertTrue(result.length==1); //proof of record drop
+	}
+	
+	//Test equals to operations
+	@Test
+	void Searchtest_equalsSymbol() {
+		//Given
+		test[0][0].setmedian(20); //Returned value
+		test[1][0].setmedian(10); //Dropped value
+		assertTrue(result.length==2);
+		//When
+		result=SimpleSerch.search( test, "median = 20", "test");
+		//Then
+		assertTrue(result[0].getmedian()==20);
+		assertTrue(result.length==1); //proof of record drop
 	}
 	
 	@Test
-	void dynamicparsetest_lessthanorequalto() {
+	void Searchtest_equalsWordSet1() {
 		//Given
-		String sample="Min less than or equal to 20";
+		test[0][0].setmedian(10); //Returned value
+		test[1][0].setmedian(20); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median equal to 20", "test");
 		//Then
-		assertThat("Min", is(tstarray[0]));
-		assertThat("less than or equal to", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+		assertTrue(result[0].getmedian()==20);
+		assertTrue(result.length==1); //proof of record drop
 	}
 	
 	@Test
-	void dynamicparsetest_Greaterthanorequalto() {
+	void Searchtest_equalsWordSet2() {
 		//Given
-		String sample="Mean Greater than or equal to 20";
+		test[0][0].setmedian(10); //Returned value
+		test[1][0].setmedian(20); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median equals 20", "test");
 		//Then
-		assertThat("Mean", is(tstarray[0]));
-		assertThat("Greater than or equal to", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+		assertTrue(result[0].getmedian()==20);
+		assertTrue(result.length==1); //proof of record drop
 	}
 	
 	@Test
-	void dynamicparsetest_equal() {
+	void Searchtest_equalsWordSet3() {
 		//Given
-		String sample="Max equal 20";
+		test[0][0].setmedian(10); //Returned value
+		test[1][0].setmedian(20); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median equal 20", "test");
 		//Then
-		assertThat("Max", is(tstarray[0]));
-		assertThat("equal", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-	
-	@Test
-	void dynamicparsetest_equals() {
-		//Given
-		String sample="Min equals 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Min", is(tstarray[0]));
-		assertThat("equals", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
+		assertTrue(result[0].getmedian()==20);
+		assertTrue(result.length==1); //proof of record drop
 	}
 
+	//Test grater than or equal to operations
 	@Test
-	void dynamicparsetest_doesnotequal() {
+	void Searchtest_graterthanorequalSymbol() {
 		//Given
-		String sample="Mean does not equal 20";
+		test[0][0].setmedian(15); //Returned value
+		test[1][0].setmedian(10); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median >= 15", "test");
 		//Then
-		assertThat("Mean", is(tstarray[0]));
-		assertThat("does not equal", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-
-	//Test Primary key search phrases
-	@Test
-	void dynamicparsetest_Name() {
-		//Given
-		String sample="Name contains 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Name", is(tstarray[0]));
-		assertThat("contains", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-
-	@Test
-	void dynamicparsetest_reportid() {
-		//Given
-		String sample="report id contains the number 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("report id", is(tstarray[0]));
-		assertThat("contains the number", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-
-	@Test
-	void dynamicparsetest_recordname() {
-		//Given
-		String sample="record name contains 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("record name", is(tstarray[0]));
-		assertThat("contains", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-
-	@Test
-	void dynamicparsetest_primarykey() {
-		//Given
-		String sample="primary key contains the number 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("primary key", is(tstarray[0]));
-		assertThat("contains the number", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-
-	@Test
-	void dynamicparsetest_mode() {
-		//Given
-		String sample="mode of 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("mode", is(tstarray[0]));
-		assertThat("of", is(tstarray[1]));
-		assertThat("20", is(tstarray[2]));
-	}
-	
-	//Error handling tests
-	@Test
-	void dynamicparsetest_wrongworderror() {
-		//Given
-		String sample="wax contains the number 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("ErrCollume", is(tstarray[0]));
+		assertTrue(result[0].getmedian()==15);
+		assertTrue(result.length==1); //proof of record drop
 	}
 	
 	@Test
-	void dynamicparsetest_wrongnumbererror() {
+	void Searchtest_graterthanorequalWord() {
 		//Given
-		String sample="Max contains the number pie";
+		test[0][0].setmedian(15); //Returned value
+		test[1][0].setmedian(10); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median greater than or equal to 15", "test");
 		//Then
-		assertThat("ErrValue", is(tstarray[0]));
+		assertTrue(result[0].getmedian()==15);
+		assertTrue(result.length==1);//proof of record drop
+	}
+	
+	//Test less than or equal to operations
+	@Test
+	void Searchtest_lessthanorequalSymbol() {
+		//Given
+		test[0][0].setmedian(15); //Returned value
+		test[1][0].setmedian(10); //Returned value
+		//When
+		result=SimpleSerch.search( test, "median <= 15", "test");
+		//Then
+		assertTrue(result[0].getmedian()==15);
+		assertTrue(result[1].getmedian()==10);
 	}
 	
 	@Test
-	void dynamicparsetest_ModeOrdererror() {
+	void Searchtest_lessthanorequalWord() {
 		//Given
-		String sample="Mode contains 20";
+		test[0][0].setmedian(15); //Returned value
+		test[1][0].setmedian(10); //Returned value
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median less than or equal to 15", "test");
 		//Then
-		assertThat("ErrOrder", is(tstarray[0]));
+		assertTrue(result[0].getmedian()==15);
+		assertTrue(result[1].getmedian()==10);
 	}
 	
+	//Test does not equal operations
 	@Test
-	void dynamicparsetest_outsideOrdererror() {
+	void Searchtest_doesnotequalSymbol() {
 		//Given
-		String sample="Average of 20";
+		test[0][0].setmedian(15); //Returned value
+		test[1][0].setmedian(10); //Dropped value
+		assertTrue(result.length==2);
 		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
+		result=SimpleSerch.search( test, "median != 10", "test");
 		//Then
-		assertThat("ErrOrder", is(tstarray[0]));
+		assertTrue(result[0].getmedian()==15);
+		assertTrue(result.length==1); //proof of record drop
 	}
-	
-	@Test
-	void dynamicparsetest_wordsoutofOrdererror() {
-		//Given
-		String sample="key primary of 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("ErrCollume", is(tstarray[0]));
-	}
-	
-	@Test
-	void dynamicparsetest_compairisonerror() {
-		//Given
-		String sample="min pickle 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("ErrCompair", is(tstarray[0]));
-	}
-	
-	@Test
-	void dynamicparsetest_sizeerror() {
-		//Given
-		String sample="min pickle20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("Error", is(tstarray[0]));
-	}
-	
-	@Test
-	void dynamicparsetest_modecontainserror() {
-		//Given
-		String sample="min contains 20";
-		//When
-		String[] tstarray= SimpleSerch.dynamicparse(sample);
-		//Then
-		assertThat("ErrOrder", is(tstarray[0]));
-	}
+		
+		@Test
+		void Searchtest_doesnotequalWord() {
+			//Given
+			test[0][0].setmedian(15); //Returned value
+			test[1][0].setmedian(10); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "median does not equal 10", "test");
+			//Then
+			assertTrue(result[0].getmedian()==15);
+			assertTrue(result.length==1);//proof of record drop
+		}
+		
+		//Test Primary Key attribute search operations
+		@Test
+		void Searchtest_attributesearchSet1() {
+			//Given
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "name contains 1", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("test1"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		@Test
+		void Searchtest_attributesearchSet2() {
+			//Given
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "name contains the number 1", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("test1"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test Mode list operations
+		@Test
+		void Searchtest_mode() {
+			//Given
+			test[0][0].setmode(new ArrayList<Double>(Arrays.asList(4.0, 4.0, 5.0, 5.0))); //Returned value
+			test[1][0].setmode(new ArrayList<Double>(Arrays.asList(7.0, 7.0, 8.0, 8.0))); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "mode of 5", "test");
+			//Then
+			assertTrue(result[0].getmode().equals(test[0][0].getmode()));
+			assertTrue(result.length==1); //proof of record drop
+		}
+							//---- End of Testing SimpleSerch.Operaton private method----\\
+		
+		//Test searchFiles for a no results retuned statment
+		@Test
+		void Searchtest_searchFiles() {
+			//Given
+			test[0][0].setmode(new ArrayList<Double>(Arrays.asList(3.0, 3.0, 3.0, 3.0))); //Returned value
+			test[1][0].setmode(null); //Dropped value due to null
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "mode of 5", "test");
+			//Then
+			assertTrue(result[0].getreportId().equalsIgnoreCase("flag"));
+			assertTrue(result.length==1); //proof of record drop
+		}
 }

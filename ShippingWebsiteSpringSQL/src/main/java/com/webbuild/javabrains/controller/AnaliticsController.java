@@ -103,27 +103,11 @@ public class AnaliticsController {
 	    
 	    //Perform a user generated search query
 	    else{ 
-	    	for(int j=0; j<=temp.length; j++) {
-	    		if(j==temp.length || SimpleSerch.SpellCheck(temp[0],3)==true) {
-	    			printout=SimpleSerch.search(File, input, row);
+	    	printout=SimpleSerch.search(File, input, row);
 			    	
-	    			//check input statement for user Error
-	    			if(printout[0].getreportId().equalsIgnoreCase("flag")) {
-	    				model = SendPackage(model, "Your Search produesd no matching results"); //run basic print statement
-			    		break;
-			    	}else if(printout[0].getreportId().equalsIgnoreCase("Incomplete")) {
-			    		model = SendPackage(model, input+" Is an Incorect statement that I cannot act upon"); //run basic print statement
-			    		break;
-			    	}else {model = PritResult(model);} //run successful print statement
-	    		}
-	    		//Error handling for incorrect spelling
-	    		else {
-	    			if(SimpleSerch.SpellCheck(temp[j],j)==false){
-	    				model = SendPackage(model, temp[j]+" dose not mach any Words or Numbers that I know");
-				    	break;
-	    			}
-	    		}
-	    	}
+	    	//check input statement for user Error
+	    	if(SimpleSerch.check(temp[0], 3)) {model = SendPackage(model, printout[0].getreportId());} //run basic print statement
+			else {model = PritResult(model);} //run successful print statement
 	    }
 		return model;
 	}
