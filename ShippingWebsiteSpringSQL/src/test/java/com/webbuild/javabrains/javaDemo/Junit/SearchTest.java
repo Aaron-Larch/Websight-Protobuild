@@ -264,7 +264,7 @@ class SearchTest {
 		}
 							//---- End of Testing SimpleSerch.Operaton private method----\\
 		
-		//Test searchFiles for a no results retuned statment
+		//Test searchFiles for a no results returned statement
 		@Test
 		void Searchtest_searchFiles() {
 			//Given
