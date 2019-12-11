@@ -38,21 +38,20 @@ public class SimpleSerch {
 		//after the Search is completed check for flag values to catch incomplete user inputs and search results that return nothing
 		if(resultes[0].getreportId().equalsIgnoreCase("flag")) //user error handling what to return if the result is zero
 		{System.out.println("There are no records matching your query");}
-		else if(resultes[0].getreportId().equalsIgnoreCase("Incomplete")) //user error handling to catch incomplete user request
+		else if(resultes[0].gethighC()==null) //user error handling to catch incomplete user request
 		{System.out.println(userinput+" Is an Incompete statement the I cannot act upon");}
 		
 		//Take an array of objects and have the user create a custom report by 
 		//choosing witch of the returned search results to perform secondary operations on
-		else{for(int i=0; i<resultes.length; i++) { //print the results
-			if(resultes[i]!=null) {//check for null values to remove empty space
-				resultes[i].showRecord();//call the print method
-				System.out.println("do you want to work further with this file?");
-				String choice = scan.words(); // Scans the next token of the input as a String.
-				if ("yes".equalsIgnoreCase(choice)|"y".equalsIgnoreCase(choice)) {
-					output[count]= new Reports(); //create a new object
-					output[count]=resultes[i]; //populate object
-					count++;
-				}
+		else{
+			for(int i=0; i<resultes.length; i++) { //print the results
+			resultes[i].showRecord();//call the print method
+			System.out.println("do you want to work further with this file?");
+			String choice = scan.words(); // Scans the next token of the input as a String.
+			if ("yes".equalsIgnoreCase(choice)|"y".equalsIgnoreCase(choice)) {
+				output[count]= new Reports(); //create a new object
+				output[count]=resultes[i]; //populate object
+				count++;
 			}
 		}
 		BuildPath.complexOps(output); //run secondary calculations
@@ -142,7 +141,7 @@ public class SimpleSerch {
 		Method val;
 		for(int i=0; i < file.length; i++) { //search all available arrays
 			//search for a single primary key array or search trough all arrays
-			if(file[i] != null && (file[i][0].getreportId().contains(field1) | field1.equalsIgnoreCase("all"))) {
+			if(file[i] != null && (file[i][0].getreportId().contains(field1) || field1.equalsIgnoreCase("all"))) {
 				//Search through the array of objects 
 				for(int j=0; j < file[i].length; j++) {
 					try {
@@ -315,7 +314,7 @@ public class SimpleSerch {
 		//Check word against all excepted words to prevent misspellings and other user errors
 		for(int ii=0; ii < Library[i].length; ii++) {
 			if(feild.equalsIgnoreCase(Library[i][ii])) {return true;}
-			else if(ii==Library[i].length-1) {return false;}
+			else if(ii==Library[i].length-1) {return false;} //if no match is found by the end of the library then we throw false
 		}
 		return false;
 	}

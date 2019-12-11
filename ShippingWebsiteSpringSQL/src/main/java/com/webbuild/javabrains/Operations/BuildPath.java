@@ -86,16 +86,13 @@ public class BuildPath {
 	//a stored method containing all secondary calculations method calls
 	public static void complexOps(Reports[] temp) {
 		//Execute secondary calculations on every saved search result object
-		if (temp.length==0) {System.out.println("There are no records matching your query");}
-		else {
-			for(int j=0; j < temp.length; j++) {
-				if(temp[j] != null) {
-					System.out.println(temp[j].getreportId()+": "+Arrays.toString(temp[j].gethighC()));
-					Statistics.SampleVariance(temp[j]);
-					Statistics.Range(temp[j]);
-				}
+		for(int j=0; j < temp.length; j++) {
+			if(temp[j] != null) {
+				System.out.println(temp[j].getreportId()+": "+Arrays.toString(temp[j].gethighC()));
+				Statistics.SampleVariance(temp[j]);
+				Statistics.Range(temp[j]);
 			}
-			Statistics.FrequencyTable(temp);
 		}
+			Statistics.FrequencyTable(temp);
 	}
 }

@@ -264,6 +264,101 @@ class SearchTest {
 		}
 							//---- End of Testing SimpleSerch.Operaton private method----\\
 		
+		
+							//--Tests For the Search Method--\\
+		//Test Average Field operations
+		@Test
+		void Searchtest_Averagobject() {
+			//Given
+			test[0][0].setaverage(10); //Returned value
+			test[1][0].setaverage(20); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "Average < 15", "test");
+			//Then
+			assertTrue(result[0].getaverage()==10);
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		@Test
+		void Searchtest_MeanObhect() {
+			//Given
+			test[0][0].setaverage(10); //Returned value
+			test[1][0].setaverage(20); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "Mean < 15", "test");
+			//Then
+			assertTrue(result[0].getaverage()==10);
+			assertTrue(result.length==1); //proof of record drop
+		}
+
+		//Test Min Field operations
+		@Test
+		void Searchtest_minObject() {
+			//Given
+			test[0][0].setmin(20); //Returned value
+			test[1][0].setmin(10); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "min > 15", "test");
+			//Then
+			assertTrue(result[0].getmin()==20);
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test Max Field operations
+		@Test
+		void Searchtest_maxObject() {
+			//Given
+			test[0][0].setmax(20); //Returned value
+			test[1][0].setmax(10); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "max > 15", "test");
+			//Then
+			assertTrue(result[0].getmax()==20);
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test Primary Key attribute search operations
+		@Test
+		void Searchtest_pkObject() {
+			//Given
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "Primary Key contains 1", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("test1"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		@Test
+		void Searchtest_RepIDobject() {
+			//Given
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "Report id contains 1", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("test1"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		@Test
+		void Searchtest_repNmnObject() {
+			//Given
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "record name contains 1", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("test1"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+					//---- End of Tests For the SimpleSerch.Search method----\\
+		
+			
+					//--Tests For the Error handling of Search Method--\\		
+		
 		//Test searchFiles for a no results returned statement
 		@Test
 		void Searchtest_searchFiles() {
@@ -275,6 +370,76 @@ class SearchTest {
 			result=SimpleSerch.search( test, "mode of 5", "test");
 			//Then
 			assertTrue(result[0].getreportId().equalsIgnoreCase("flag"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test Object name priority error catch
+		@Test
+		void Searchtest_ErrorTestField1() {
+			//Given
+			test[0][0].setmedian(10); //Returned value
+			test[1][0].setmedian(20); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "Monkey pickle pie", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("The Field you are trying to serch for dose not exist. \nPlease Try Again"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test comparison name priority error catch
+		@Test
+		void Searchtest_ErrorTestField2() {
+			//Given
+			test[0][0].setmedian(10); //Returned value
+			test[1][0].setmedian(20); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "median pickle pie", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("I Do not Know how to preform this operation. Please try again"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test Reserved word priority error catch
+		@Test
+		void Searchtest_ErrorTestField3() {
+			//Given
+			test[0][0].setmedian(10); //Returned value
+			test[1][0].setmedian(20); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "median of pie", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("The compairson you'r trying to make is useing a reserved word and can not be preformed"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test number over words priority error catch
+		@Test
+		void Searchtest_ErrorTestField4() {
+			//Given
+			test[0][0].setmedian(10); //Returned value
+			test[1][0].setmedian(20); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "median <= pie", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("Sorry but this is not a value i understand. I can only read Number values"));
+			assertTrue(result.length==1); //proof of record drop
+		}
+		
+		//Test Sentence length priority error catch
+		@Test
+		void Searchtest_ErrorTestField5() {
+			//Given
+			test[0][0].setmedian(10); //Returned value
+			test[1][0].setmedian(20); //Dropped value
+			assertTrue(result.length==2);
+			//When
+			result=SimpleSerch.search( test, "median 12", "test");
+			//Then
+			assertTrue(result[0].getreportId().contentEquals("This Is not a Statement that I understand"));
 			assertTrue(result.length==1); //proof of record drop
 		}
 }

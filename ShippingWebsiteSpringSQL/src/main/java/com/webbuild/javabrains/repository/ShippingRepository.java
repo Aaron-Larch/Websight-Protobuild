@@ -13,7 +13,7 @@ public interface ShippingRepository {
 	public void updateOrder(TableObjects order, String id);
 	public void deleteOrder(String id); 
 	public void updateTable();
-	public List<TableObjects> getUserTable(String id, String userid);
+	public List<TableObjects> getUserTable(String id);
 	public double[][] collectdata(String collum);
 }
 

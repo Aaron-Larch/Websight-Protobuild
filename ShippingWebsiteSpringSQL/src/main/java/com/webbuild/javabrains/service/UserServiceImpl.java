@@ -1,6 +1,7 @@
 package com.webbuild.javabrains.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+    
+    public List<Role> GetRolls(){
+    	return roleRepository.findAll();
     }
 }

@@ -40,7 +40,7 @@
  <select style="display: ${role};" name="category" class="form-control" onChange="window.location.href=this.value">
     <option value="none">Choose A region</option>
     <c:forEach items="${listCategory}" var="category">
-    	<spring:url value="/Shipping/${category}" var="PageSelectURL" />
+    	<spring:url value="/Shipping/Europe/${category}" var="PageSelectURL" />
         <option value="${PageSelectURL}">${category}</option>
     </c:forEach>
 </select>

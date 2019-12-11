@@ -35,9 +35,9 @@ public class ShippingServiceImpl implements ShippingRepository {
 
 	//select * from orders where customer= '{id}'
 	@Override
-	public List<TableObjects> getUserTable(String id, String role){
+	public List<TableObjects> getUserTable(String id){
 		if(shipRegion==null) {
-			shipRegion=ExternalConnection.Shipping(id, role); //run program
+			shipRegion=ExternalConnection.Shipping(id, "user"); //run program
 		}
 		return shipRegion;
 		}

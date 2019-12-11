@@ -22,51 +22,49 @@ import com.webbuild.javabrains.repository.ShippingRepository;
 @RequestMapping(value = "/Shipping")
 public class SpainShippingController {
 	private static ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
-	private int neworder=ExternalConnection.getOrderId();
+	private int neworder=ExternalConnection.getOrderId();//this should not be here table should handle this
 	 
-	public String pageflag;
+	public static String pageflag="";
 	static String Namesave;
-	String Role;
+	private static String Role;
 	static double[][] array;
 	
 	@Autowired //call data table and all stored functions
 	ShippingRepository shippingservice;
 	
-	//manager table information for BA home page
-	@RequestMapping(value = {"/manager", "/{id}"}) //web site control statement
-	public ModelAndView getManagerTableObjects(@PathVariable(required=false) String id) {
+	//User table information home page generator
+	@RequestMapping(value = {"/{role}", "/{role}/{id}"}) //web site control statement
+	public ModelAndView getHomePageTableObjects(@PathVariable String role, @PathVariable(required=false) String id) {
 		  ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
-		  List<TableObjects> ordersList;
-		  String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
-		  //check for starting flag
-		  if(id==null) {
-			  pageflag="Spain";
-			  ordersList = shippingservice.getAllOrders(pageflag); //run a default sql  query 
-		  } 
-		  else{
-			  pageflag=id; //save state flag for place keeping
-			  ordersList = shippingservice.getAllOrders(id); //run a sql query
-		  } 
+		  List<TableObjects> ordersList = null;
+		  Role=role;
 		  
-		  //set object for web page
-		  model.addObject("role", "block"); //send objects to jsp page
-		  model.addObject("ordersList", ordersList); //send objects to jsp page
-		  model.addObject("listCategory", headders); //send objects to jsp page
-		  return model; //load page command
-	}
-	
-	//User table information for BA home page
-	@RequestMapping(value = "/user") //web site control statement
-	public ModelAndView getUserTableObjects() {
-		  ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
-		  pageflag="user";
-		  List<TableObjects> ordersList;
-		  ordersList = shippingservice.getUserTable("ANTON", "user"); //run a default sql  query 
-	
-		  //set object for web page
-		  model.addObject("ordersList", ordersList); //send objects to jsp page
-		  model.addObject("role", "none"); //send objects to jsp page
-		  return model; //load page command
+		//user table information for customer home page
+		  if(UserController.FindAuthentication().contains("America")) {
+			  ordersList = shippingservice.getUserTable("ANTON"); //run a default sql  query 
+			  model.addObject("role", "none"); //Hide All Manager Operations
+			
+			  //manager table information for BA home page
+		  }else if(UserController.FindAuthentication().contains("Europe")) {
+			  String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
+			  //check for starting flag
+			  if(id==null) {
+				  pageflag="Spain";//Set a default Table position
+				  ordersList = shippingservice.getAllOrders(pageflag); //run a default sql  query 
+			  } 
+			  else{
+				  pageflag=id; //save state flag for place keeping
+				  ordersList = shippingservice.getAllOrders(id); //run a sql query
+			  } 
+			  
+			 //set object for web page
+			 model.addObject("role", "block"); //send objects to jsp page
+			 model.addObject("listCategory", headders); //send objects to jsp page
+			  
+		 }
+		//set Global object for web page
+		 model.addObject("ordersList", ordersList); //send objects to jsp page
+		 return model; //load page command
 	}
 	
 	//Single object call
@@ -104,7 +102,7 @@ public class SpainShippingController {
 		//check for a flag value to see if which query the user wants to run
 		if(id==null) {shippingservice.addOrder(Topic);} //run a sql insert query 
 		else{shippingservice.updateOrder(Topic, id);} //run a sql update query
-		return new ModelAndView("redirect:/Shipping/"+pageflag); //load a previous page command
+		return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //load a previous page command
 	}
 	
 	//delete object
@@ -116,11 +114,11 @@ public class SpainShippingController {
 		//a form of user error handling to prevent error
 		if(temp==null) {
 			 model.addObject("update", "No such Id found"); //failure message
-			 return new ModelAndView("redirect:/Shipping/"+pageflag); //load a previous page command
+			 return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //load a previous page command
 		}else {
 			shippingservice.deleteOrder(id); //run a sql query
 			model.addObject("update", "Record has been deleted"); //success message
-			return new ModelAndView("redirect:/Shipping/"+pageflag); //load a previous page command
+			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //load a previous page command
 		}
 	}
 	
@@ -133,26 +131,30 @@ public class SpainShippingController {
 	//request mapping for models/pop-up windows 
 	@RequestMapping(value = "/switchup")
 	public ModelAndView test(@RequestParam("cn") String cn, @RequestParam("Product") String product) {
-		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
-		Namesave=cn;  //reset stored user given record
-		//Perform operations
-		runSoftware.start();
-		array=shippingservice.collectdata(product);
-		String printOutputValue=runSoftware.stop();
+		if(UserController.FindAuthentication().contains("Europe")) {
+			ModelAndView model = new ModelAndView(); //start by reading information on the starting page
+			Namesave=cn;  //reset stored user given record
+			//Perform operations
+			runSoftware.start();
+			array=shippingservice.collectdata(product);
+			String printOutputValue=runSoftware.stop();
 
-		//set object for web page
-		model.addObject("Message", printOutputValue);
-		model.addObject("Information", array[0]);
-		model.addObject("Name", Namesave);
-		model.addObject("Page", "page1");
-		model.addObject("id", "0");
+			//set object for web page
+			model.addObject("Message", printOutputValue);
+			model.addObject("Information", array[0]);
+			model.addObject("Name", Namesave);
+			model.addObject("Page", "page1");
+			model.addObject("id", "0");
 					
-		model.setViewName("Analitics/Display_Data"); //call a new jsp page to load the objects into
-		return model; //load a previous page command;
+			model.setViewName("Analitics/Display_Data"); //call a new jsp page to load the objects into
+			return model; //load a previous page command;
+		}else {return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag);} //load a previous page command}
+		
 	}
 				
 	//Collect the the processed data and send it over to another Controller file 
 	public static double[][] FetchValues(){return (array);}
 	public static String FetchNameValues(){return Namesave;}
+	public static void ResetValues(){pageflag=""; Role="";} //reset stored token values.
 
 }

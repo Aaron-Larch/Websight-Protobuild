@@ -110,7 +110,7 @@ public class ExternalConnection{
 							   		TableData.get(i).getSHIPNAME()+"', '"+
 							   		TableData.get(i).getSHIPCOUNTRY()+"')";
 					
-					//if exists (select * from table with (updlock,serializable) where key = @key)
+					//if exists (select * from table with (uplock,serializable) where key = @key)
 					ResultSet rs = sta.executeQuery(checkstatement);
 					rs.next();
 					if(rs.getInt("COUNT(*)")==1) { //if rowcount = 1 then
@@ -151,7 +151,7 @@ public class ExternalConnection{
 			}
 		}
 		
-		//Determine method by which to organize large amounts of dat to save on memory space
+		//Determine method by which to organize large amounts of data to save on memory space
 		public static String[] SetSortParamiters() {
 			try {
 				// create the java statement to connect to a specific database 

@@ -32,7 +32,6 @@ public class UserController {
 
     @Autowired //call the validation methods
     private UserValidator userValidator;
-    
 
     //Create objects required to add a new user
     @GetMapping("/registration")
@@ -61,12 +60,14 @@ public class UserController {
     //Check Token for flag values to prompt the user
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
-        if (error != null) //Message for login error
+        if (error != null) { //Message for login error
             model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null) //Message for confirmed log out
+        }
+        if (logout != null) { //Message for confirmed log out
+        	//shippingservice.updateTable();
+        	SpainShippingController.ResetValues();
             model.addAttribute("message", "You have been logged out successfully.");
-
+        }
         return "UserInterFace/login";
     }
 
@@ -74,18 +75,17 @@ public class UserController {
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model) {
         //Get authentication Data from the server to determine the current users role 
+    	for(Role i:userService.GetRolls()) {
+    		if(FindAuthentication().contains(i.getDIVISIONNAME())){
+    			return "redirect:/Shipping/"+i.getDIVISIONNAME(); //load all user information
+    		}
+    	 }
+    	return null;
+    }
+    
+    public static String FindAuthentication(){
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String role = auth.getAuthorities().toString(); //set Authentication to string
-    	
-    	if(auth.getAuthorities().toString().contains("America")) {
-    		return "redirect:/Shipping/user"; //load all user information
-        }else if(role.contains("Europe")){
-        	return "redirect:/Shipping/manager"; //load all manager information
-        }else if(role.contains("Pacific")){
-        	model.addAttribute("message", "You are a Admin.");
-        }else {
-        	return "redirect:/Shipping/manager"; //load all Admin information
-        }
-    	return null;
+    	return role;
     }
 }

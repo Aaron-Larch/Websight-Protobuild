@@ -60,7 +60,7 @@ public class AnaliticsController {
 		//reset all values
 		Name=null;
 		AnaliticService.UpdateRecord();
-		return new ModelAndView("redirect:/Shipping/manager");
+		return new ModelAndView("redirect:/Shipping/Europe");
 	}
 
 	//close out creating record objects and move on to the search engine
@@ -81,8 +81,7 @@ public class AnaliticsController {
 	    //forgot to select a row to search
 	    if(row==null) { //Check to see if the user has set the minimal required values for a search
 	    	model = SendPackage(model, "You forgot to select witch file you wanted to search through"); //print method
-	    }
-	    
+	    } 
 	    //Selected the display all objects button
 	    else if(row!=null && input.isEmpty()) {
 	    	List<Reports> holdingzone = new ArrayList<Reports>();
@@ -100,11 +99,9 @@ public class AnaliticsController {
 	    	printout=holdingzone.toArray(new Reports[holdingzone.size()]);
 	    	model = PritResult(model); //run successful print statement
 	    }
-	    
 	    //Perform a user generated search query
 	    else{ 
-	    	printout=SimpleSerch.search(File, input, row);
-			    	
+	    	printout=SimpleSerch.search(File, input, row);    	
 	    	//check input statement for user Error
 	    	if(SimpleSerch.check(temp[0], 3)) {model = SendPackage(model, printout[0].getreportId());} //run basic print statement
 			else {model = PritResult(model);} //run successful print statement
