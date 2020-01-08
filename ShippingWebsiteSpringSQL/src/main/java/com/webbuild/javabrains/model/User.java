@@ -17,6 +17,10 @@ public class User {
 
     private String password;
     
+    private String email;
+    
+    private byte[] testcolum;
+    
     private Long roleid;
 
 	@Transient
@@ -65,6 +69,14 @@ public class User {
 		this.roleid = roleid; // save a value
 	}
 	
+	 public String getEmail() {
+		return email; //Retrieve a value
+	 }
+
+	public void setEmail(String Email) {
+		this.email = Email; // save a value
+	}
+	
     public Set<Role> getRoles() {
         return roles; //Retrieve a value
     }
@@ -72,4 +84,12 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles; // save a value
     }
+
+	public byte[] getTestcolum() {
+		return testcolum;
+	}
+
+	public void setTestcolum(byte[] testcolum) {
+		this.testcolum = testcolum;
+	}
 }

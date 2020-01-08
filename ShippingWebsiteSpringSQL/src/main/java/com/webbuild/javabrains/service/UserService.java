@@ -11,4 +11,8 @@ public interface UserService {
     User findByUsername(String username);
 
 	List<Role> GetRolls();
+
+	User saveRecord(User usr);
+	
+	void LoadRecord(User usr);
 }

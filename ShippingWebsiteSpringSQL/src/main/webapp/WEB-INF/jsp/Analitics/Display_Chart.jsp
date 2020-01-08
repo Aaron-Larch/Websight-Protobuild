@@ -9,53 +9,35 @@
 	<title>Line Chart</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-	<!-- To center an element vertically, I adopted a solution from the CSS style guide:
-	https://www.w3.org/Style/Examples/007/center.en.html -->
 	<style>
-		.main-display {
-			justify-content: center;
-		}
-		.column {
-			display: inline-block;
-			margin: 10px 10px 10px 10px;
-			width: 47%;	
-		}
-		.item {
-			width: 85%;
-			display: block;
-  			margin-left: auto;
-  			margin-right: auto;
-			min-height: 300px;
-		}
-		#message2 {
-			font-size: 12pt;
-		}
+	<%@include file="../../resources/css/common.css"%>
 		/* Style the footer */
-		footer2{
-    		width: 100%;
-    		background-color: #777;
+		footer2{	
+    		width: 98%;
+    		background-color: Gray;
  			padding: 15px;
     		float: left;
-    		border: solid 1px blue;
+    		border: solid 1px black;
     		text-align: center;
 		}
 		
 		.container button{display: inline-block;}
-		#btn1{float:left;}
-		#btn3{float:right;}
+		#btn1{ float:left;}
+		#btn3{ float:right;}
 		
 	</style>
 	
 </head>
 <body>
 <!-- Report Headers Object to tell the viewer which object is being viewed   -->
+	 <div id="header" style="text-align:center">
 	  <c:if test="${pageContext.request.userPrincipal.name != null}">
         <form id="logoutForm" method="POST" action="${contextPath}/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
-        <h2 style="text-align:right; float:right;"> ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+        <h2> ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
     </c:if>
-	<div id="header" style="text-align:center">
+	
 		<h1>Graphs Generated for the object: ${Label}</h1>
 	</div>
 		<div id="divName" style="display: none;">${Label}</div>
@@ -64,7 +46,7 @@
 	<div class="main-display">
 		<!--Main report information, Bell curve Chart and Histogram Chart object  -->
 		<div class="column">
-			<textarea class="item" id="message2">${Message}</textarea>
+			<textarea class="item" id="message">${Message}</textarea>
 			<canvas class="item" id="BellcurveChart"></canvas>
 			<canvas class="item" id="HistogramChart"></canvas>
 		</div>
@@ -85,7 +67,7 @@
 	var barXAxis = ${Arrays.deepToString(BarGraph)};
 	var HistogramData= ${Arrays.toString(Histogram)};
 	
-	/*Chart progam layouts as found on https://www.chartjs.org/samples/latest/*/
+	/*Chart program layouts as found on https://www.chartjs.org/samples/latest/*/
 	new Chart(document.getElementById("BellcurveChart"), {
 		  type: 'line',
 		  data: {

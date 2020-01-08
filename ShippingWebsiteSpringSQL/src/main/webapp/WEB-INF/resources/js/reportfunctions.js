@@ -19,7 +19,7 @@ $(document).ready(function () {
 	//function to call popup window
 	this.loadPopUp =function (input){
 		$("#PopUpModal").modal().on('shown.bs.modal', function (e) {loadContent(input);});
-		load_page('/WEB-INF/Objectcontent.jsp #container');
+		load_page('/WEB-INF/ModelLibrary.jsp #container');
 	};
 	
 	//Switch states button
@@ -44,6 +44,8 @@ $(document).ready(function () {
 		    checkboxes[i].checked = source.checked;
 		  }
 		};
+	
+	this.renderChart();	
 })	
 
 function load_page(url){$('modal-isi-body').load(url) ;}
@@ -70,4 +72,31 @@ function loadContent(input) {
 		var quickfix=string[input].substring(2, string[input].length);
 		document.getElementById('Display').value=quickfix;
 	}else{document.getElementById('Display').value=string[input];}
+}
+
+function renderChart() {
+	/*Chart program layouts as found on https://www.chartjs.org/samples/latest/*/
+	var xAxsis = [86,114,106,106,107,111,133,221,783,2478];
+	var bellData = [282,350,411,502,635,809,947,1402,3700,5267];
+	
+	var ctx = document.getElementById("BellcurveChart").getContext('2d');
+	new Chart(ctx, {
+		  type: 'line',
+		  data: {
+		    labels: xAxsis,
+		    datasets: [{ 
+		        data: bellData,
+		        label: document.getElementById("divName").innerHTML,
+		        borderColor: "#3e95cd",
+		        fill: false
+		      }]
+		  },
+		  options: {
+		    title: {
+		      display: true,
+		      text: 'Bell Curve Graph'
+		    }
+		  }
+		});
+	chart.render();
 }

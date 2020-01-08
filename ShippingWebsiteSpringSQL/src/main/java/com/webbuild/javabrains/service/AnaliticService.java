@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.webbuild.javabrains.ConsoleOutputCapturer;
 import com.webbuild.javabrains.Operations.Statistics;
 import com.webbuild.javabrains.Operations.SwitchBoard;
@@ -18,16 +18,20 @@ import com.webbuild.javabrains.model.Reports;
 public class AnaliticService{// implements AnaliticsRepository{
 	//Declare all Required Global Variables
 	private static ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
+	private Gson g = new Gson();
 	static Map<String, Double> chartinfo= new HashMap<String, Double>();
-	static double[][] databox=SpainShippingController.FetchValues();
+	static double[][] databox;
 	private static Reports[][] box=new Reports[3][];
 	private static int i=-1; //Start at -1 to run UpdateRecord and initialize array 0 location
 	private static int ii=0;
+	private static boolean flag=false;
 	
 	//build a single object also the first method called in program
 	public static String BuildRecord(String[] choices, String Countery, String Name, int location){
 		//Start the Record creation process
-		if(i==-1) {UpdateRecord();}
+		if(databox==null) {databox=SpainShippingController.FetchValues();}
+		if(i==-1) {UpdateRecord();}//by starting at -1 we can create the first record with the same update method
+		if(flag==true) {UpdateRecord(); flag=false;}//check for a loaded value
 		
 		//Create a stream to hold the output
 	    if(i < box.length && ii < databox.length) {
@@ -152,9 +156,25 @@ public class AnaliticService{// implements AnaliticsRepository{
 	}
 	
 	//Close a recored and relese the stored resources for data effishency
-	public static void releaseresources() {
+	public void releaseresources() {
 		CloseRecord();
 		databox=null;
 		box=new Reports[3][];
+	}
+	
+	//Retrieve a users saved data
+	public void LoadSavedData(String jsonString) {
+		i=-1;
+		flag=true;
+		box = g.fromJson(jsonString, Reports[][].class);
+		for(Reports[] count:box) {
+			if(count!=null) {i++;}
+		}
+	}
+	
+	//Convert Data to a String for saving
+	public String SavedData() {
+		String jsonString = g.toJson(box);
+		return jsonString;
 	}
 }

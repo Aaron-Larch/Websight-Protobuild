@@ -3,8 +3,6 @@ package com.webbuild.javabrains.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,8 +29,9 @@ public class UserController {
     private SecurityService securityService;
 
     @Autowired //call the validation methods
-    private UserValidator userValidator;
-
+    private UserValidator userValidator; 
+    
+    User usr = new User();
     //Create objects required to add a new user
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -51,7 +50,6 @@ public class UserController {
             return "UserInterFace/registration"; //If errors found retun to page with error message
         }
         userService.save(userForm); //if no errors found save
-
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm()); //Auto login after successful save
 
         return "redirect:/welcome";  //go to jsp page
@@ -60,32 +58,29 @@ public class UserController {
     //Check Token for flag values to prompt the user
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
-        if (error != null) { //Message for login error
+    	if (error != null) { //Message for login error
             model.addAttribute("error", "Your username and password is invalid.");
         }
         if (logout != null) { //Message for confirmed log out
-        	//shippingservice.updateTable();
-        	SpainShippingController.ResetValues();
-            model.addAttribute("message", "You have been logged out successfully.");
+        	usr=userService.saveRecord(usr);
+        	model.addAttribute("message", "You have been logged out successfully.");
         }
         return "UserInterFace/login";
     }
-
+    
     //Use the user roles to determine what to load in the user home page 
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model) {
+    	usr=userService.findByUsername(securityService.FindUserName());
+    	userService.LoadRecord(usr);
         //Get authentication Data from the server to determine the current users role 
     	for(Role i:userService.GetRolls()) {
-    		if(FindAuthentication().contains(i.getDIVISIONNAME())){
+    		if(securityService.FindAuthentication().contains(i.getDIVISIONNAME())){
     			return "redirect:/Shipping/"+i.getDIVISIONNAME(); //load all user information
     		}
     	 }
     	return null;
     }
     
-    public static String FindAuthentication(){
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String role = auth.getAuthorities().toString(); //set Authentication to string
-    	return role;
-    }
+    public User FetchValues(){return usr;}
 }

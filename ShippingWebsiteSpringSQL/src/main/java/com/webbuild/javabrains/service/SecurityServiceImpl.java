@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,5 +45,17 @@ public class SecurityServiceImpl implements SecurityService{
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             logger.debug(String.format("Auto login %s successfully!", username)); //log recored added
         }
+    }
+    
+    public String FindAuthentication(){
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String role = auth.getAuthorities().toString(); //set Authentication to string
+    	return role;
+    }
+    
+    public String FindUserName(){
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); //set Authentication to string
+    	return username;
     }
 }

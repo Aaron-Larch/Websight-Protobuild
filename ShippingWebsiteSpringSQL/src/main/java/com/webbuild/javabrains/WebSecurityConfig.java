@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService; //call user detail method
-
+    
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder(); //Create new encryption key
@@ -27,10 +27,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests() //Set website available to the user at login
                 .antMatchers("/resources/**", "/registration").permitAll()
-                .antMatchers("/Sipping/**", "/registration").authenticated()
-                .antMatchers("/Sipping/America", "/registration").hasAuthority("America")
-                .antMatchers("/Sipping/Europe/**", "/registration").hasAuthority("Europe")
-                .antMatchers("/Stats/**", "/registration").hasAuthority("Europe")
+                .antMatchers("/Sipping/**", "/welcome").authenticated()
+                .antMatchers("/Sipping/America").hasAuthority("America")
+                .antMatchers("/Sipping/Europe/**", "/Sipping/switchup").hasAuthority("Europe")
+                .antMatchers("/Stats/**").hasAuthority("Europe")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()//declare sites available to the which user after login

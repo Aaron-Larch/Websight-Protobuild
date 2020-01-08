@@ -16,6 +16,7 @@ import com.webbuild.javabrains.ConsoleOutputCapturer;
 import com.webbuild.javabrains.jdbc.ExternalConnection;
 import com.webbuild.javabrains.model.TableObjects;
 import com.webbuild.javabrains.repository.ShippingRepository;
+import com.webbuild.javabrains.service.SecurityService;
 
 
 @Controller
@@ -32,39 +33,44 @@ public class SpainShippingController {
 	@Autowired //call data table and all stored functions
 	ShippingRepository shippingservice;
 	
+	 @Autowired //call the security methods
+	 private SecurityService securityService;
+	
 	//User table information home page generator
-	@RequestMapping(value = {"/{role}", "/{role}/{id}"}) //web site control statement
-	public ModelAndView getHomePageTableObjects(@PathVariable String role, @PathVariable(required=false) String id) {
-		  ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
-		  List<TableObjects> ordersList = null;
-		  Role=role;
-		  
-		//user table information for customer home page
-		  if(UserController.FindAuthentication().contains("America")) {
-			  ordersList = shippingservice.getUserTable("ANTON"); //run a default sql  query 
-			  model.addObject("role", "none"); //Hide All Manager Operations
-			
-			  //manager table information for BA home page
-		  }else if(UserController.FindAuthentication().contains("Europe")) {
-			  String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
-			  //check for starting flag
-			  if(id==null) {
-				  pageflag="Spain";//Set a default Table position
-				  ordersList = shippingservice.getAllOrders(pageflag); //run a default sql  query 
-			  } 
-			  else{
-				  pageflag=id; //save state flag for place keeping
-				  ordersList = shippingservice.getAllOrders(id); //run a sql query
-			  } 
-			  
-			 //set object for web page
-			 model.addObject("role", "block"); //send objects to jsp page
-			 model.addObject("listCategory", headders); //send objects to jsp page
-			  
-		 }
+	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
+	public ModelAndView getManagerPageTableObjects(@PathVariable String role, @PathVariable(required=false) String id) {
+		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
+		List<TableObjects> ordersList = null;
+		Role=role;
+		String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
+		//check for starting flag
+		if(id==null) {
+			pageflag="Spain";//Set a default Table position
+			ordersList = shippingservice.getAllOrders(pageflag); //run a default sql  query 
+		}else{
+			pageflag=id; //save state flag for place keeping
+			ordersList = shippingservice.getAllOrders(id); //run a sql query
+		} 
+		//set object for web page
+		model.addObject("role", "block"); //send objects to jsp page
+		model.addObject("listCategory", headders); //send objects to jsp page
+
 		//set Global object for web page
-		 model.addObject("ordersList", ordersList); //send objects to jsp page
-		 return model; //load page command
+		model.addObject("ordersList", ordersList); //send objects to jsp page
+		return model; //load page command
+	}
+	
+	@RequestMapping("/America") //web site control statement
+	public ModelAndView getUserPageTableObjects(@PathVariable String role) {
+		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
+		List<TableObjects> ordersList = null;
+		Role=role;
+		ordersList = shippingservice.getUserTable("ANTON"); //run a default sql  query 
+		model.addObject("role", "none"); //Hide All Manager Operations
+		
+		//set Global object for web page
+		model.addObject("ordersList", ordersList); //send objects to jsp page
+		return model; //load page command
 	}
 	
 	//Single object call
@@ -131,7 +137,7 @@ public class SpainShippingController {
 	//request mapping for models/pop-up windows 
 	@RequestMapping(value = "/switchup")
 	public ModelAndView test(@RequestParam("cn") String cn, @RequestParam("Product") String product) {
-		if(UserController.FindAuthentication().contains("Europe")) {
+		if(securityService.FindAuthentication().contains("Europe")) {
 			ModelAndView model = new ModelAndView(); //start by reading information on the starting page
 			Namesave=cn;  //reset stored user given record
 			//Perform operations

@@ -197,9 +197,10 @@ class StatsisticTest {
 		file.setmax(12.0);
 		file.setmin(1.0);
 		file.setmedian(6.0);
-		
+
 		map.put("lower interquartile range", 2.5);
 		map.put("upper interquartile range", 9.5);
+		map.put("range", 11.0);
 		map.put("interquartile range", 7.0);
 		
 		//When
@@ -229,6 +230,7 @@ class StatsisticTest {
 
 		map.put("lower interquartile range", 3.5);
 		map.put("upper interquartile range", 9.5);
+		map.put("range", 11.0);
 		map.put("interquartile range", 6.0);
 		
 		//When

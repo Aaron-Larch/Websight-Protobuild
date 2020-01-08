@@ -70,6 +70,7 @@ public class SwitchBoard {
 	
 	public static void buildReports(Reports rep, String[] inputary, double[] input) {
 		String inputOP;
+		rep.setoriginal(input); //save original Data for backup purposes 	
 		for(int i=0; i < inputary.length; i++) {
 			
 			/*do to data retention causing all stored array object to all be set to the value of the latest entry 
@@ -78,7 +79,6 @@ public class SwitchBoard {
 			double[] temp= new double[input.length]; //refresh temporary array
 			for(int j=0; j<temp.length; j++) {temp[j]=input[j];} //populate temp array with input array
 			inputOP=inputary[i];
-		rep.setoriginal(temp); //save original Data for backup purposes 	
 		switch(inputOP.toLowerCase()){ //match inputary[i] with it's matching Switch case
 		case"sorthi":
 			//call operation and print result 
@@ -125,8 +125,8 @@ public class SwitchBoard {
 		default:
 			//User Error handling
 			System.out.println(inputOP + " appears to be an invalid operation. This report has been reset.");
-			rep=null;
-			i = inputary.length;
+			rep=null; //empty the Object so that it can be reused
+			i = inputary.length; //if an error has been found the code should stop running
 			break;
 			}
 		}

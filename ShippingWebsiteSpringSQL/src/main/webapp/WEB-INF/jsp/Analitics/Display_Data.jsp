@@ -42,7 +42,7 @@
 	</main>
 	<!-- Main print statemnt to see all of the collected Data -->
 		<h1 id="tital1">Data created for the ${Name} file:</h1>
-		<textarea id="message" rows="22" cols="135" readonly>${Message}</textarea>
+		<textarea id="message" rows="22" cols="125" readonly>${Message}</textarea>
 	</main>
 
 	<aside>

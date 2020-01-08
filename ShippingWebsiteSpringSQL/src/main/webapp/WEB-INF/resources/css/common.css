@@ -132,6 +132,7 @@ caption, .legend2 { padding: 0 2px }
 
 #message{
 	background: #eee;
+	font-size: 12pt;
 }
 #tital1{
 	padding-left: 15px;
@@ -238,4 +239,23 @@ fieldset
 }
 #spacer{
 	padding-left: 120px;
+}
+
+/*Chart format Display settings*/
+/*To center an element vertically, I adopted a solution from the CSS style guide:
+	https://www.w3.org/Style/Examples/007/center.en.html*/
+.main-display {
+	justify-content: center;
+}
+.column {
+	display: inline-block;
+	margin: 10px 10px 10px 10px;
+	width: 47%;	
+}
+.item {
+	width: 85%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	min-height: 300px;
 }
