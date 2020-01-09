@@ -38,10 +38,10 @@ public class SpainShippingController {
 	
 	//User table information home page generator
 	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
-	public ModelAndView getManagerPageTableObjects(@PathVariable String role, @PathVariable(required=false) String id) {
+	public ModelAndView getManagerPageTableObjects(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;
-		Role=role;
+		Role="Europe";
 		String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
 		//check for starting flag
 		if(id==null) {
@@ -61,10 +61,10 @@ public class SpainShippingController {
 	}
 	
 	@RequestMapping("/America") //web site control statement
-	public ModelAndView getUserPageTableObjects(@PathVariable String role) {
+	public ModelAndView getUserPageTableObjects() {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;
-		Role=role;
+		Role="America";
 		ordersList = shippingservice.getUserTable("ANTON"); //run a default sql  query 
 		model.addObject("role", "none"); //Hide All Manager Operations
 		
@@ -108,7 +108,7 @@ public class SpainShippingController {
 		//check for a flag value to see if which query the user wants to run
 		if(id==null) {shippingservice.addOrder(Topic);} //run a sql insert query 
 		else{shippingservice.updateOrder(Topic, id);} //run a sql update query
-		return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //load a previous page command
+		return premissions(); //load a previous page command
 	}
 	
 	//delete object
@@ -120,11 +120,11 @@ public class SpainShippingController {
 		//a form of user error handling to prevent error
 		if(temp==null) {
 			 model.addObject("update", "No such Id found"); //failure message
-			 return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //load a previous page command
+			 return premissions(); //load a previous page command
 		}else {
 			shippingservice.deleteOrder(id); //run a sql query
 			model.addObject("update", "Record has been deleted"); //success message
-			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //load a previous page command
+			return premissions(); //load a previous page command
 		}
 	}
 	
@@ -154,7 +154,7 @@ public class SpainShippingController {
 					
 			model.setViewName("Analitics/Display_Data"); //call a new jsp page to load the objects into
 			return model; //load a previous page command;
-		}else {return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag);} //load a previous page command}
+		}else {return premissions();} //load a previous page command}
 		
 	}
 				
@@ -162,5 +162,16 @@ public class SpainShippingController {
 	public static double[][] FetchValues(){return (array);}
 	public static String FetchNameValues(){return Namesave;}
 	public static void ResetValues(){pageflag=""; Role="";} //reset stored token values.
+	
+	//To prevent cross sight scripting a dynamic page redirect is needed
+	private ModelAndView premissions() {
+		if(Role.equalsIgnoreCase("America")) {
+			return new ModelAndView("redirect:/Shipping/"+Role);
+		}else if(Role.equalsIgnoreCase("Europe")) {
+			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag);
+		}else {
+			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //Admin Page to be added later
+		}	
+	}
 
 }

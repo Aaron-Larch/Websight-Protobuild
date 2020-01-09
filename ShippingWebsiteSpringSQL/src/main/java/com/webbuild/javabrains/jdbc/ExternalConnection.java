@@ -73,8 +73,8 @@ public class ExternalConnection{
 				//error handling
 				System.err.println("Got an exception!");
 				System.err.println(e.getMessage());
+				return null;
 			}
-			return null;
 		}
 		
 		//update a table with the information on the data layer
@@ -156,24 +156,17 @@ public class ExternalConnection{
 			try {
 				// create the java statement to connect to a specific database 
 				Statement sta = dbConnect().createStatement();
-				int i=0;
 				
 				//get the size of the array needed to sort all objects
-				String StartingQuery= "select count(DISTINCT SHIPCOUNTRY) AS \"Size\" from Orders";
-				ResultSet storedValue = sta.executeQuery(StartingQuery);
-				storedValue.next();
-				String[] Country=new String[storedValue.getInt("Size")];
-		        
+				List<String> Country = new ArrayList<String>();
 				//Create list of Search Terms
 				String CollectCountery = "select DISTINCT SHIPCOUNTRY from Orders";
 				ResultSet list = sta.executeQuery(CollectCountery);
 				while(list.next()){
-					Country[i]=list.getString("SHIPCOUNTRY");
-					i++;
+					Country.add(list.getString("SHIPCOUNTRY"));
 				}
-				
 				sta.close();//close off server connection. release use resources 
-				return Country;
+				return Country.toArray(new String[Country.size()]);
 				
 			}catch(Exception e){
 				//error handling
@@ -225,8 +218,12 @@ public class ExternalConnection{
 		}
 		
 		//test lab method for ease of debugging
-		public static void main(String[] args) {
-			/*List<TableObjects> shipSpain = ExternalConnection.SpainShipping();
+		/*public static void main(String[] args) {
+			String[] PrintOut=SetSortParamiters();
+			for(int i=0; i < PrintOut.length; i++) {
+				System.out.println(PrintOut[i]);
+			}
+			
 			ArrayList<TableObjects>[] shipping = SortedShipping();
 			for(int i=0; i < shipping.length; i++) {
 				for(int ii=0; ii < shipping[i].size(); ii++) {
@@ -234,8 +231,8 @@ public class ExternalConnection{
 			     }
 				System.out.println("New country"+ i);
 			}
-		   ShippingUpdate(shipSpain);*/
+		   //ShippingUpdate(shipSpain);
 			//int test= getOrderId();
 			//System.out.println(test);
-		}
+		}*/
 }

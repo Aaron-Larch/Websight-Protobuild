@@ -165,7 +165,7 @@ public class AnaliticService{// implements AnaliticsRepository{
 	//Retrieve a users saved data
 	public void LoadSavedData(String jsonString) {
 		i=-1;
-		flag=true;
+		flag=true; //Set flag to true so the code knows to run the update method
 		box = g.fromJson(jsonString, Reports[][].class);
 		for(Reports[] count:box) {
 			if(count!=null) {i++;}

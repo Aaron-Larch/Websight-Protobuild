@@ -19,7 +19,7 @@ public class User {
     
     private String email;
     
-    private byte[] testcolum;
+    private byte[] testcolum; //make sure types match for zip file
     
     private Long roleid;
 

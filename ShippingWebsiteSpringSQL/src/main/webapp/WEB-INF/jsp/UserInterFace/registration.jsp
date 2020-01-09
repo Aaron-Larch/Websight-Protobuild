@@ -34,6 +34,14 @@
                     <form:errors path="username"></form:errors>
                 </div>
             </spring:bind>
+            
+            <spring:bind path="email">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <form:input type="text" path="email" class="form-control" placeholder="Email Address"
+                                autofocus="true"></form:input>
+                    <form:errors path="email"></form:errors>
+                </div>
+            </spring:bind>
 
             <spring:bind path="password">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -51,16 +59,16 @@
             </spring:bind>
 
 			 <spring:bind path="roleid">
-			 <div class="form-group">
-			 <label for="sel1">Select A Role:</label>
- 		<form:select path="roleid" class="form-control" id="sel1">
-    		<option value="none">Choose A Role</option>
-    		<c:forEach items="${Rolelist}" var="Role">
-			<form:option value="${Role.DIVISIONID}">${Role.DIVISIONNAME}</form:option>
-    		</c:forEach>
-		</form:select>
- 		</div>
- 		</spring:bind>
+			 	<div class="form-group">
+			 		<label for="sel1">Select A Role:</label>
+ 					<form:select path="roleid" class="form-control" id="sel1">
+    					<option value="none">Choose A Role</option>
+    					<c:forEach items="${Rolelist}" var="Role">
+							<form:option value="${Role.DIVISIONID}">${Role.DIVISIONNAME}</form:option>
+    					</c:forEach>
+					</form:select>
+ 				</div>
+ 			</spring:bind>
  		
             <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
         </form:form>

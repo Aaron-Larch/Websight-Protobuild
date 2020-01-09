@@ -45,5 +45,11 @@ public class UserValidator implements Validator {
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm"); //call Stored error message from the validation resource file
         }
+        
+        //Check user object to see if the email Address is null
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
+        if (user.getEmail().length() < 6 || user.getEmail().length() > 32) {
+            errors.rejectValue("email", "Size.userForm.email"); //call Stored error message from the validation resource file
+        }
     }
 }

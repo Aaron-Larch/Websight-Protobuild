@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.webbuild.javabrains.Store;
+import com.webbuild.javabrains.controller.SpainShippingController;
 import com.webbuild.javabrains.model.Role;
 import com.webbuild.javabrains.model.User;
 import com.webbuild.javabrains.repository.RoleRepository;
@@ -42,13 +43,14 @@ public class UserServiceImpl implements UserService {
     public User saveRecord(User user) {
     	if(user.getRoleid()==2) {
     		try {
-    			byte[] compressed =  Store.compress(Dataprep.SavedData());
+    			byte[] compressed = Store.compress(Dataprep.SavedData());
     			user.setTestcolum(compressed);
     			userRepository.save(user);
     		} catch (IOException e) {e.printStackTrace();}
     	}
     	//reset all stored variables for security and resource management
     	Dataprep.releaseresources();
+    	SpainShippingController.ResetValues();
         return null;
     }
     

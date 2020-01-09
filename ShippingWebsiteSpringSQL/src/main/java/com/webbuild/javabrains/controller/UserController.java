@@ -72,10 +72,10 @@ public class UserController {
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model) {
     	usr=userService.findByUsername(securityService.FindUserName());
-    	userService.LoadRecord(usr);
         //Get authentication Data from the server to determine the current users role 
     	for(Role i:userService.GetRolls()) {
     		if(securityService.FindAuthentication().contains(i.getDIVISIONNAME())){
+    			if(i.getDIVISIONID()==2) {userService.LoadRecord(usr);}//load all save data
     			return "redirect:/Shipping/"+i.getDIVISIONNAME(); //load all user information
     		}
     	 }
