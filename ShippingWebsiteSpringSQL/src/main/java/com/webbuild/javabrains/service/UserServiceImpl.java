@@ -14,6 +14,7 @@ import com.webbuild.javabrains.controller.SpainShippingController;
 import com.webbuild.javabrains.model.Role;
 import com.webbuild.javabrains.model.User;
 import com.webbuild.javabrains.repository.RoleRepository;
+import com.webbuild.javabrains.repository.ShippingRepository;
 import com.webbuild.javabrains.repository.UserRepository;
 
 
@@ -29,6 +30,9 @@ public class UserServiceImpl implements UserService {
     @Autowired //create a new encryption token
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
+    @Autowired //call data table and all stored functions
+	ShippingRepository shippingservice;
+    
     Set<Role> Security= new HashSet<Role>(); //Create a new role list
     private static AnaliticService Dataprep = new AnaliticService();
 
@@ -39,7 +43,8 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Security);
         userRepository.save(user);
     }
-      
+    
+    //Save data and Release all used resources
     public User saveRecord(User user) {
     	if(user.getRoleid()==2) {
     		try {
@@ -47,13 +52,15 @@ public class UserServiceImpl implements UserService {
     			user.setTestcolum(compressed);
     			userRepository.save(user);
     		} catch (IOException e) {e.printStackTrace();}
+        	Dataprep.releaseresources();
     	}
     	//reset all stored variables for security and resource management
-    	Dataprep.releaseresources();
+    	shippingservice.updateTable(user); //update Tables
     	SpainShippingController.ResetValues();
         return null;
     }
     
+    //Load a saved object from the SQL table
     public void LoadRecord(User user) {
     	if(user.getTestcolum() != null) {
     		byte[] compressed=user.getTestcolum();

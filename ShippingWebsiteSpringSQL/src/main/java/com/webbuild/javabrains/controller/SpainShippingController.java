@@ -131,7 +131,7 @@ public class SpainShippingController {
 	//Secret command to commit table to the main database
 	@RequestMapping(value = "/Spain/push", method=RequestMethod.PUT)
 	public void PushtoTable(ModelMap model) {
-		shippingservice.updateTable();	
+		shippingservice.updateTable(UserController.FetchValues());	
 	}
 	
 	//request mapping for models/pop-up windows 

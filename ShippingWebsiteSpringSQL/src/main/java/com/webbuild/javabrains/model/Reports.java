@@ -28,31 +28,31 @@ public class Reports {
     private double mid;
     private List<Double> mode;
 
-    public double[] getoriginal() {return this.originaldata;}//Retrieve a value
+    public double[] getoriginal() {return originaldata;}//Retrieve a value
     public void setoriginal(double[] orD) {this.originaldata = orD;}// save a value
     
-    public String getreportId() {return this.reportID;}//Retrieve a value
+    public String getreportId() {return reportID;}//Retrieve a value
     public void setreportId(String rID) {this.reportID = rID;}// save a value
     
-    public double[] gethighC() {return this.highcount;}//Retrieve a value
+    public double[] gethighC() {return highcount;}//Retrieve a value
     public void sethighC(double[] hiC) {this.highcount = hiC;}// save a value
     
-    public double[] getlowC() {return this.lowcount;}//Retrieve a value
+    public double[] getlowC() {return lowcount;}//Retrieve a value
     public void setlowC(double[] loC) {this.lowcount = loC;}// save a value
     
-    public double getmax() {return this.max;}//Retrieve a value
+    public double getmax() {return max;}//Retrieve a value
     public void setmax(double mx) {this.max = mx;}// save a value
     
-    public double getmin() {return this.min;}//Retrieve a value
+    public double getmin() {return min;}//Retrieve a value
     public void setmin(double mn) {this.min = mn;}// save a value
     
-    public double getaverage() {return this.ave;}//Retrieve a value
+    public double getaverage() {return ave;}//Retrieve a value
     public void setaverage(double avg) {this.ave = avg;}// save a value
     
-    public double getmedian() {return this.mid;}//Retrieve a value
+    public double getmedian() {return mid;}//Retrieve a value
     public void setmedian(double md) {this.mid = md;}// save a value
     
-    public List<Double> getmode() {return this.mode;}//Retrieve a value
+    public List<Double> getmode() {return mode;}//Retrieve a value
     public void setmode(List<Double> mod) {this.mode = mod;}// save a value
     
     //this function will check the object to see which values have information and print every stored value of the object 

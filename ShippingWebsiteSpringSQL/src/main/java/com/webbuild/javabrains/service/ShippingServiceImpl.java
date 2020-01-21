@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.webbuild.javabrains.Operations.Statistics;
 import com.webbuild.javabrains.jdbc.ExternalConnection;
 import com.webbuild.javabrains.model.TableObjects;
+import com.webbuild.javabrains.model.User;
 import com.webbuild.javabrains.repository.ShippingRepository;
 
 @Service
@@ -75,8 +76,12 @@ public class ShippingServiceImpl implements ShippingRepository {
 	
 	//COMMIT shipSpain table
 	@Override
-	public void updateTable() {	
-		for(int i=0; i < shipping.length; i++) {ExternalConnection.Update(shipping[i]);}
+	public void updateTable(User usr) {	
+		if(usr.getRoleid()==1) {
+			ExternalConnection.Update(shipRegion);
+		}else if(usr.getRoleid()==2) {
+			for(int i=0; i < shipping.length; i++) {ExternalConnection.Update(shipping[i]);}
+		}
 	}
 	
 	//Bring user choice back into the equation. Decide on witch collum of information the user wants to work with

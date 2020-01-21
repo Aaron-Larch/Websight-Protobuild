@@ -1,7 +1,5 @@
 package com.webbuild.javabrains.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +29,13 @@ public class UserController {
     @Autowired //call the validation methods
     private UserValidator userValidator; 
     
-    User usr = new User();
+    static User usr = new User();
+    
     //Create objects required to add a new user
     @GetMapping("/registration")
     public String registration(Model model) {
-    	List<Role>Rolelist=roleRepository.findAll(); //set roles to a list
     	model.addAttribute("userForm", new User()); //create new user object
-    	model.addAttribute("Rolelist", Rolelist);
+    	model.addAttribute("Rolelist", roleRepository.findAll()); //set roles to a list
         return "UserInterFace/registration";  //go to jsp page
     }
 
@@ -62,7 +60,7 @@ public class UserController {
             model.addAttribute("error", "Your username and password is invalid.");
         }
         if (logout != null) { //Message for confirmed log out
-        	usr=userService.saveRecord(usr);
+        	if(usr != null) {usr=userService.saveRecord(usr);}
         	model.addAttribute("message", "You have been logged out successfully.");
         }
         return "UserInterFace/login";
@@ -75,12 +73,12 @@ public class UserController {
         //Get authentication Data from the server to determine the current users role 
     	for(Role i:userService.GetRolls()) {
     		if(securityService.FindAuthentication().contains(i.getDIVISIONNAME())){
-    			if(i.getDIVISIONID()==2) {userService.LoadRecord(usr);}//load all save data
+    			if(i.getDIVISIONID()==2) {userService.LoadRecord(usr);} //load all save data
     			return "redirect:/Shipping/"+i.getDIVISIONNAME(); //load all user information
     		}
     	 }
     	return null;
     }
     
-    public User FetchValues(){return usr;}
+    public static User FetchValues(){return usr;}
 }
