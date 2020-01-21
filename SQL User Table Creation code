@@ -1,0 +1,25 @@
+CREATE TABLE users (
+    PersonID INT auto_increment not null,
+    username varchar(255),
+    password varchar(255),
+    Email VARCHAR(255),
+    CustomerID VARCHAR(255),
+    StorFile BLOB,
+    roleid int
+    
+    Constraint PK_User Primary Key (PersonID),
+    CONSTRAINT FK_User_Role FOREIGN KEY (roleid) REFERENCES DIVISIONS(DIVISIONID),
+    CONSTRAINT FK_User_Customer FOREIGN KEY (CustomerID) REFERENCES CUSTOMERS(CUSTOMERID)
+);
+
+CREATE TABLE Divisions
+(DivisionID 	numeric(5)	not null,
+ DivisionName	varchar(40)	not null)
+/
+ALTER TABLE Divisions ADD Constraint PK_Division
+	Primary Key (DivisionID)
+/
+ALTER TABLE Divisions
+        ADD CONSTRAINT UK_DivisionName
+        UNIQUE (DivisionName)
+/
