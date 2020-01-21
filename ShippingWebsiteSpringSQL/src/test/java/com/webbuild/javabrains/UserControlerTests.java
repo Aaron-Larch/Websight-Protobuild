@@ -38,6 +38,7 @@ public class UserControlerTests {
 		localeResolver.setCookieDomain("domain");
 		localeResolver.setCookieHttpOnly(true);
 
+		//Generate Cookies
 		this.mockMvc = standaloneSetup(new UserController())
 				.addInterceptors(new LocaleChangeInterceptor())
 				.setLocaleResolver(localeResolver)
