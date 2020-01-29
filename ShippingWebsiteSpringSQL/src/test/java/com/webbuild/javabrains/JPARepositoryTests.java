@@ -63,7 +63,7 @@ public class JPARepositoryTests {
 
         for (Iterator<Role> i = findAll.iterator(); i.hasNext();) {
         	role=i.next();
-        	assertThat(role.getDIVISIONNAME()).isEqualTo(Test[role.getDIVISIONID()-1]); 
+        	assertThat(role.getDIVISIONNAME()).isEqualTo(Test[(int) (role.getDIVISIONID()-1)]); 
         }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 public class ApplicationStartUp extends SpringBootServletInitializer{
 
 	//http://localhost:8084/login
+	//http://localhost:8084/HomePage
 	public static void main(String[] args) {
 		//the run spring server command
 		SpringApplication.run(ApplicationStartUp.class, args);

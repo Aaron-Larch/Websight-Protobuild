@@ -8,18 +8,18 @@ import java.util.Set;
 public class Role {
     @Id //identify primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int DIVISIONID;
+    private long DIVISIONID;
 
     private String DIVISIONNAME;
 
     @ManyToMany(mappedBy = "roles") //Declare reference table
     private Set<User> users; //set a many to many relation with the user table
 
-    public int getDIVISIONID() {
+    public long getDIVISIONID() {
         return DIVISIONID; //Retrieve a value
     }
 
-    public void setDIVISIONID(int id) {
+    public void setDIVISIONID(long id) {
         this.DIVISIONID = id; // save a value
     }
 

@@ -3,6 +3,7 @@ package com.webbuild.javabrains.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,6 +39,7 @@ public class SpainShippingController {
 	
 	//User table information home page generator
 	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
+	@PreAuthorize("hasRole('Europe')")
 	public ModelAndView getManagerPageTableObjects(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;
@@ -61,13 +63,14 @@ public class SpainShippingController {
 	}
 	
 	@RequestMapping("/America") //web site control statement
+	@PreAuthorize("hasRole('America')")
 	public ModelAndView getUserPageTableObjects() {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;
 		Role="America";
 		ordersList = shippingservice.getUserTable("ANTON"); //run a default sql  query 
 		model.addObject("role", "none"); //Hide All Manager Operations
-		
+		pageflag= ordersList.get(0).getSHIPCOUNTRY();
 		//set Global object for web page
 		model.addObject("ordersList", ordersList); //send objects to jsp page
 		return model; //load page command

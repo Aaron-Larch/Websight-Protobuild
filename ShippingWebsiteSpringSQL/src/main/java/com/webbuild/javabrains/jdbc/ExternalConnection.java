@@ -78,49 +78,45 @@ public class ExternalConnection{
 		}
 		
 		//update a table with the information on the data layer
-		public static void Update(List<TableObjects> TableData) {
+		public static void UpdateLine(TableObjects TableData) {
 			try {
 				// create the java statement
 				Statement sta = dbConnect().createStatement();
+
+				//build a check statement to see if the object needs to be updated or inserted
+				String checkstatement = "select COUNT(*) from orders where ORDERID = '"+TableData.getORDERID()+"'";
 				
-				//generate the SQL query dynamically
-				for (int i = 0; i < TableData.size(); i++) {	
+				//update statement
+				String updateStatement = "UPDATE ORDERS SET "+
+						"CUSTOMERID = '" + TableData.getCUSTOMERID()+"', "+
+						"EMPLOYEEID = '" + TableData.getEMPLOYEEID()+"', "+
+						"SHIPVIA = '" + TableData.getSHIPVIA()+"', "+ 
+						"FREIGHT = '" + TableData.getFREIGHT()+"', "+ 
+						"SHIPNAME = '" + TableData.getSHIPNAME()+"', "+
+						"SHIPCOUNTRY = '" + TableData.getSHIPCOUNTRY()+
+					"' WHERE ORDERID = '"+ TableData.getORDERID()+"'";
+			
+				//insert statement
+				String insertStatement = "insert into orders "+
+				"(ORDERID, CUSTOMERID, EMPLOYEEID, SHIPVIA, FREIGHT, SHIPNAME, SHIPCOUNTRY)"+
+							  "values ('"+TableData.getORDERID()+"', '"+
+							   	TableData.getCUSTOMERID()+"', '"+
+							   	TableData.getEMPLOYEEID()+"', '"+
+							   	TableData.getSHIPVIA()+"', '"+
+							   	TableData.getFREIGHT()+"', '"+
+							   	TableData.getSHIPNAME()+"', '"+
+							   	TableData.getSHIPCOUNTRY()+"')";
 					
-					//build a check statement to see if the object needs to be updated or inserted
-					String checkstatement = "select COUNT(*) from orders where ORDERID = '"+TableData.get(i).getORDERID()+"'";
-					
-					//update statement
-					String updateStatement = "UPDATE ORDERS SET "+
-							"CUSTOMERID = '" + TableData.get(i).getCUSTOMERID()+"', "+
-							"EMPLOYEEID = '" + TableData.get(i).getEMPLOYEEID()+"', "+
-							"SHIPVIA = '" + TableData.get(i).getSHIPVIA()+"', "+ 
-							"FREIGHT = '" + TableData.get(i).getFREIGHT()+"', "+ 
-							"SHIPNAME = '" + TableData.get(i).getSHIPNAME()+"', "+
-							"SHIPCOUNTRY = '" + TableData.get(i).getSHIPCOUNTRY()+
-					"' WHERE ORDERID = '"+ TableData.get(i).getORDERID()+"'";
-					
-					//insert statement
-					String insertStatement = "insert into orders "+
-					"(ORDERID, CUSTOMERID, EMPLOYEEID, SHIPVIA, FREIGHT, SHIPNAME, SHIPCOUNTRY)"+
-							   "values ('"+TableData.get(i).getORDERID()+"', '"+
-							   		TableData.get(i).getCUSTOMERID()+"', '"+
-							   		TableData.get(i).getEMPLOYEEID()+"', '"+
-							   		TableData.get(i).getSHIPVIA()+"', '"+
-							   		TableData.get(i).getFREIGHT()+"', '"+
-							   		TableData.get(i).getSHIPNAME()+"', '"+
-							   		TableData.get(i).getSHIPCOUNTRY()+"')";
-					
-					//if exists (select * from table with (uplock,serializable) where key = @key)
-					ResultSet rs = sta.executeQuery(checkstatement);
-					rs.next();
-					if(rs.getInt("COUNT(*)")==1) { //if rowcount = 1 then
-						System.out.println(rs.getInt("COUNT(*)"));
-						sta.executeUpdate(updateStatement);
-					}else { //if rowcount = 0 then
-						System.out.println(rs.getInt("COUNT(*)"));
-						sta.executeUpdate(insertStatement);
-					}//if rowcount = 2 then this isn't a primary key
-					
+				//if exists (select * from table with (uplock,serializable) where key = @key)
+				ResultSet rs = sta.executeQuery(checkstatement);
+				while (rs.next()) {
+				if(rs.getInt("COUNT(*)")==1) { //if rowcount = 1 then
+					System.out.println(rs.getInt("COUNT(*)"));
+					sta.executeUpdate(updateStatement);
+				}else { //if rowcount = 0 then
+					System.out.println(rs.getInt("COUNT(*)"));
+					sta.executeUpdate(insertStatement);
+				}//if rowcount = 2 then this isn't a primary key
 				}
 				sta.close();//close off server connection. release use resources 
 				System.out.println("Database updated");
@@ -129,6 +125,12 @@ public class ExternalConnection{
 				System.err.println("Got an exception!");
 				System.err.println(e.getMessage());
 			}
+		}
+		
+		//update a table with the information on the data layer
+		public static void Update(List<TableObjects> TableData) {
+			//generate the SQL query dynamically
+			for (int i = 0; i < TableData.size(); i++) {UpdateLine(TableData.get(i));}
 		}
 		
 		//delete a table row

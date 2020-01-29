@@ -76,27 +76,32 @@ function loadContent(input) {
 
 function renderChart() {
 	/*Chart program layouts as found on https://www.chartjs.org/samples/latest/*/
-	var xAxsis = [86,114,106,106,107,111,133,221,783,2478];
-	var bellData = [282,350,411,502,635,809,947,1402,3700,5267];
-	
-	var ctx = document.getElementById("BellcurveChart").getContext('2d');
-	new Chart(ctx, {
-		  type: 'line',
-		  data: {
-		    labels: xAxsis,
-		    datasets: [{ 
-		        data: bellData,
-		        label: document.getElementById("divName").innerHTML,
-		        borderColor: "#3e95cd",
-		        fill: false
-		      }]
-		  },
-		  options: {
-		    title: {
-		      display: true,
-		      text: 'Bell Curve Graph'
-		    }
-		  }
-		});
-	chart.render();
+	  var chart = new CanvasJS.Chart("chartContainer", {
+		  	animationEnabled: true,
+		  	theme: "light2",
+		  	title:{
+		  		text: "Simple Line Chart"
+		  	},
+		  	axisY:{
+		  		includeZero: false
+		  	},
+		  	data: [{        
+		  		type: "line",       
+		  		dataPoints: [
+		  			{ y: 450 },
+		  			{ y: 414},
+		  			{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
+		  			{ y: 460 },
+		  			{ y: 450 },
+		  			{ y: 500 },
+		  			{ y: 480 },
+		  			{ y: 480 },
+		  			{ y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+		  			{ y: 500 },
+		  			{ y: 480 },
+		  			{ y: 510 }
+		  		]
+		  	}]
+		  });
+		  chart.render();
 }
