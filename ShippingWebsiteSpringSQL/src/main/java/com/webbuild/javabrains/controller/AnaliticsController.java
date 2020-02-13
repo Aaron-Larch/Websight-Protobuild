@@ -86,7 +86,7 @@ public class AnaliticsController {
 	    else if(row!=null && input.isEmpty()) {
 	    	List<Reports> holdingzone = new ArrayList<Reports>();
 	    	for(int i=0;  i<File.length; i++) {	//Search ALL possible object
-				if(File[i]!=null) { //collect information to compare to user choice
+				if(File[i]!=null && File[i][0]!=null) { //collect information to compare to user choice
 					int stop=File[i][0].getreportId().indexOf('-');
 					String CheckValue=File[i][0].getreportId().substring(0, stop);
 					if(CheckValue.equalsIgnoreCase(row) || row.equalsIgnoreCase("all")) {

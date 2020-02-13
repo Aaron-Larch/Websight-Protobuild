@@ -48,14 +48,15 @@ public class UserServiceImpl implements UserService {
     public User saveRecord(User user) {
     	if(user.getRoleid()==2) {
     		try {
-    			byte[] compressed = Store.compress(Dataprep.SavedData());
-    			user.setTestcolum(compressed);
-    			userRepository.save(user);
+    			if(AnaliticService.getFile()!=null) {
+    				byte[] compressed = Store.compress(Dataprep.SavedData());
+    				user.setTestcolum(compressed);
+    				userRepository.save(user);
+    			}
     		} catch (IOException e) {e.printStackTrace();}
         	Dataprep.releaseresources();
     	}
     	//reset all stored variables for security and resource management
-    	shippingservice.updateTable(user); //update Tables
     	SpainShippingController.ResetValues();
         return null;
     }

@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import java.util.Set;
 
+//Define all relevant user data
 @Entity
 @Table(name = "USERS") //Table Reference in database
 public class User {
@@ -28,7 +29,7 @@ public class User {
 
     @ManyToMany //Declare value as receiving value from other table
     private Set<Role> roles; //set a many to many relation with the Role table
-
+    
     public int getId() {
         return PersonID; //Retrieve a value
     }
@@ -77,7 +78,7 @@ public class User {
 		this.email = Email; // save a value
 	}
 	
-    public Set<Role> getRoles() {
+	public Set<Role> getRoles() {
         return roles; //Retrieve a value
     }
 

@@ -3,6 +3,8 @@ package com.webbuild.javabrains.model;
 import javax.persistence.*;
 import java.util.Set;
 
+//Call a table in a remote Data base that stores roll names and permissions
+
 @Entity
 @Table(name = "DIVISIONS") //Table Reference in database
 public class Role {

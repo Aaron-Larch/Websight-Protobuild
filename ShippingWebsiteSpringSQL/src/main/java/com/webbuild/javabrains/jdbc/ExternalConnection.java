@@ -127,12 +127,6 @@ public class ExternalConnection{
 			}
 		}
 		
-		//update a table with the information on the data layer
-		public static void Update(List<TableObjects> TableData) {
-			//generate the SQL query dynamically
-			for (int i = 0; i < TableData.size(); i++) {UpdateLine(TableData.get(i));}
-		}
-		
 		//delete a table row
 		public static void DeleteRow(List<TableObjects> TableData, String Orderid) {
 			try {

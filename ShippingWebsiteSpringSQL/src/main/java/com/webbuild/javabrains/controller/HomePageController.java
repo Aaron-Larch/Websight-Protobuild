@@ -14,4 +14,4 @@ public class HomePageController {
     	model.addAttribute("test", "Hello World"); //create new user object
         return "Index";  //go to jsp page
     }
-}
+}//This Is a work Bench Page that is used for testing code

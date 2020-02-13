@@ -54,6 +54,7 @@ public class ShippingServiceImpl implements ShippingRepository {
 	@Override
 	public void addOrder(TableObjects order) {
 		shipRegion.add(order);
+		ExternalConnection.UpdateLine(order);
 	}
 
 	//update orders set EMPLOYEEID= '{user input}', ect. where ORDERID = '{id}'
@@ -63,6 +64,7 @@ public class ShippingServiceImpl implements ShippingRepository {
 			TableObjects t=shipRegion.get(i);
 			if (t.getORDERID().equals(id)) {
 				shipRegion.set(i, order);
+				ExternalConnection.UpdateLine(order);
 				return;
 			}
 		}
@@ -72,16 +74,6 @@ public class ShippingServiceImpl implements ShippingRepository {
 	@Override
 	public void deleteOrder(String id) {
 		shipRegion.removeIf(t -> t.getORDERID().equals(id));
-	}
-	
-	//COMMIT shipSpain table
-	@Override
-	public void updateTable(User usr) {	
-		if(usr.getRoleid()==1) {
-			ExternalConnection.Update(shipRegion);
-		}else if(usr.getRoleid()==2) {
-			for(int i=0; i < shipping.length; i++) {ExternalConnection.Update(shipping[i]);}
-		}
 	}
 	
 	//Bring user choice back into the equation. Decide on witch collum of information the user wants to work with
@@ -137,5 +129,11 @@ public class ShippingServiceImpl implements ShippingRepository {
 					": " + Arrays.toString(databox[i]) + "\n\n");
 		}
 		return databox;
+	}
+
+	@Override
+	public void updateTable(User usr) {
+		// TODO Auto-generated method stub
+		
 	}
 }

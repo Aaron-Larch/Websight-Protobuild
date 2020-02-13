@@ -47,14 +47,16 @@ public class SecurityServiceImpl implements SecurityService{
         }
     }
     
+    //Call up all of the user defined roles
     public String FindAuthentication(){
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();//call server for user info
         String role = auth.getAuthorities().toString(); //set Authentication to string
     	return role;
     }
     
+    //Get the user name
     public String FindUserName(){
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();//call server for user info
         String username = auth.getName(); //set Authentication to string
     	return username;
     }

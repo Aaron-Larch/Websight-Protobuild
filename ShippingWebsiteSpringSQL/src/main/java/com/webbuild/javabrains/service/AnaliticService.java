@@ -21,7 +21,7 @@ public class AnaliticService{// implements AnaliticsRepository{
 	private Gson g = new Gson();
 	static Map<String, Double> chartinfo= new HashMap<String, Double>();
 	static double[][] databox;
-	private static Reports[][] box=new Reports[5][];
+	private static Reports[][] box=new Reports[10][];
 	private static int i=-1; //Start at -1 to run UpdateRecord and initialize array 0 location
 	private static int ii=0;
 	private static boolean flag=false;
@@ -168,8 +168,9 @@ public class AnaliticService{// implements AnaliticsRepository{
 		flag=true; //Set flag to true so the code knows to run the update method
 		box = g.fromJson(jsonString, Reports[][].class);
 		for(Reports[] count:box) {
-			if(count!=null) {i++;}
+			if(count!=null && count[0]!=null) {i++;}
 		}
+		if(i==box.length-1) {i=-1;}
 	}
 	
 	//Convert Data to a String for saving

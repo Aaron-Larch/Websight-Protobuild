@@ -3,7 +3,6 @@ package com.webbuild.javabrains.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +22,7 @@ import com.webbuild.javabrains.service.SecurityService;
 @Controller
 @RequestMapping(value = "/Shipping")
 public class SpainShippingController {
+	//set all global variables
 	private static ConsoleOutputCapturer runSoftware= new ConsoleOutputCapturer();
 	private int neworder=ExternalConnection.getOrderId();//this should not be here table should handle this
 	 
@@ -39,7 +39,6 @@ public class SpainShippingController {
 	
 	//User table information home page generator
 	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
-	@PreAuthorize("hasRole('Europe')")
 	public ModelAndView getManagerPageTableObjects(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;
@@ -63,7 +62,6 @@ public class SpainShippingController {
 	}
 	
 	@RequestMapping("/America") //web site control statement
-	@PreAuthorize("hasRole('America')")
 	public ModelAndView getUserPageTableObjects() {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;

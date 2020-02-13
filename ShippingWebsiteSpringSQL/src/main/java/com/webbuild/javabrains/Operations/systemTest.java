@@ -20,6 +20,7 @@ public class systemTest {
 		BuildPath Build = new BuildPath();
 		Reports[][] box = Build.JavaInterFaceBuildArray(length, random); //use the data to populate the objects
 		System.out.println("The titles of the files stroed and the number of records in each file are:");
+		//create a nice print out
 		for(int j=0; j < box.length; j++) {
 			int count=0;
 			if(box[j] != null) {
