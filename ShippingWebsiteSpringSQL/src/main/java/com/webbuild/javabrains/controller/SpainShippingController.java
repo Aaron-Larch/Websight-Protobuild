@@ -1,5 +1,7 @@
 package com.webbuild.javabrains.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.webbuild.javabrains.ConsoleOutputCapturer;
 import com.webbuild.javabrains.jdbc.ExternalConnection;
+import com.webbuild.javabrains.model.Categories;
+import com.webbuild.javabrains.model.Products;
+import com.webbuild.javabrains.model.Suppliers;
 import com.webbuild.javabrains.model.TableObjects;
+import com.webbuild.javabrains.repository.CategoriesRepository;
+import com.webbuild.javabrains.repository.ProductsRepository;
 import com.webbuild.javabrains.repository.ShippingRepository;
+import com.webbuild.javabrains.repository.SuppliersRepository;
 import com.webbuild.javabrains.service.SecurityService;
+
 
 
 @Controller
@@ -30,12 +39,23 @@ public class SpainShippingController {
 	static String Namesave;
 	private static String Role;
 	static double[][] array;
+	List<Suppliers> Sellers;
+	List<Products> items = new ArrayList<>(Arrays.asList());
 	
 	@Autowired //call data table and all stored functions
 	ShippingRepository shippingservice;
 	
-	 @Autowired //call the security methods
-	 private SecurityService securityService;
+	@Autowired //call the security methods
+	private SecurityService securityService;
+	
+	@Autowired //call data table and all stored functions
+	CategoriesRepository categoriesservice;
+	
+	@Autowired //call data table and all stored functions
+	ProductsRepository productservice;
+	
+	@Autowired //call data table and all stored functions
+	SuppliersRepository suppliersservice;
 	
 	//User table information home page generator
 	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
@@ -91,17 +111,77 @@ public class SpainShippingController {
 	}
 	
 	//user starts on this url
-	@RequestMapping(value = "/addneworder")
-	public ModelAndView addTablePage() {
+	@RequestMapping(value = { "/addneworder", "/addneworder/{id}"})
+	public ModelAndView userShopping(@PathVariable(required=false) String id) {
 		//need to add Select MAX(OrderID) from Orders + 1 declare as global maybe?
-		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
-		TableObjects article = new TableObjects(); //generate new object for table
-		neworder++;
+		ModelAndView model = new ModelAndView();//start by reading information on the starting page
+		TableObjects article = new TableObjects();
+		if(id==null) {
+			List<Categories> Storfront=categoriesservice.findAll();
+			model.addObject("Storfront", Storfront);
+			model.addObject("Flag", "Step1");
+			model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
+		}else if (id.matches("\\d*\\.?\\d+")){
+			int order=Integer.parseInt(id);
+			List<Products> Sale= productservice.findByCategoryID(order);
+			model.addObject("Shop", Sale);
+			model.addObject("Flag", "Step2");
+			model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
+		}else if(id.matches("\\d*\\.?\\d+")==false){
+			items= productservice.findByProductName(id);
+			Sellers =  new ArrayList<>(Arrays.asList());
+			int input=0;
+			for(Products i:items){
+				Sellers.add(suppliersservice.findBySupplierID(i.getSupplierID()));
+			}
+			model.addObject("Owner", Sellers);
+			model.addObject("Product", items);
+			model.addObject("Ammount", input);
+			model.addObject("Flag", "Step3");
+			model.setViewName("UserInterFace/Add_New_Order");
+		}
+		
 		model.addObject("order", article);
-		model.addObject("OrderID", neworder);
-		model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
 		return model;
 	}
+	
+	//user starts on this url
+		@RequestMapping(value = { "/addneworder/Invoicve-{id}"}, method=RequestMethod.POST)
+		public ModelAndView addTablePage(@ModelAttribute("Ammount") String input, @PathVariable() String id) {
+			ModelAndView model = new ModelAndView(); //start by reading information on the starting page
+			TableObjects article = new TableObjects();
+			try {
+				int Value = Integer.parseInt(input);
+				if(Value > items.get(Integer.parseInt(id)).getUnitsInStock()) {
+					int range=0;
+					model.addObject("Owner", Sellers);
+					model.addObject("Product", items);
+					model.addObject("Ammount", range);
+					model.addObject("error", "User.error.OutofBounds");
+					model.addObject("Flag", "Step3");
+					model.setViewName("UserInterFace/Add_New_Order");
+				}else {
+					neworder+=1;
+					double frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
+					article.setORDERID(String.valueOf(neworder));
+					article.setFREIGHT(String.valueOf(frate));
+					article.setSHIPNAME(Sellers.get(Integer.parseInt(id)).getCompanyName());
+					article.setSHIPCOUNTRY(Sellers.get(Integer.parseInt(id)).getCountry());
+					model.addObject("OrderID", neworder);
+					model.setViewName("UserInterFace/Add_New_Order");
+				}
+				}catch (NumberFormatException e) {
+					int range=0;
+					model.addObject("Owner", Sellers);
+					model.addObject("Product", items);
+					model.addObject("Ammount", range);
+					model.addObject("error", "User.error.incorrecttype");
+					model.addObject("Flag", "Step3");
+					model.setViewName("UserInterFace/Add_New_Order");
+				}
+			model.addObject("order", article);
+			return model;
+		}
 	
 	//update a single object
 	@RequestMapping(value = {"/tableUpdate", "/tableUpdate/{id}"}, method=RequestMethod.POST) //a way to make two pages run off of the same method

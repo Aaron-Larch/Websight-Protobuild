@@ -30,7 +30,7 @@ public class BeanFactory {
                 securityConstraint.setUserConstraint("CONFIDENTIAL");
                 SecurityCollection collection = new SecurityCollection();
                 collection.addPattern("/*");
-                securityConstraint.addCollection(collection);
+                securityConstraint.addCollection(collection); 
                 context.addConstraint(securityConstraint);
             }
         };
@@ -41,11 +41,9 @@ public class BeanFactory {
         return tomcat;
     }
 
-    /*
-    We need to redirect from HTTP to HTTPS. Without SSL, this application used
+    /*To redirect from HTTP to HTTPS. Without SSL, this application used
     port 8084. With SSL it will use port 8443. So, any request for 8084 needs to be
-    redirected to HTTPS on 8443.
-     */
+    redirected to HTTPS on 8443.*/
     private Connector httpToHttpsRedirectConnector() {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setScheme("http");

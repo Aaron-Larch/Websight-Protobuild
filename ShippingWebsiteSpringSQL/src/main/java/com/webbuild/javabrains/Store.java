@@ -13,7 +13,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * @author gce
+ * @author Aaron Larch
  *
  */
 public class Store {
