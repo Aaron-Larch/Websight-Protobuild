@@ -86,19 +86,23 @@
 	<tr>
 	<td style="white-space:pre-wrap; word-wrap:break-word">
 		<c:out value="${comp.companyName}: ${comp.address}, ${comp.city}, ${comp.country} ${comp.postalCode}"/>
-		<c:out value="    ${Product[status.index].productName}. 
-		 There are ${Product[status.index].quantityPerUnit} to a unit. 
-		 There are ${Product[status.index].unitsInStock} units in stock at $${Product[status.index].unitprice} per unit" />
+		<c:out value="    ${Product[status.index].productName}: There are ${Product[status.index].quantityPerUnit} to a unit. 
+		 		There are ${Product[status.index].unitsInStock} units in stock at $${Product[status.index].unitprice} per unit"/> 
+		<c:out value="Avalibule Cupons and discounts:"/>
+		 <c:forEach items="${Discnt}" var="cupon" varStatus="disc" ><c:if test="${cupon.productID == Product[status.index].productID}">
+		 	<label for="discount">Coupon Name ${cupon.orderID}:  ${cupon.discount} Discount </label> <input type="checkbox" id="discount" <c:set var="coupon" value="${disc.index}"/> >
+		 	</c:if></c:forEach>
 	</td>
 	<td style="white-space:pre-wrap; word-wrap:break-word">
 		<label>Amount Purchased</label>
 		<input type="text" name="Ammount" form="my_form" />
 		<div id="FailedResult">${error}</div>
-		<spring:url value="/Shipping/addneworder/Invoicve-${status.index}" var="invoice" />
+		<spring:url value="/Shipping/addneworder/Invoicve-${status.index}/${coupon}" var="invoice" />
 		<form:form ModelAttribute="Ammount" method="post" action="${invoice}" id="my_form"></form:form>
 		
 	</td>
-	<td>
+	<td style="white-space:pre-wrap; word-wrap:break-word">
+
 		<button type="submit" class="btn btn-primary" form="my_form">Place order</button> 
 	</td>
 	</tr>
@@ -113,35 +117,38 @@
   <h2>Article</h2>
   <form:form modelAttribute="order" method="post" action="${addURL }" cssClass="form" >
    
+	<div class="form-group">
    <!-- Fixed Id should not allow user interaction -->
-   <form:hidden path="ORDERID" cssClass="form-control" id="orderId" Value="${OrderID}"/>
+   <label>Order Id</label>
+   <form:input path="ORDERID" cssClass="form-control" id="orderId" Value="${OrderID}"/>
+   </div>
+  
    <div class="form-group">
-   
    <!-- Fixed list of Values needs drop down menu -->
     <label>Customer Id</label>
     <form:input path="CUSTOMERID" cssClass="form-control" id="customerId"/>
    </div>
    <div class="form-group">
-    <label>Employee Id</label>
-    <form:input path="EMPLOYEEID" cssClass="form-control" id="employeeId"/>
+    <label>Discount Id</label>
+    <form:input path="EMPLOYEEID" cssClass="form-control" id="employeeId" Value="${order.EMPLOYEEID}"/>
    </div>
    <div class="form-group">
-    <label>Ship Via</label>
-    <form:input path="SHIPVIA" cssClass="form-control" id="shipVia"/>
+    <label>Amount Purchased</label>
+    <form:input path="SHIPVIA" cssClass="form-control" id="shipVia" Value="${order.SHIPVIA}"/>
    </div>
    <div class="form-group">
-    <label>Freight</label>
-    <form:input path="FREIGHT" cssClass="form-control" id="freight"/>
+    <label>Total Price</label>
+    <form:input path="FREIGHT" cssClass="form-control" id="freight" Value="${order.FREIGHT}"/>
    </div>
    <div class="form-group">
-    <label>Ship Name</label>
-    <form:input path="SHIPNAME" cssClass="form-control" id="shipName"/>
+    <label>Company Name</label>
+    <form:input path="SHIPNAME" cssClass="form-control" id="shipName" Value="${order.SHIPNAME}"/>
    </div>
    <div class="form-group">
    
    <!-- Fixed list of Values needs drop down menu -->
     <label>Ship Country</label>
-    <form:input path="SHIPCOUNTRY" cssClass="form-control" id="shipCountry"/>
+    <form:input path="SHIPCOUNTRY" cssClass="form-control" id="shipCountry" Value="${order.SHIPCOUNTRY}"/>
    </div>
    <button type="submit" class="btn btn-primary">Save</button>
   </form:form>
@@ -151,8 +158,8 @@
 	Copyright &copy; 2020. All rights reserved
 </footer>
 <script>
-	window.onload = function () {loadValues(document.getElementById("divLoad").innerHTML);}
-	function loadValues(flag){
+	window.onload = function () {loadChannel(document.getElementById("divLoad").innerHTML);}
+	function loadChannel(flag){
 		if(flag=="Step1"){
 			[].forEach.call(document.querySelectorAll(".Shoping"), function (i) {i.style.display="none";});
 			[].forEach.call(document.querySelectorAll(".container"), function (i) {i.style.display="none";});

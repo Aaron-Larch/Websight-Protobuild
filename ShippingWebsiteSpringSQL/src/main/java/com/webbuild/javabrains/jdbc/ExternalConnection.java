@@ -118,6 +118,9 @@ public class ExternalConnection{
 					sta.executeUpdate(insertStatement);
 				}//if rowcount = 2 then this isn't a primary key
 				}
+				//commit changes
+				sta.executeQuery("COMMIT");
+				System.out.println("Commit Executed");
 				sta.close();//close off server connection. release use resources 
 				System.out.println("Database updated");
 			}catch(Exception e){
@@ -139,6 +142,9 @@ public class ExternalConnection{
 						sta.executeUpdate(query);
 					}
 				}
+				//commit changes
+				sta.executeQuery("COMMIT");
+				System.out.println("Commit Executed");
 				sta.close();//close off server connection. release use resources 	
 			}catch(Exception e){
 				//error handling

@@ -33,7 +33,6 @@ public class ShippingServiceImpl implements ShippingRepository {
 		}
 		return null;
 	}
-
 	//select * from orders where customer= '{id}'
 	@Override
 	public List<TableObjects> getUserTable(String id){
@@ -73,7 +72,8 @@ public class ShippingServiceImpl implements ShippingRepository {
 	//delete from orders where ORDERID = 'insert row here'
 	@Override
 	public void deleteOrder(String id) {
-		shipRegion.removeIf(t -> t.getORDERID().equals(id));
+		ExternalConnection.DeleteRow(shipRegion, id); //delete from database
+		shipRegion.removeIf(t -> t.getORDERID().equals(id)); //delete from temp storage
 	}
 	
 	//Bring user choice back into the equation. Decide on witch collum of information the user wants to work with

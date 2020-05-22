@@ -16,11 +16,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.webbuild.javabrains.ConsoleOutputCapturer;
 import com.webbuild.javabrains.jdbc.ExternalConnection;
+import com.webbuild.javabrains.jdbc.SecondSQLConnection;
 import com.webbuild.javabrains.model.Categories;
+import com.webbuild.javabrains.model.OrderDetails;
 import com.webbuild.javabrains.model.Products;
 import com.webbuild.javabrains.model.Suppliers;
 import com.webbuild.javabrains.model.TableObjects;
 import com.webbuild.javabrains.repository.CategoriesRepository;
+import com.webbuild.javabrains.repository.OrderDetailsRepository;
 import com.webbuild.javabrains.repository.ProductsRepository;
 import com.webbuild.javabrains.repository.ShippingRepository;
 import com.webbuild.javabrains.repository.SuppliersRepository;
@@ -39,7 +42,9 @@ public class SpainShippingController {
 	static String Namesave;
 	private static String Role;
 	static double[][] array;
+	List<OrderDetails> discount;
 	List<Suppliers> Sellers;
+	List<TableObjects> ordersList;
 	List<Products> items = new ArrayList<>(Arrays.asList());
 	
 	@Autowired //call data table and all stored functions
@@ -57,11 +62,13 @@ public class SpainShippingController {
 	@Autowired //call data table and all stored functions
 	SuppliersRepository suppliersservice;
 	
+	@Autowired //call data table and all stored functions
+	OrderDetailsRepository orderdetailsservice;
+	
 	//User table information home page generator
 	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
 	public ModelAndView getManagerPageTableObjects(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
-		List<TableObjects> ordersList = null;
 		Role="Europe";
 		String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
 		//check for starting flag
@@ -129,14 +136,18 @@ public class SpainShippingController {
 			model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
 		}else if(id.matches("\\d*\\.?\\d+")==false){
 			items= productservice.findByProductName(id);
-			Sellers =  new ArrayList<>(Arrays.asList());
-			int input=0;
+			Sellers = new ArrayList<>(Arrays.asList());
+			discount = new ArrayList<>(Arrays.asList());
 			for(Products i:items){
 				Sellers.add(suppliersservice.findBySupplierID(i.getSupplierID()));
+				List<OrderDetails> temp=SecondSQLConnection.order(i.getProductID());
+				for(int j=0; j<temp.size(); j++) {
+					discount.add(temp.get(j));
+				}
 			}
 			model.addObject("Owner", Sellers);
 			model.addObject("Product", items);
-			model.addObject("Ammount", input);
+			model.addObject("Discnt", discount);
 			model.addObject("Flag", "Step3");
 			model.setViewName("UserInterFace/Add_New_Order");
 		}
@@ -146,8 +157,9 @@ public class SpainShippingController {
 	}
 	
 	//user starts on this url
-		@RequestMapping(value = { "/addneworder/Invoicve-{id}"}, method=RequestMethod.POST)
-		public ModelAndView addTablePage(@ModelAttribute("Ammount") String input, @PathVariable() String id) {
+		@RequestMapping(value = { "/addneworder/Invoicve-{id}/{disc}"}, method=RequestMethod.POST)
+		public ModelAndView addTablePage(
+				@ModelAttribute("Ammount") String input, @PathVariable() String id, @PathVariable(required=false) String disc) {
 			ModelAndView model = new ModelAndView(); //start by reading information on the starting page
 			TableObjects article = new TableObjects();
 			try {
@@ -156,15 +168,27 @@ public class SpainShippingController {
 					int range=0;
 					model.addObject("Owner", Sellers);
 					model.addObject("Product", items);
+					model.addObject("Discount", discount);
 					model.addObject("Ammount", range);
-					model.addObject("error", "User.error.OutofBounds");
+					model.addObject("error", "The amount requested is larger than what's in stock");
 					model.addObject("Flag", "Step3");
 					model.setViewName("UserInterFace/Add_New_Order");
 				}else {
 					neworder+=1;
-					double frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
+					double frate;
+					if(disc==null) {
+						frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
+						article.setFREIGHT(String.valueOf(frate));//total cost calculated
+						article.setEMPLOYEEID("8");
+					}else {
+						frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
+						frate=frate*discount.get(Integer.parseInt(disc)).getDiscount();
+						article.setFREIGHT(String.valueOf(frate));//total cost calculated
+						article.setEMPLOYEEID("6");
+					}
+					article.setCUSTOMERID("GODOS");
 					article.setORDERID(String.valueOf(neworder));
-					article.setFREIGHT(String.valueOf(frate));
+					article.setSHIPVIA("3");
 					article.setSHIPNAME(Sellers.get(Integer.parseInt(id)).getCompanyName());
 					article.setSHIPCOUNTRY(Sellers.get(Integer.parseInt(id)).getCountry());
 					model.addObject("OrderID", neworder);
@@ -174,8 +198,9 @@ public class SpainShippingController {
 					int range=0;
 					model.addObject("Owner", Sellers);
 					model.addObject("Product", items);
+					model.addObject("Discount", discount);
 					model.addObject("Ammount", range);
-					model.addObject("error", "User.error.incorrecttype");
+					model.addObject("error", "This input is not a number");
 					model.addObject("Flag", "Step3");
 					model.setViewName("UserInterFace/Add_New_Order");
 				}
