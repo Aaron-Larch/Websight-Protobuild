@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  <append>true</append>
+  <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+    <layout class="services.utils.MaskingPatternLayout">
+      <mask>*</mask>
+      <patternsProperty>^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$</patternsProperty>
+      <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+    </layout>
+  </encoder>
+</appender>
+</configuration>

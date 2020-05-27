@@ -52,5 +52,4 @@ public class BeanFactory {
         connector.setRedirectPort(8443);
         return connector;
     }
-
 }

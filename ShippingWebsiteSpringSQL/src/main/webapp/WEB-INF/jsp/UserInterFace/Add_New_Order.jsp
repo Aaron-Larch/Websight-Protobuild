@@ -30,10 +30,12 @@
     </c:if>
     <hr style="background-color:white;"/>
 </div>
-
+<!--variabule call for the class selction javascript program-->
 <div id="divLoad" style="display: none;">${Flag}</div>
+
+<!--table object for product catigories-->
 <div class="welcome">
-<table class="table table-striped" id="Shopping Table">
+<table class="table table-striped" id="Info-Table">
    <thead>
     <th colspan="2">Welcome to JBA bulk shopping. What would you like to buy?</th>
    </thead>
@@ -53,8 +55,9 @@
   </table>
 </div>
 
+<!--table object for distinct product listings -->
 <div class="Shoping">
-<table class="table table-striped" id="Shopping Table">
+<table class="table table-striped" id="Shopping-Table">
    <thead>
     <th scope="row">Product</th>
     <th scope="row">QuantityPerUnit</th>
@@ -79,8 +82,10 @@
    </tbody>
   </table>
 </div>
+
+<!--table object for compairison shopping and discount coupons future proofed-->
  <div class="checkout">
-	<table class="table table-striped" id="Invoice Table">
+	<table class="table table-striped" id="Invoice-Table">
 	<tbody>
 		<c:forEach items="${Owner}" var="comp" varStatus="status" >
 	<tr>
@@ -111,6 +116,7 @@
 	</table>
 	
  </div>
+ 
 <!--User Input class For all fields of the table object-->
  <div class="container">
   <spring:url value="/Shipping/tableUpdate" var="addURL" />
@@ -153,31 +159,15 @@
    <button type="submit" class="btn btn-primary">Save</button>
   </form:form>
  </div>
- <footer>
+ <footer><!--stylish footer to denote legal-->
 	<hr style="background-color:black;"/>
 	Copyright &copy; 2020. All rights reserved
 </footer>
 <script>
-	window.onload = function () {loadChannel(document.getElementById("divLoad").innerHTML);}
-	function loadChannel(flag){
-		if(flag=="Step1"){
-			[].forEach.call(document.querySelectorAll(".Shoping"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".container"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".checkout"), function (i) {i.style.display="none";});
-		}else if(flag=="Step2"){
-			[].forEach.call(document.querySelectorAll(".welcome"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".container"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".checkout"), function (i) {i.style.display="none";});
-		}else if(flag=="Step3"){
-			[].forEach.call(document.querySelectorAll(".welcome"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".Shoping"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".container"), function (i) {i.style.display="none";});
-		}else{
-			[].forEach.call(document.querySelectorAll(".welcome"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".Shoping"), function (i) {i.style.display="none";});
-			[].forEach.call(document.querySelectorAll(".checkout"), function (i) {i.style.display="none";});
-		}
-	}
+	<%@include file="../../resources/js/reportfunctions.js"%>
+	//Build page on load function
+	window.onload = function () {loadChannel(
+			".Shoping", ".container", ".checkout", ".welcome", document.getElementById("divLoad").innerHTML);}
 </script>
 </body>
 </html>

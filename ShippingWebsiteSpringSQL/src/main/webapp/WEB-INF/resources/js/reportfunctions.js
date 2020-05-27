@@ -25,17 +25,13 @@ $(document).ready(function () {
 	//Switch states button
 	this.SwichLoadout= function(a){
 		if(a==1){
-			[].forEach.call(document.querySelectorAll(".Populate"), function (i) {
-			  	i.style.display="block";});
-			[].forEach.call(document.querySelectorAll(".display"), function (i) {
-			  	i.style.display="none";});
-			}else{
-				[].forEach.call(document.querySelectorAll(".Populate"), function (i) {
-			  		i.style.display="none";});
-				[].forEach.call(document.querySelectorAll('.display'), function (i) {
-			  		i.style.display="block";});
-			}
-		};
+			[].forEach.call(document.querySelectorAll(".Populate"), function (i) {i.style.display="block";});
+			[].forEach.call(document.querySelectorAll(".display"), function (i) {i.style.display="none";});
+		}else{
+			[].forEach.call(document.querySelectorAll(".Populate"), function (i) {i.style.display="none";});
+			[].forEach.call(document.querySelectorAll('.display'), function (i) {i.style.display="block";});
+		}
+	};
 
 	//Check all function
 	this.checkAll=function(source) {
@@ -45,7 +41,7 @@ $(document).ready(function () {
 		  }
 		};
 	
-	this.renderChart();	
+	this.renderChart();
 })	
 
 function load_page(url){$('modal-isi-body').load(url) ;}
@@ -72,6 +68,27 @@ function loadContent(input) {
 		var quickfix=string[input].substring(2, string[input].length);
 		document.getElementById('Display').value=quickfix;
 	}else{document.getElementById('Display').value=string[input];}
+}
+
+
+function loadChannel(cl1, cl2, cl3, cl4, flag){
+	if(flag=="Step1"){
+		[].forEach.call(document.querySelectorAll(cl1), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl2), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl3), function (i) {i.style.display="none";});
+	}else if(flag=="Step2"){
+		[].forEach.call(document.querySelectorAll(cl4), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl2), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl3), function (i) {i.style.display="none";});
+	}else if(flag=="Step3"){
+		[].forEach.call(document.querySelectorAll(cl4), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl1), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl2), function (i) {i.style.display="none";});
+	}else{
+		[].forEach.call(document.querySelectorAll(cl4), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl1), function (i) {i.style.display="none";});
+		[].forEach.call(document.querySelectorAll(cl3), function (i) {i.style.display="none";});
+	}
 }
 
 function renderChart() {

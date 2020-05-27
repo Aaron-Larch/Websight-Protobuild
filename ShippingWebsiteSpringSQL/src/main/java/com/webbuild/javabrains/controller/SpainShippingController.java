@@ -117,38 +117,48 @@ public class SpainShippingController {
 		return model;
 	}
 	
-	//user starts on this url
+	//walk the user thought the shopping process to minimize user input and user error
 	@RequestMapping(value = { "/addneworder", "/addneworder/{id}"})
 	public ModelAndView userShopping(@PathVariable(required=false) String id) {
-		//need to add Select MAX(OrderID) from Orders + 1 declare as global maybe?
 		ModelAndView model = new ModelAndView();//start by reading information on the starting page
 		TableObjects article = new TableObjects();
 		if(id==null) {
-			List<Categories> Storfront=categoriesservice.findAll();
+			//start by showing a list of all categories of products to minimize data usage
+			List<Categories> Storfront=categoriesservice.findAll();//Execute SQL Query
+			
+			//populate Modal
 			model.addObject("Storfront", Storfront);
-			model.addObject("Flag", "Step1");
+			model.addObject("Flag", "Step1"); //class display state
 			model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
 		}else if (id.matches("\\d*\\.?\\d+")){
-			int order=Integer.parseInt(id);
-			List<Products> Sale= productservice.findByCategoryID(order);
+			//show a list of all products in a category
+			int order=Integer.parseInt(id);//convert input
+			//List<Products> Sale= productservice.findByCategoryID(order);//Execute SQL Query
+			List<Products> Sale= SecondSQLConnection.CollectProducts(order);//Execute SQL Query
+			//populate Modal
 			model.addObject("Shop", Sale);
-			model.addObject("Flag", "Step2");
+			model.addObject("Flag", "Step2"); //class display state
 			model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
 		}else if(id.matches("\\d*\\.?\\d+")==false){
-			items= productservice.findByProductName(id);
+			//Show all available sellers and discounts of a selected product
+			items= productservice.findByProductName(id);//Execute SQL product Query
+			//declare Temp Variables 
 			Sellers = new ArrayList<>(Arrays.asList());
 			discount = new ArrayList<>(Arrays.asList());
+			
+			//populate the sellers and discount objects using the items object as the guiding line so that all the objects line up in final print
 			for(Products i:items){
-				Sellers.add(suppliersservice.findBySupplierID(i.getSupplierID()));
-				List<OrderDetails> temp=SecondSQLConnection.order(i.getProductID());
+				Sellers.add(suppliersservice.findBySupplierID(i.getSupplierID())); //Execute SQL seller Query
+				List<OrderDetails> temp=SecondSQLConnection.order(i.getProductID()); //Execute SQL discount Query
 				for(int j=0; j<temp.size(); j++) {
-					discount.add(temp.get(j));
+					discount.add(temp.get(j));//one product can have many discount coupons
 				}
 			}
+			//populate Modal
 			model.addObject("Owner", Sellers);
 			model.addObject("Product", items);
 			model.addObject("Discnt", discount);
-			model.addObject("Flag", "Step3");
+			model.addObject("Flag", "Step3"); //class display state
 			model.setViewName("UserInterFace/Add_New_Order");
 		}
 		
@@ -156,36 +166,39 @@ public class SpainShippingController {
 		return model;
 	}
 	
-	//user starts on this url
-		@RequestMapping(value = { "/addneworder/Invoicve-{id}/{disc}"}, method=RequestMethod.POST)
-		public ModelAndView addTablePage(
-				@ModelAttribute("Ammount") String input, @PathVariable() String id, @PathVariable(required=false) String disc) {
-			ModelAndView model = new ModelAndView(); //start by reading information on the starting page
-			TableObjects article = new TableObjects();
-			try {
-				int Value = Integer.parseInt(input);
-				if(Value > items.get(Integer.parseInt(id)).getUnitsInStock()) {
+	//This is the add new object Controller
+	@RequestMapping(value = { "/addneworder/Invoicve-{id}/{disc}"}, method=RequestMethod.POST)
+	public ModelAndView addTablePage(
+			@ModelAttribute("Ammount") String input, @PathVariable() String id, @PathVariable(required=false) String disc) {
+		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
+		TableObjects article = new TableObjects();
+		try {
+			int Value = Integer.parseInt(input);//convert input
+			//check if user amount is grater than the stored amount
+			if(Value > items.get(Integer.parseInt(id)).getUnitsInStock()) {
 					int range=0;
 					model.addObject("Owner", Sellers);
 					model.addObject("Product", items);
 					model.addObject("Discount", discount);
 					model.addObject("Ammount", range);
-					model.addObject("error", "The amount requested is larger than what's in stock");
-					model.addObject("Flag", "Step3");
+					model.addObject("error", "The amount requested is larger than what's in stock");//return error message
+					model.addObject("Flag", "Step3"); //class display state
 					model.setViewName("UserInterFace/Add_New_Order");
 				}else {
-					neworder+=1;
+					neworder+=1; //create new order id
 					double frate;
-					if(disc==null) {
+					if(disc==null) { //if no discount is chosen then calculate with formula a
 						frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
 						article.setFREIGHT(String.valueOf(frate));//total cost calculated
 						article.setEMPLOYEEID("8");
 					}else {
+						//Calculate selected discount with formula b 
 						frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
 						frate=frate*discount.get(Integer.parseInt(disc)).getDiscount();
 						article.setFREIGHT(String.valueOf(frate));//total cost calculated
 						article.setEMPLOYEEID("6");
 					}
+					//populate user article
 					article.setCUSTOMERID("GODOS");
 					article.setORDERID(String.valueOf(neworder));
 					article.setSHIPVIA("3");
@@ -195,13 +208,14 @@ public class SpainShippingController {
 					model.setViewName("UserInterFace/Add_New_Order");
 				}
 				}catch (NumberFormatException e) {
+					//check for number value and not null or string or float
 					int range=0;
 					model.addObject("Owner", Sellers);
 					model.addObject("Product", items);
 					model.addObject("Discount", discount);
 					model.addObject("Ammount", range);
-					model.addObject("error", "This input is not a number");
-					model.addObject("Flag", "Step3");
+					model.addObject("error", "This input is not a number");//return error message
+					model.addObject("Flag", "Step3"); //class display state
 					model.setViewName("UserInterFace/Add_New_Order");
 				}
 			model.addObject("order", article);

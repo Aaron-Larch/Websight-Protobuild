@@ -9,6 +9,7 @@ public class SuppliersService {
 	@Autowired //call the user table in the database
     private SuppliersRepository suppliersRepository;
 	
+	//select * from Suppliers Where SupplierID=input
 	public Suppliers findBySupplierID(int id) {
 		return suppliersRepository.findBySupplierID(id);
 	}

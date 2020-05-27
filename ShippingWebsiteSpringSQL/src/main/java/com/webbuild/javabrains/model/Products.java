@@ -44,6 +44,8 @@ public class Products {
 	@ManyToMany
 	private Set<Suppliers> Suppliers;
 
+	
+	
 	public int getProductID() {
 		return productID;
 	}

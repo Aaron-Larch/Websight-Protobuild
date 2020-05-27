@@ -16,7 +16,7 @@ public class ProductService {
 	public List<Products> findByCategoryID(int id) {
 		return productsRepository.findByCategoryID(id);
     }
-	
+	//SELECT * FROM PRODUCTS Where ProductName = input
 	public List<Products> findByProductName(String id) {
 		return productsRepository.findByProductName(id);
     }
