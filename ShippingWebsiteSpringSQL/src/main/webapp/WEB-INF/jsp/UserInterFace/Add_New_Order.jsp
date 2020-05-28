@@ -93,10 +93,9 @@
 		<c:out value="${comp.companyName}: ${comp.address}, ${comp.city}, ${comp.country} ${comp.postalCode}"/>
 		<c:out value="    ${Product[status.index].productName}: There are ${Product[status.index].quantityPerUnit} to a unit. 
 		 		There are ${Product[status.index].unitsInStock} units in stock at $${Product[status.index].unitprice} per unit"/> 
-		<c:out value="Avalibule Cupons and discounts:"/>
-		 <c:forEach items="${Discnt}" var="cupon" varStatus="disc" ><c:if test="${cupon.productID == Product[status.index].productID}">
-		 	<label for="discount">Coupon Name ${cupon.orderID}:  ${cupon.discount} Discount </label> <input type="checkbox" id="discount" <c:set var="coupon" value="${disc.index}"/> >
-		 	</c:if></c:forEach>
+		<form action=""><c:out value="		Avalibule Coupons and discounts:" />
+		<c:forEach items="${Discnt}" var="cupon" varStatus="disc" ><c:if test="${cupon.productID == Product[status.index].productID}">	Coupon Name ${cupon.orderID}:  ${cupon.discount} Discount <input type="radio" name="discount" <c:set var="coupon" value="${disc.index}"/> >
+		</c:if> </c:forEach></form>
 	</td>
 	<td style="white-space:pre-wrap; word-wrap:break-word">
 		<label>Amount Purchased</label>
@@ -166,8 +165,7 @@
 <script>
 	<%@include file="../../resources/js/reportfunctions.js"%>
 	//Build page on load function
-	window.onload = function () {loadChannel(
-			".Shoping", ".container", ".checkout", ".welcome", document.getElementById("divLoad").innerHTML);}
+	window.onload = function () {loadChannel(".Shoping", ".container", ".checkout", ".welcome", document.getElementById("divLoad").innerHTML);}
 </script>
 </body>
 </html>

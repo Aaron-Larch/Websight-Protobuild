@@ -40,6 +40,7 @@ public class SpainShippingController {
 	 
 	public static String pageflag="";
 	static String Namesave;
+	static int range=0;
 	private static String Role;
 	static double[][] array;
 	List<OrderDetails> discount;
@@ -93,9 +94,8 @@ public class SpainShippingController {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;
 		Role="America";
-		ordersList = shippingservice.getUserTable("ANTON"); //run a default sql  query 
+		ordersList = shippingservice.getUserTable("GODOS"); //run a default sql  query 
 		model.addObject("role", "none"); //Hide All Manager Operations
-		pageflag= ordersList.get(0).getSHIPCOUNTRY();
 		//set Global object for web page
 		model.addObject("ordersList", ordersList); //send objects to jsp page
 		return model; //load page command
@@ -154,6 +154,14 @@ public class SpainShippingController {
 					discount.add(temp.get(j));//one product can have many discount coupons
 				}
 			}
+			
+			if(range==1) {
+				range=0;
+				model.addObject("error", "The amount requested is larger than what's in stock");//return error message
+			}else if(range==2) {
+				range=0;
+				model.addObject("error", "This input is not a number");//return error message
+			}
 			//populate Modal
 			model.addObject("Owner", Sellers);
 			model.addObject("Product", items);
@@ -170,21 +178,16 @@ public class SpainShippingController {
 	@RequestMapping(value = { "/addneworder/Invoicve-{id}/{disc}"}, method=RequestMethod.POST)
 	public ModelAndView addTablePage(
 			@ModelAttribute("Ammount") String input, @PathVariable() String id, @PathVariable(required=false) String disc) {
-		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
+		ModelAndView model; //start by reading information on the starting page
 		TableObjects article = new TableObjects();
 		try {
 			int Value = Integer.parseInt(input);//convert input
 			//check if user amount is grater than the stored amount
 			if(Value > items.get(Integer.parseInt(id)).getUnitsInStock()) {
-					int range=0;
-					model.addObject("Owner", Sellers);
-					model.addObject("Product", items);
-					model.addObject("Discount", discount);
-					model.addObject("Ammount", range);
-					model.addObject("error", "The amount requested is larger than what's in stock");//return error message
-					model.addObject("Flag", "Step3"); //class display state
-					model.setViewName("UserInterFace/Add_New_Order");
+					range=1;
+					model = new ModelAndView("redirect:/Shipping/addneworder/"+items.get(Integer.parseInt(id)).getProductName());
 				}else {
+					model = new ModelAndView();
 					neworder+=1; //create new order id
 					double frate;
 					if(disc==null) { //if no discount is chosen then calculate with formula a
@@ -209,14 +212,8 @@ public class SpainShippingController {
 				}
 				}catch (NumberFormatException e) {
 					//check for number value and not null or string or float
-					int range=0;
-					model.addObject("Owner", Sellers);
-					model.addObject("Product", items);
-					model.addObject("Discount", discount);
-					model.addObject("Ammount", range);
-					model.addObject("error", "This input is not a number");//return error message
-					model.addObject("Flag", "Step3"); //class display state
-					model.setViewName("UserInterFace/Add_New_Order");
+					range=2;
+					model = new ModelAndView("redirect:/Shipping/addneworder/"+items.get(Integer.parseInt(id)).getProductName());
 				}
 			model.addObject("order", article);
 			return model;
