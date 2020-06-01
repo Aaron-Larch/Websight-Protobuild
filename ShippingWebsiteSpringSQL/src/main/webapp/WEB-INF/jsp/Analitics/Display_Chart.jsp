@@ -9,24 +9,8 @@
 	<title>Line Chart</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-	<style>
-	<%@include file="../../resources/css/common.css"%>
-		/* Style the footer */
-		footer2{	
-    		width: 98%;
-    		background-color: Gray;
- 			padding: 15px;
-    		float: left;
-    		border: solid 1px black;
-    		text-align: center;
-		}
-		
-		.container button{display: inline-block;}
-		#btn1{ float:left;}
-		#btn3{ float:right;}
-		
-	</style>
-	
+	<style><%@include file="../../resources/css/common.css"%></style>
+	<script><%@include file="../../resources/js/reportfunctions.js"%></script>
 </head>
 <body>
 <!-- Report Headers Object to tell the viewer which object is being viewed   -->
@@ -59,110 +43,15 @@
 	</div>
 <script>
 	/*Collect all the requierd variabuls*/
-	var xAxsis= ${Arrays.toString(Xaxis)};
-	var bellData= ${Arrays.toString(BellCurveGraph)};
-	var highData= ${Arrays.toString(YaxisHigh)};
-	var lowData= ${Arrays.toString(YaxisLow)};
-	var boxData= ${Arrays.toString(BoxAndWhiskersGraph)};
-	var barXAxis = ${Arrays.deepToString(BarGraph)};
-	var HistogramData= ${Arrays.toString(Histogram)};
-	
-	/*Chart program layouts as found on https://www.chartjs.org/samples/latest/*/
-	new Chart(document.getElementById("BellcurveChart"), {
-		  type: 'line',
-		  data: {
-		    labels: xAxsis,
-		    datasets: [{ 
-		        data: bellData,
-		        label: document.getElementById("divName").innerHTML,
-		        borderColor: "#3e95cd",
-		        fill: false
-		      }]
-		  },
-		  options: {
-		    title: {
-		      display: true,
-		      text: 'Bell Curve Graph'
-		    }
-		  }
-		});
-	
-	new Chart(document.getElementById("HighLineGraph"), {
-		  type: 'line',
-		  data: {
-		    labels: xAxsis,
-		    datasets: [{ 
-		        data: highData,
-		        label: document.getElementById("divName").innerHTML,
-		        borderColor: "#3e95cd",
-		        fill: false
-		      }]
-		  },
-		  options: {
-		    title: {
-		      display: true,
-		      text: 'Data Graph from high to low'
-		    }
-		  }
-		});
-	
-	new Chart(document.getElementById("LowLineGraph"), {
-		  type: 'line',
-		  data: {
-		    labels: xAxsis,
-		    datasets: [{ 
-		        data: lowData,
-		        label: document.getElementById("divName").innerHTML,
-		        borderColor: "#3e95cd",
-		        fill: false
-		      }]
-		  },
-		  options: {
-		    title: {
-		      display: true,
-		      text: 'Data Graph from low to high'
-		    }
-		  }
-		});
-	
-	new Chart(document.getElementById("HistogramChart"), {
-		  type: 'bar',
-		  data: {
-		    labels: barXAxis,
-		    datasets: [{ 
-		        data: HistogramData,
-		        label: document.getElementById("divName").innerHTML,
-		        borderColor: "#3e95cd",
-		        fill: false
-		      }]
-		  },
-		  options: {
-		    title: {
-		      display: true,
-		      text: 'Histogram Chart'
-		    }
-		  }
-		});
-	
-	var chart = new CanvasJS.Chart("BoxandWhisker", {
-		title:{
-			text: "Box And Whisker Plot"
-		},
-		axisY: {
-			interval: 40
-		},
-		data: [{
-			type: "boxAndWhisker",
-			upperBoxColor: "#FFC28D",
-			lowerBoxColor: "#9ECCB8",
-			color: "black",
-			dataPoints: [
-				
-				{ label: document.getElementById("divName").innerHTML, y: boxData }
-			]
-		}]
-	});
-	chart.render();
+	window.onload = function () {buildReport(
+		${Arrays.toString(Xaxis)}, 
+		${Arrays.toString(BellCurveGraph)}, 
+		${Arrays.toString(YaxisHigh)}, 
+		${Arrays.toString(YaxisLow)}, 
+		${Arrays.toString(BoxAndWhiskersGraph)}, 
+		${Arrays.deepToString(BarGraph)}, 
+		${Arrays.toString(Histogram)}
+	)}
 </script>
 </body>
 <!-- Links to other objects Chart pages -->

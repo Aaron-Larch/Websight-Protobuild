@@ -91,34 +91,132 @@ function loadChannel(cl1, cl2, cl3, cl4, flag){
 	}
 }
 
-function renderChart() {
+function buildReport(
+		xAxsis,
+		bellData,
+		highData,
+		lowData,
+		boxData,
+		barXAxis,
+		HistogramData) {
 	/*Chart program layouts as found on https://www.chartjs.org/samples/latest/*/
-	  var chart = new CanvasJS.Chart("chartContainer", {
-		  	animationEnabled: true,
-		  	theme: "light2",
-		  	title:{
-		  		text: "Simple Line Chart"
-		  	},
-		  	axisY:{
-		  		includeZero: false
-		  	},
-		  	data: [{        
-		  		type: "line",       
-		  		dataPoints: [
-		  			{ y: 450 },
-		  			{ y: 414},
-		  			{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-		  			{ y: 460 },
-		  			{ y: 450 },
-		  			{ y: 500 },
-		  			{ y: 480 },
-		  			{ y: 480 },
-		  			{ y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-		  			{ y: 500 },
-		  			{ y: 480 },
-		  			{ y: 510 }
-		  		]
-		  	}]
-		  });
+	 new Chart("BellcurveChart", {
+		  type: 'line',
+		  data: {
+		    labels: xAxsis,
+		    datasets: [{ 
+		        data: bellData,
+		        label: document.getElementById("divName").innerHTML,
+		        borderColor: "#3e95cd",
+		        fill: false
+		      }]
+		  },
+		  options: {
+		    title: {
+		      display: true,
+		      text: 'Bell Curve Graph'
+		    }
+		  }
+		});
+	 
+	 new Chart("HighLineGraph", {
+		  type: 'line',
+		  data: {
+		    labels: xAxsis,
+		    datasets: [{ 
+		        data: highData,
+		        label: document.getElementById("divName").innerHTML,
+		        borderColor: "#3e95cd",
+		        fill: false
+		      }]
+		  },
+		  options: {
+		    title: {
+		      display: true,
+		      text: 'Data Graph from high to low'
+		    }
+		  }
+		});
+	 
+	 new Chart("LowLineGraph", {
+		  type: 'line',
+		  data: {
+		    labels: xAxsis,
+		    datasets: [{ 
+		        data: lowData,
+		        label: document.getElementById("divName").innerHTML,
+		        borderColor: "#3e95cd",
+		        fill: false
+		      }]
+		  },
+		  options: {
+		    title: {
+		      display: true,
+		      text: 'Data Graph from low to high'
+		    }
+		  }
+		});
+	 
+	 new Chart("HistogramChart", {
+		  type: 'bar',
+		  data: {
+		    labels: barXAxis,
+		    datasets: [{ 
+		        data: HistogramData,
+		        label: document.getElementById("divName").innerHTML,
+		        borderColor: "#3e95cd",
+		        fill: false
+		      }]
+		  },
+		  options: {
+		    title: {
+		      display: true,
+		      text: 'Histogram Chart'
+		    }
+		  }
+		});
+	 
+	 var chart = new CanvasJS.Chart("BoxandWhisker", {
+			title:{
+				text: "Box And Whisker Plot"
+			},
+			axisY: {
+				interval: 40
+			},
+			data: [{
+				type: "boxAndWhisker",
+				upperBoxColor: "#FFC28D",
+				lowerBoxColor: "#9ECCB8",
+				color: "black",
+				dataPoints: [
+					
+					{ label: document.getElementById("divName").innerHTML, y: boxData }
+				]
+			}]
+		});
+		chart.render();
+}
+
+function renderChart(input) {
+	/*Chart program layouts as found on https://www.chartjs.org/samples/latest/*/
+	document.getElementById('display2').innerHTML=input;
+	  var chart = new Chart("chartContainer", { 
+		  type: 'line',
+			  data: {
+			    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+			    datasets: [{ 
+			        data: input,
+			        label: 'My first dataset',
+			        borderColor: "#3e95cd",
+			        fill: false
+			     }]
+			  },
+			  options: {
+			    title: {
+			      display: true,
+			      text: 'Simple Line Chart'
+	                    }
+	                }
+			});
 		  chart.render();
 }

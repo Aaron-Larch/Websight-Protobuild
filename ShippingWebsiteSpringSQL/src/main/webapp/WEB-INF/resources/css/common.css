@@ -259,3 +259,18 @@ fieldset
 	margin-right: auto;
 	min-height: 300px;
 }
+
+/* Style the Report footer */
+footer2{	
+	width: 98%;
+	background-color: Gray;
+	padding: 15px;
+	float: left;
+	border: solid 1px black;
+	text-align: center;
+}
+.container button{display: inline-block;}
+#btn1{ float:left;}
+#btn3{ float:right;}
+
+

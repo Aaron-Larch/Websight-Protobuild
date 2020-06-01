@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication
 public class BeanFactory {
-	//.\keytool �genkey -alias ShippingWebsiteSpringSQL -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore bootsecurity.p12 -validity 3650
+	//.\keytool –genkey –alias ShippingWebsiteSpringSQL –storetype PKCS12 –keyalg RSA –keysize 2048 –keystore bootsecurity.p12 –validity 3650
 	
 	@Bean
     public ServletWebServerFactory servletContainer() {
