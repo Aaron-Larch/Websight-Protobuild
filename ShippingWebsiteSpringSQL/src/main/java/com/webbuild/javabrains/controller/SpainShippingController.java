@@ -18,6 +18,7 @@ import com.webbuild.javabrains.ConsoleOutputCapturer;
 import com.webbuild.javabrains.jdbc.ExternalConnection;
 import com.webbuild.javabrains.jdbc.SecondSQLConnection;
 import com.webbuild.javabrains.model.Categories;
+import com.webbuild.javabrains.model.InvoiceInfo;
 import com.webbuild.javabrains.model.OrderDetails;
 import com.webbuild.javabrains.model.Products;
 import com.webbuild.javabrains.model.Suppliers;
@@ -121,7 +122,6 @@ public class SpainShippingController {
 	@RequestMapping(value = { "/addneworder", "/addneworder/{id}"})
 	public ModelAndView userShopping(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView();//start by reading information on the starting page
-		TableObjects article = new TableObjects();
 		if(id==null) {
 			//start by showing a list of all categories of products to minimize data usage
 			List<Categories> Storfront=categoriesservice.findAll();//Execute SQL Query
@@ -170,34 +170,34 @@ public class SpainShippingController {
 			model.setViewName("UserInterFace/Add_New_Order");
 		}
 		
-		model.addObject("order", article);
+		model.addObject("order", new TableObjects());
+		model.addObject("input", new InvoiceInfo());
 		return model;
 	}
 	
 	//This is the add new object Controller
-	@RequestMapping(value = { "/addneworder/Invoicve-{id}/{disc}"}, method=RequestMethod.POST)
-	public ModelAndView addTablePage(
-			@ModelAttribute("Ammount") String input, @PathVariable() String id, @PathVariable(required=false) String disc) {
+	@RequestMapping(value = { "/addneworder/Invoicve"}, method=RequestMethod.POST)
+	public ModelAndView addTablePage(@ModelAttribute("input") InvoiceInfo test) {
 		ModelAndView model; //start by reading information on the starting page
 		TableObjects article = new TableObjects();
 		try {
-			int Value = Integer.parseInt(input);//convert input
+			int Value = Integer.parseInt(test.getAmmount());//convert input
 			//check if user amount is grater than the stored amount
-			if(Value > items.get(Integer.parseInt(id)).getUnitsInStock()) {
+			if(Value > items.get(Integer.parseInt(test.getUnits())).getUnitsInStock()) {
 					range=1;
-					model = new ModelAndView("redirect:/Shipping/addneworder/"+items.get(Integer.parseInt(id)).getProductName());
+					model = new ModelAndView("redirect:/Shipping/addneworder/"+items.get(Integer.parseInt(test.getUnits())).getProductName());
 				}else {
 					model = new ModelAndView();
 					neworder+=1; //create new order id
 					double frate;
-					if(disc==null) { //if no discount is chosen then calculate with formula a
-						frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
+					if(test.getDiscount()==null) { //if no discount is chosen then calculate with formula a
+						frate=Value*items.get(Integer.parseInt(test.getUnits())).getUnitprice();
 						article.setFREIGHT(String.valueOf(frate));//total cost calculated
 						article.setEMPLOYEEID("8");
 					}else {
 						//Calculate selected discount with formula b 
-						frate=Value*items.get(Integer.parseInt(id)).getUnitprice();
-						frate=frate*discount.get(Integer.parseInt(disc)).getDiscount();
+						frate=Value*items.get(Integer.parseInt(test.getUnits())).getUnitprice();
+						frate=frate*discount.get(Integer.parseInt(test.getDiscount())).getDiscount();
 						article.setFREIGHT(String.valueOf(frate));//total cost calculated
 						article.setEMPLOYEEID("6");
 					}
@@ -205,15 +205,15 @@ public class SpainShippingController {
 					article.setCUSTOMERID("GODOS");
 					article.setORDERID(String.valueOf(neworder));
 					article.setSHIPVIA("3");
-					article.setSHIPNAME(Sellers.get(Integer.parseInt(id)).getCompanyName());
-					article.setSHIPCOUNTRY(Sellers.get(Integer.parseInt(id)).getCountry());
+					article.setSHIPNAME(Sellers.get(Integer.parseInt(test.getUnits())).getCompanyName());
+					article.setSHIPCOUNTRY(Sellers.get(Integer.parseInt(test.getUnits())).getCountry());
 					model.addObject("OrderID", neworder);
 					model.setViewName("UserInterFace/Add_New_Order");
 				}
 				}catch (NumberFormatException e) {
 					//check for number value and not null or string or float
 					range=2;
-					model = new ModelAndView("redirect:/Shipping/addneworder/"+items.get(Integer.parseInt(id)).getProductName());
+					model = new ModelAndView("redirect:/Shipping/addneworder/"+items.get(Integer.parseInt(test.getUnits())).getProductName());
 				}
 			model.addObject("order", article);
 			return model;
@@ -290,5 +290,4 @@ public class SpainShippingController {
 			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //Admin Page to be added later
 		}	
 	}
-
 }

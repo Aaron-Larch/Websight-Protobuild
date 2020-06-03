@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1" import= "java.util.Arrays"%>
     <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>    
 <html>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/> 
 <head>
@@ -21,11 +22,19 @@
    	<div id="display2"></div>
    	<div id="stage"></div>
     <canvas class="item" id="chartContainer"  style="height: 300px; width: 100%;"></canvas>
-    
     <spring:url value="${contextPath}/login" var="StartURL" />
   	<a id="LoadFile" href="${StartURL }" >Login</a>.
+		<spring:url value="/TestPage" var="invoice" />
+		<form:form ModelAttribute="testVal" method="post" action="${invoice}" id="my_form">
+		<label>Amount Purchased</label>
+		<input type="text" name="testVal" form="my_form" />
+		<button type="submit" class="btn btn-primary" form="my_form">Save</button> 
+		</form:form>
+		
   <script>
-	window.onload = function () {renderChart(${Arrays.toString(Data)})}
+	$(document).ready(function(){
+		renderChart(${Arrays.toString(Data)});
+	});
   </script>
   
 </body>

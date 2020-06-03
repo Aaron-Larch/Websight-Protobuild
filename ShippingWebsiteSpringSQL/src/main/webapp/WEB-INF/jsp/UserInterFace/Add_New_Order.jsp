@@ -93,16 +93,17 @@
 		<c:out value="${comp.companyName}: ${comp.address}, ${comp.city}, ${comp.country} ${comp.postalCode}"/>
 		<c:out value="    ${Product[status.index].productName}: There are ${Product[status.index].quantityPerUnit} to a unit. 
 		 		There are ${Product[status.index].unitsInStock} units in stock at $${Product[status.index].unitprice} per unit"/> 
-		<form action=""><c:out value="		Avalibule Coupons and discounts:" />
-		<c:forEach items="${Discnt}" var="cupon" varStatus="disc" ><c:if test="${cupon.productID == Product[status.index].productID}">	Coupon Name ${cupon.orderID}:  ${cupon.discount} Discount <input type="radio" name="discount" <c:set var="coupon" value="${disc.index}"/> >
-		</c:if> </c:forEach></form>
+		Avalibule Coupons and discounts:<c:forEach items="${Discnt}" var="cupon" varStatus="disc" ><c:if test="${cupon.productID == Product[status.index].productID}">
+			Coupon Name ${cupon.orderID}:  ${cupon.discount} Discount <form:radiobutton path="input.Discount" form="my_form" value="${disc.index}"/>
+		</c:if> </c:forEach>
 	</td>
 	<td style="white-space:pre-wrap; word-wrap:break-word">
 		<label>Amount Purchased</label>
-		<input type="text" name="Ammount" form="my_form" />
+		<form:input type="text" path="input.Ammount" form="my_form"/>
 		<div id="FailedResult">${error}</div>
-		<spring:url value="/Shipping/addneworder/Invoicve-${status.index}/${coupon}" var="invoice" />
-		<form:form ModelAttribute="Ammount" method="post" action="${invoice}" id="my_form"></form:form>
+		<form:hidden path="input.Units" form="my_form" value="${status.index}"/>
+		<spring:url value="/Shipping/addneworder/Invoicve" var="invoice" />
+		<form:form ModelAttribute="input" method="post" action="${invoice}" id="my_form"></form:form>
 		
 	</td>
 	<td style="white-space:pre-wrap; word-wrap:break-word">

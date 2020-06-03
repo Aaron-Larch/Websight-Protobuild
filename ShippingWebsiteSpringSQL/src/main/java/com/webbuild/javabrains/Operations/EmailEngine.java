@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -22,6 +25,7 @@ import javax.mail.internet.MimeMultipart;
 
 
 public class EmailEngine {
+	
 	// The javamail session object.
 	protected Session session;
 	// The sender's email address
@@ -118,6 +122,30 @@ public class EmailEngine {
 			
 			if (!isComplete())throw new IllegalArgumentException("doSend called before message was complete");
 			session.setDebug(true);// Set Debug log
+			
+			//Properties object used to pass props into the MAIL API
+			Properties properties = new Properties();
+			
+			// Your LAN must define the local SMTP server as "mailhost"
+			properties.put("mail.smtp.host", mailHost); //SMTP Host must match the from email address not to.
+			properties.put("mail.smtp.port", "587"); //TLS Port
+			properties.put("mail.smtp.auth", "true"); //enable authentication
+			properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+			
+			//Username and password verification
+			Authenticator authenticator = new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+		        	return new PasswordAuthentication(from, "Spring2020");
+		         }
+		     };
+		     
+			// Create the Session object
+			if (session == null) {
+				System.out.println("TLSEmail Start");
+				session = Session.getDefaultInstance(properties, authenticator);
+				if (isVerbose())session.setDebug(true);// Set Debug log
+			}
+			
 			
 			// create a message
 			final MimeMessage mesg = new MimeMessage(session);
