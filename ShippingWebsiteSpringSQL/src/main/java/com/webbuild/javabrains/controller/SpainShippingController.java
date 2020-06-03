@@ -31,7 +31,6 @@ import com.webbuild.javabrains.repository.SuppliersRepository;
 import com.webbuild.javabrains.service.SecurityService;
 
 
-
 @Controller
 @RequestMapping(value = "/Shipping")
 public class SpainShippingController {
@@ -67,7 +66,7 @@ public class SpainShippingController {
 	@Autowired //call data table and all stored functions
 	OrderDetailsRepository orderdetailsservice;
 	
-	//User table information home page generator
+	//Set Employee table and homepage information
 	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
 	public ModelAndView getManagerPageTableObjects(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
@@ -90,6 +89,7 @@ public class SpainShippingController {
 		return model; //load page command
 	}
 	
+	//Set User table and homepage information
 	@RequestMapping("/America") //web site control statement
 	public ModelAndView getUserPageTableObjects() {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
@@ -108,13 +108,12 @@ public class SpainShippingController {
 		ModelAndView model = new ModelAndView(); //start by reading information on the starting page
 		TableObjects temp = shippingservice.getOrders(id); //run a sql query	
 		//a form of user error handling to prevent error
-		if(temp==null) {
+		if(temp==null) {//if a non existent id found
 			 model.addObject("order", "No such Id found");
-		}else {
+		}else {//else proceed as normal
 			model.addObject("order", temp);
 			model.setViewName("UserInterFace/Update_Table"); //call a new jsp page to load the objects into
 		}
-		
 		return model;
 	}
 	
@@ -122,7 +121,7 @@ public class SpainShippingController {
 	@RequestMapping(value = { "/addneworder", "/addneworder/{id}"})
 	public ModelAndView userShopping(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView();//start by reading information on the starting page
-		if(id==null) {
+		if(id==null) {//then that means this is a new product
 			//start by showing a list of all categories of products to minimize data usage
 			List<Categories> Storfront=categoriesservice.findAll();//Execute SQL Query
 			
@@ -130,7 +129,7 @@ public class SpainShippingController {
 			model.addObject("Storfront", Storfront);
 			model.addObject("Flag", "Step1"); //class display state
 			model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
-		}else if (id.matches("\\d*\\.?\\d+")){
+		}else if (id.matches("\\d*\\.?\\d+")){//if id is a number then that means the id is a category flag 
 			//show a list of all products in a category
 			int order=Integer.parseInt(id);//convert input
 			//List<Products> Sale= productservice.findByCategoryID(order);//Execute SQL Query
@@ -139,7 +138,7 @@ public class SpainShippingController {
 			model.addObject("Shop", Sale);
 			model.addObject("Flag", "Step2"); //class display state
 			model.setViewName("UserInterFace/Add_New_Order"); //call a new jsp page to load the objects into
-		}else if(id.matches("\\d*\\.?\\d+")==false){
+		}else if(id.matches("\\d*\\.?\\d+")==false){//if id is a word then that means the id is a product flag 
 			//Show all available sellers and discounts of a selected product
 			items= productservice.findByProductName(id);//Execute SQL product Query
 			//declare Temp Variables 
@@ -155,13 +154,14 @@ public class SpainShippingController {
 				}
 			}
 			
-			if(range==1) {
-				range=0;
+			//check error page flag to determine what error has occurred 
+			if(range==1) {//if 1 than order was to large
+				range=0;//IMPORTANT! reset flag value or else error message will persist
 				model.addObject("error", "The amount requested is larger than what's in stock");//return error message
-			}else if(range==2) {
-				range=0;
+			}else if(range==2) {//if 2 than order was not a number
+				range=0;//IMPORTANT! reset flag value or else error message will persist
 				model.addObject("error", "This input is not a number");//return error message
-			}
+			}//if 0 nothing is wrong
 			//populate Modal
 			model.addObject("Owner", Sellers);
 			model.addObject("Product", items);
@@ -283,9 +283,9 @@ public class SpainShippingController {
 	//To prevent cross sight scripting a dynamic page redirect is needed
 	private ModelAndView premissions() {
 		if(Role.equalsIgnoreCase("America")) {
-			return new ModelAndView("redirect:/Shipping/"+Role);
+			return new ModelAndView("redirect:/Shipping/"+Role);//user home page
 		}else if(Role.equalsIgnoreCase("Europe")) {
-			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag);
+			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag);//employee home page
 		}else {
 			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //Admin Page to be added later
 		}	
