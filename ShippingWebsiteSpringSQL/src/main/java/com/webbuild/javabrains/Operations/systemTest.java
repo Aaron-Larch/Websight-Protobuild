@@ -22,17 +22,17 @@ public class systemTest {
 		//Export();
 		try {
 			List<String> inputPath=new ArrayList<String>();
-			inputPath.add("C:/Users/gce/Desktop/Timesheet Tracker.xlsx");
-			//inputPath.add("C:/Users/gce/Desktop/Project summory version 2..docx");
+			inputPath.add(*****************************************);
+			//inputPath.add(*****************************************);
 			
 			ArrayList<String> ccEmail=new ArrayList<String>();
-			//ccEmail.add("sal.horquita@gce.org");
-			//ccEmail.add("a.larch@yahoo.com");
+			//ccEmail.add("*******@gce.org");
+			//ccEmail.add("******@yahoo.com");
 			
 			EmailEngine.send(
 					"smtp.office.com",
-					"a.larch@yahoo.com",
-					"aaron.larch@gce.org",
+					"******@yahoo.com",
+					"******@gce.org",
 					ccEmail,
 					false,
 					"My War Report",
