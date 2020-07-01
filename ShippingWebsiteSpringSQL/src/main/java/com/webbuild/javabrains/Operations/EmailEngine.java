@@ -125,7 +125,7 @@ public class EmailEngine {
 		
 		// Your LAN must define the local SMTP server as "mailhost"
 		properties.put("mail.smtp.host", mailHost); //SMTP Host must match the from email address not to.
-		properties.put("mail.smtp.port", "587"); //TLS Port
+		properties.put("mail.smtp.port", ***); //TLS Port
 		properties.put("mail.smtp.auth", "true"); //enable authentication
 		properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
 		
@@ -133,7 +133,7 @@ public class EmailEngine {
 		Authenticator auth = new Authenticator() {
 			//override the getPasswordAuthentication method
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(from, "GC3W!ning!");
+				return new PasswordAuthentication(from, ********);
 			}
 		};
 		
