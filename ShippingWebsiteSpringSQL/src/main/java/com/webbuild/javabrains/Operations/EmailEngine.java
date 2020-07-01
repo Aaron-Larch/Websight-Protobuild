@@ -1,10 +1,12 @@
 package com.webbuild.javabrains.Operations;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -23,27 +25,24 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+
+import com.webbuild.javabrains.model.User;
+
 
 public class EmailEngine {
+	protected Session session; //The javamail session object.
+	protected String from; //The sender's email address
+	protected String subject; //The subject of the message.
+	protected List<String> toList = new ArrayList<>(); //The recipient ("To:"), as Strings.
+	protected List<String> ccList = new ArrayList<String>(); //The CC list, as Strings.
+	protected List<String> bccList = new ArrayList<String>(); //The BCC list, as Strings.
+	protected String body; //The text of the message.
+	protected String mailHost; //The SMTP relay host
+	protected boolean verbose; //The verbosity setting
 	
-	// The javamail session object.
-	protected Session session;
-	// The sender's email address
-	protected String from;
-	// The subject of the message.
-	protected String subject;
-	// The recipient ("To:"), as Strings.
-	protected List<String> toList = new ArrayList<>();
-	// The CC list, as Strings.
-	protected List<String> ccList = new ArrayList<String>();
-	// The BCC list, as Strings.
-	protected List<String> bccList = new ArrayList<String>();
-	// The text of the message.
-	protected String body;
-	// The SMTP relay host
-	protected String mailHost;
-	// The Data log setting
-	protected boolean verbose;
 	//Set up alias
 	protected boolean useAlias;
 	protected static boolean newsletter;
@@ -73,157 +72,156 @@ public class EmailEngine {
 	// Set to as a string like "tom, mary, robin@host". Loses any previously set values.
 	public void setToList(String s) {toList = Arrays.asList(s.split(",\\s+"));}
 	public void addTo(String to) {toList.add(to);}	// Add one "to" recipient
+	
+	
+	// SETTERS/GETTERS FOR CC: LIST
+	public List<String> getCcList() {return ccList;} // Get cc list, as an array of Strings
+	public void setCcList(ArrayList<String> cc) {ccList = cc;} //Set cc list to an ArrayList of Strings
+	
+	// Set cc as a string like "tom, mary, robin@host". Loses any previously set values.
+	public void setCcList(String s) {ccList = Arrays.asList(s.split(",\\s+"));}
+	public void addCc(String cc) {ccList.add(cc);}// Add one "cc" recipient
+	
+	// SETTERS/GETTERS FOR BCC: LIST
+	public List<String> getBccList() {return bccList;}// Get Bcc list, as an array of Strings
+	public void setBccList(List<String> bcc) {bccList = bcc;}// Set bcc list to an ArrayList of Strings
+	
+	// Set bcc as a string like "tom, mary, robin@host". Loses any previously set values.
+	public void setBccList(String s) {bccList = Arrays.asList(s.split(",\\s+"));}
+	public void addBcc(String bcc) {bccList.add(bcc);} // Add one "bcc" recipient
+	
+	/** Check if all required fields have been set before sending.
+	 * Normally called before doSend; called by doSend for verification.*/
+	public boolean isComplete() {
+		if (from == null    || from.length()==0) {
+			System.err.println("doSend: no FROM");
+			return false;
+		}
+		if (subject == null || subject.length()==0) {
+			System.err.println("doSend: no SUBJECT");
+			return false;
+		}
+		if (toList.size()==0) {
+			System.err.println("doSend: no recipients");
+			return false;
+		}
+		if (body == null || body.length()==0) {
+			System.err.println("doSend: no body");
+			return false;
+		}
+		if (mailHost == null || mailHost.length()==0) {
+			System.err.println("doSend: no server host");
+			return false;
+		}
+		return true; 
+	}
+	
+	// Send the message.
+	public synchronized void doSend(List<String> Attachment) throws MessagingException {
+		if (!isComplete())throw new IllegalArgumentException("doSend called before message was complete");
 		
+		//Properties object used to pass props into the MAIL API
+		Properties properties = new Properties();
 		
-		// SETTERS/GETTERS FOR CC: LIST
-		public List<String> getCcList() {return ccList;} // Get cc list, as an array of Strings
-		public void setCcList(ArrayList<String> cc) {ccList = cc;} //Set cc list to an ArrayList of Strings
+		// Your LAN must define the local SMTP server as "mailhost"
+		properties.put("mail.smtp.host", mailHost); //SMTP Host must match the from email address not to.
+		properties.put("mail.smtp.port", "587"); //TLS Port
+		properties.put("mail.smtp.auth", "true"); //enable authentication
+		properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
 		
-		// Set cc as a string like "tom, mary, robin@host". Loses any previously set values.
-		public void setCcList(String s) {ccList = Arrays.asList(s.split(",\\s+"));}
-		public void addCc(String cc) {ccList.add(cc);}// Add one "cc" recipient
-		
-		// SETTERS/GETTERS FOR BCC: LIST
-		public List<String> getBccList() {return bccList;}// Get Bcc list, as an array of Strings
-		public void setBccList(List<String> bcc) {bccList = bcc;}// Set bcc list to an ArrayList of Strings
-		
-		// Set bcc as a string like "tom, mary, robin@host". Loses any previously set values.
-		public void setBccList(String s) {bccList = Arrays.asList(s.split(",\\s+"));}
-		public void addBcc(String bcc) {bccList.add(bcc);} // Add one "bcc" recipient
-		
-		/** Check if all required fields have been set before sending.
-		 * Normally called before doSend; called by doSend for verification.*/
-		public boolean isComplete() {
-			if (from == null    || from.length()==0) {
-				System.err.println("doSend: no FROM");
-				return false;
-				}
-			if (subject == null || subject.length()==0) {
-				System.err.println("doSend: no SUBJECT");
-				return false;
-				}
-			if (toList.size()==0) {
-				System.err.println("doSend: no recipients");
-				return false;
-				}
-			if (body == null || body.length()==0) {
-				System.err.println("doSend: no body");
-				return false;
-				}
-			if (mailHost == null || mailHost.length()==0) {
-				System.err.println("doSend: no server host");
-				return false;
-				}
-			return true; 
+		//create Authenticator object to pass in Session.getInstance argument
+		Authenticator auth = new Authenticator() {
+			//override the getPasswordAuthentication method
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(from, "GC3W!ning!");
 			}
+		};
 		
-		// Send the message.
-		public synchronized void doSend(List<String> Attachment) throws MessagingException {
+		// Create the Session object
+		if (session == null) {
+			System.out.println("TLSEmail Start");
+			session = Session.getInstance(properties, auth);
+			System.out.println("Session created");
+			session.setDebug(isVerbose());// Set Debug log
+		}
+		
+		// create a message
+		final MimeMessage mesg = new MimeMessage(session);
+		mesg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+		mesg.addHeader("format", "flowed");
+		mesg.addHeader("Content-Transfer-Encoding", "8bit");
+		
+		InternetAddress[] addresses;
 			
-			if (!isComplete())throw new IllegalArgumentException("doSend called before message was complete");
-			session.setDebug(true);// Set Debug log
-			
-			//Properties object used to pass props into the MAIL API
-			Properties properties = new Properties();
-			
-			// Your LAN must define the local SMTP server as "mailhost"
-			properties.put("mail.smtp.host", mailHost); //SMTP Host must match the from email address not to.
-			properties.put("mail.smtp.port", "587"); //TLS Port
-			properties.put("mail.smtp.auth", "true"); //enable authentication
-			properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-			
-			//Username and password verification
-			Authenticator authenticator = new Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-		        	return new PasswordAuthentication(from, "Spring2020");
-		         }
-		     };
-		     
-			// Create the Session object
-			if (session == null) {
-				System.out.println("TLSEmail Start");
-				session = Session.getDefaultInstance(properties, authenticator);
-				if (isVerbose())session.setDebug(true);// Set Debug log
+		// TO Address list
+		addresses = new InternetAddress[toList.size()];
+		for (int i=0; i<addresses.length; i++)
+			addresses[i] = new InternetAddress((String)toList.get(i));
+		mesg.setRecipients(Message.RecipientType.TO, addresses);
+		
+		// From Address
+		if(isUseAlias()) {
+			try {
+				//Enable aliasing to hide email address.
+				mesg.setFrom(new InternetAddress(from, "no_reply@gce.com"));
+				mesg.setReplyTo(InternetAddress.parse("no_reply@gce.org", false)); //set false to hide real name
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			
-			// create a message
-			final MimeMessage mesg = new MimeMessage(session);
-			mesg.addHeader("Content-type", "text/HTML; charset=UTF-8");
-			mesg.addHeader("format", "flowed");
-			mesg.addHeader("Content-Transfer-Encoding", "8bit");
-			
-			InternetAddress[] addresses;
-			
-			// TO Address list
-			addresses = new InternetAddress[toList.size()];
-			for (int i=0; i<addresses.length; i++)
-				addresses[i] = new InternetAddress((String)toList.get(i));
-			mesg.setRecipients(Message.RecipientType.TO, addresses);
-			
-			// From Address
-			if(isUseAlias()) {
-				try {
-					//Enable aliasing to hide email address.
-					mesg.setFrom(new InternetAddress(from, "no_reply@gce.com"));
-					mesg.setReplyTo(InternetAddress.parse("no_reply@gce.org", false)); //set false to hide real name
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}else {
-				//set a true/false state to alternate between alias and real sender.
-				mesg.setFrom(new InternetAddress(from));
-			}
-			
-			
+		}else {
+			//set a true/false state to alternate between alias and real sender.
+			mesg.setFrom(new InternetAddress(from));
+		}
+		
+		if(ccList!=null || !bccList.isEmpty()) {
 			// CC Address list
 			addresses = new InternetAddress[ccList.size()];
 			for (int i=0; i<addresses.length; i++)
-				addresses[i] = new InternetAddress((String)ccList.get(i));
+				{addresses[i] = new InternetAddress((String)ccList.get(i));}
 			mesg.setRecipients(Message.RecipientType.CC, addresses);
 			
 			// BCC Address list
 			addresses = new InternetAddress[bccList.size()];
 			for (int i=0; i<addresses.length; i++)
-				addresses[i] = new InternetAddress((String)bccList.get(i));
+				{addresses[i] = new InternetAddress((String)bccList.get(i));}
 			mesg.setRecipients(Message.RecipientType.BCC, addresses);
-			
-			// The Subject
-			mesg.setSubject(subject, "UTF-8");
-			mesg.setSentDate(new Date());
-			
-			 // Create the message body part
-			BodyPart messageBodyPart = new MimeBodyPart();
-
-			 // Create a multipart message for attachment
-	        Multipart multipart = new MimeMultipart();
-
-	        // Second part is attachment
-	        for(String i: Attachment) {
-	        	messageBodyPart = new MimeBodyPart();
-	        	DataSource source = new FileDataSource(i);
-	        	messageBodyPart.setDataHandler(new DataHandler(source));
-	        	messageBodyPart.setFileName(i);
-	        	multipart.addBodyPart(messageBodyPart);
-	        }
-	        
-	        if(newsletter==true) {
-	        	multipart=FormatNode.LetterFormat(body);
-	        }else {
-	        	 // Fill the message
-	            messageBodyPart.setText(body);
-	            
-	        	// Set text message part
-	        	multipart.addBodyPart(messageBodyPart);
-	        }
-	           
-	 
-	        // Send the complete message parts
-	        mesg.setContent(multipart);
-			Transport.send(mesg);  
 		}
 		
+		// The Subject
+		mesg.setSubject(subject, "UTF-8");
+		mesg.setSentDate(new Date());
+		
+		// Create the message body part
+		BodyPart messageBodyPart = new MimeBodyPart();
+		// Create a multipart message for attachment
+		Multipart multipart = new MimeMultipart();
+		
+		// Second part is attachment
+		if(!Attachment.isEmpty()) {
+			for(String i: Attachment) {
+				messageBodyPart = new MimeBodyPart();
+				DataSource source = new FileDataSource(i);
+				messageBodyPart.setDataHandler(new DataHandler(source));
+				messageBodyPart.setFileName(i);
+				multipart.addBodyPart(messageBodyPart);
+			}
+		}
+		
+		if(newsletter==true) {
+			multipart=FormatNode.LetterFormat(body);
+		}else {
+			// Fill the message
+			messageBodyPart.setText(body);
+			// Set text message part
+			multipart.addBodyPart(messageBodyPart);
+		}
+		
+		// Send the complete message parts
+		mesg.setContent(multipart);
+		Transport.send(mesg);  
+	}
+
 		public static void send(
 				String mailhost, String recipient, String sender, ArrayList<String> cc,
 				Boolean alias, String subject, String message, List<String> inputPath)
@@ -238,7 +236,20 @@ public class EmailEngine {
 			m.setSubject(subject);
 			m.setBody(message);
 			m.doSend(inputPath);
-			newsletter=true;
+			newsletter=false;
 			}
 
+		public static void constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
+			try {
+				Resource resource = new ClassPathResource("/validation.properties");
+				Properties props = PropertiesLoaderUtils.loadProperties(resource);
+				String url = contextPath + "/Account/user/changePassword?token=" + token;
+				String message = props.getProperty("message.resetPassword");
+				System.out.println(message + " \r\n" + url);
+				//then send email
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}

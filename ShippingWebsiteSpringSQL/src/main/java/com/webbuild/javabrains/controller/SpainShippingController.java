@@ -1,10 +1,15 @@
 package com.webbuild.javabrains.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,13 +26,16 @@ import com.webbuild.javabrains.model.Categories;
 import com.webbuild.javabrains.model.InvoiceInfo;
 import com.webbuild.javabrains.model.OrderDetails;
 import com.webbuild.javabrains.model.Products;
+import com.webbuild.javabrains.model.Role;
 import com.webbuild.javabrains.model.Suppliers;
 import com.webbuild.javabrains.model.TableObjects;
+import com.webbuild.javabrains.model.User;
 import com.webbuild.javabrains.repository.CategoriesRepository;
 import com.webbuild.javabrains.repository.OrderDetailsRepository;
 import com.webbuild.javabrains.repository.ProductsRepository;
 import com.webbuild.javabrains.repository.ShippingRepository;
 import com.webbuild.javabrains.repository.SuppliersRepository;
+import com.webbuild.javabrains.repository.UserRepository;
 import com.webbuild.javabrains.service.SecurityService;
 
 
@@ -41,7 +49,6 @@ public class SpainShippingController {
 	public static String pageflag="";
 	static String Namesave;
 	static int range=0;
-	private static String Role;
 	static double[][] array;
 	List<OrderDetails> discount;
 	List<Suppliers> Sellers;
@@ -66,11 +73,13 @@ public class SpainShippingController {
 	@Autowired //call data table and all stored functions
 	OrderDetailsRepository orderdetailsservice;
 	
+	@Autowired //call data table and all stored functions
+	UserRepository userservice;
+	
 	//Set Employee table and homepage information
 	@RequestMapping(value = {"/Europe", "/Europe/{id}"}) //web site control statement
 	public ModelAndView getManagerPageTableObjects(@PathVariable(required=false) String id) {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
-		Role="Europe";
 		String[] headders=ExternalConnection.SetSortParamiters();//the list of key values to sort the table by
 		//check for starting flag
 		if(id==null) {
@@ -94,12 +103,30 @@ public class SpainShippingController {
 	public ModelAndView getUserPageTableObjects() {
 		ModelAndView model = new ModelAndView("UserInterFace/welcome"); //first load a named .jsp file
 		List<TableObjects> ordersList = null;
-		Role="America";
 		ordersList = shippingservice.getUserTable("GODOS"); //run a default sql  query 
 		model.addObject("role", "none"); //Hide All Manager Operations
 		//set Global object for web page
 		model.addObject("ordersList", ordersList); //send objects to jsp page
 		return model; //load page command
+	}
+	
+	//Set Employee table and homepage information
+	@RequestMapping(value = {"/Pacific"}) //web site control statement
+	public ModelAndView Adminsetup() {
+		ModelAndView model = new ModelAndView("UserInterFace/AdminPage");
+		Resource resource = new ClassPathResource("/validation.properties");
+		try {
+			Properties props = PropertiesLoaderUtils.loadProperties(resource);
+			String test=props.getProperty("token.message");
+			model.addObject("message", test);
+			model.addObject("UserTable", userservice.findAll());
+			return model;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addObject("UserTable", userservice.findAll());
+		return model;
 	}
 	
 	//Single object call
@@ -278,16 +305,16 @@ public class SpainShippingController {
 	//Collect the the processed data and send it over to another Controller file 
 	public static double[][] FetchValues(){return (array);}
 	public static String FetchNameValues(){return Namesave;}
-	public static void ResetValues(){pageflag=""; Role="";} //reset stored token values.
+	public static void ResetValues(){pageflag="";} //reset stored token values.
 	
 	//To prevent cross sight scripting a dynamic page redirect is needed
 	private ModelAndView premissions() {
-		if(Role.equalsIgnoreCase("America")) {
-			return new ModelAndView("redirect:/Shipping/"+Role);//user home page
-		}else if(Role.equalsIgnoreCase("Europe")) {
-			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag);//employee home page
-		}else {
-			return new ModelAndView("redirect:/Shipping/"+Role+"/"+pageflag); //Admin Page to be added later
-		}	
+		User account=UserController.FetchValues();
+		for(Role i:account.getRoles()) {
+			if(securityService.FindAuthentication().contains(i.getDIVISIONNAME())){
+				return new ModelAndView("redirect:/Shipping/"+i.getDIVISIONNAME()); //Admin Page to be added later
+			}	
+		}
+		return null;
 	}
 }

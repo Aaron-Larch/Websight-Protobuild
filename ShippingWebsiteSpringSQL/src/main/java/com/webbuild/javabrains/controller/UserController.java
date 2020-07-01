@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.webbuild.javabrains.model.Role;
 import com.webbuild.javabrains.model.User;
@@ -54,17 +55,21 @@ public class UserController {
     }
 
     //Check Token for flag values to prompt the user
-    @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
-    	if (error != null) { //Message for login error
-            model.addAttribute("error", "Your username and password is invalid.");
-        }
-        if (logout != null) { //Message for confirmed log out
-        	if(usr != null) {usr=userService.saveRecord(usr);}
-        	model.addAttribute("message", "You have been logged out successfully.");
-        }
-        return "UserInterFace/login";
-    }
+	@GetMapping("/login")
+	public String login(Model model, @RequestParam(value = "attr", required = false) String attr, 
+			String error, String logout, String resettoken) {
+		if (error != null) { //Message for login error
+			model.addAttribute("error", "Your username and password is invalid.");
+		}
+		if (logout != null) { //Message for confirmed log out
+			if(usr != null && usr.getRoleid()==2) {usr=userService.saveRecord(usr);}
+			model.addAttribute("message", "You have been logged out successfully.");
+		}
+		if (resettoken != null) { //Message for password recovery
+			model.addAttribute("message", attr);
+		}
+		return "UserInterFace/login";
+	}
     
     //Use the user roles to determine what to load in the user home page 
     @GetMapping({"/", "/welcome"})
@@ -73,7 +78,9 @@ public class UserController {
         //Get authentication Data from the server to determine the current users role 
     	for(Role i:userService.GetRolls()) {
     		if(securityService.FindAuthentication().contains(i.getDIVISIONNAME())){
-    			if(i.getDIVISIONID()==2) {userService.LoadRecord(usr);} //load all save data
+    			if(i.getDIVISIONID()==2) {
+    				userService.LoadRecord(usr);
+    				} //load all save data
     			return "redirect:/Shipping/"+i.getDIVISIONNAME(); //load all user information
     		}
     	 }

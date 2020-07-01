@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.webbuild.javabrains.Store;
 import com.webbuild.javabrains.controller.SpainShippingController;
+import com.webbuild.javabrains.model.PasswordResetToken;
 import com.webbuild.javabrains.model.Role;
 import com.webbuild.javabrains.model.User;
+import com.webbuild.javabrains.repository.PasswordResetTokenRepository;
 import com.webbuild.javabrains.repository.RoleRepository;
 import com.webbuild.javabrains.repository.ShippingRepository;
 import com.webbuild.javabrains.repository.UserRepository;
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService {
     
     @Autowired //call data table and all stored functions
 	ShippingRepository shippingservice;
+    
+    @Autowired
+    private PasswordResetTokenRepository passwordTokenRepository;
     
     Set<Role> Security= new HashSet<Role>(); //Create a new role list
     private static AnaliticService Dataprep = new AnaliticService();
@@ -78,7 +83,33 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
     
+    @Override
     public List<Role> GetRolls(){
     	return roleRepository.findAll();
+    }
+    
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+    
+    //SELCET * FROM USER WHERE Email= 'input'
+    @Override
+    public User findUserByEmail(String Email) {
+        return userRepository.findByUsername(Email);
+    }
+    
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+    	PasswordResetToken myToken = new PasswordResetToken(token, user);
+    	passwordTokenRepository.save(myToken);
+    }
+    
+    public void changeUserPassword(User user, String password) {
+    	User update= userRepository.findByUsername(user.getUsername());
+        update.setUsername(user.getUsername());
+        update.setPassword(bCryptPasswordEncoder.encode(password));
+        userRepository.save(update);
+        
     }
 }

@@ -15,4 +15,13 @@ public interface UserService {
 	User saveRecord(User usr);
 	
 	void LoadRecord(User usr);
+	
+	List<User> findAll();
+
+	User findUserByEmail(String Email);
+	
+	void createPasswordResetTokenForUser(User user, String token);
+
+	void changeUserPassword(User userForm, String passwordConfirm);
+
 }

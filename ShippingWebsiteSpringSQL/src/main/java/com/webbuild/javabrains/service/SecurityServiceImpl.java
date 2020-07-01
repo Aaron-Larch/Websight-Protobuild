@@ -1,5 +1,7 @@
 package com.webbuild.javabrains.service;
 
+import java.util.Calendar;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.webbuild.javabrains.model.PasswordResetToken;
+import com.webbuild.javabrains.repository.PasswordResetTokenRepository;
+
+
 @Service //Create and store information in the server log
 public class SecurityServiceImpl implements SecurityService{
     @Autowired //call the authentication layer
@@ -18,6 +24,9 @@ public class SecurityServiceImpl implements SecurityService{
 
     @Autowired //call the user details method
     private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private PasswordResetTokenRepository passwordTokenRepository;
 
     //create a log object
     private static final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
@@ -60,4 +69,26 @@ public class SecurityServiceImpl implements SecurityService{
         String username = auth.getName(); //set Authentication to string
     	return username;
     }
+    
+    public PasswordResetToken passToken(String token) {
+    	return passwordTokenRepository.findByToken(token);
+    }
+    
+    public String validatePasswordResetToken(String token) {
+        final PasswordResetToken passToken = passToken(token);
+        return !isTokenFound(passToken) ? "invalidToken"
+                : isTokenExpired(passToken) ? "expired"
+                : "validToken";
+    }
+     
+    private boolean isTokenFound(PasswordResetToken passToken) {
+        return passToken != null;
+    }
+     
+    private boolean isTokenExpired(PasswordResetToken passToken) {
+        final Calendar cal = Calendar.getInstance();
+        return passToken.getExpiryDate().before(cal.getTime());
+    }
+    
+    
 }

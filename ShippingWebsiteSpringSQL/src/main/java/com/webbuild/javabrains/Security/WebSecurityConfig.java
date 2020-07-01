@@ -39,9 +39,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests() //Set website available to the user at login
-                .antMatchers("/resources/**", "/registration", "/HomePage", "/TestPage").permitAll()
-                .antMatchers("/welcome").authenticated()
+                .antMatchers("/resources/**", "/registration", "/HomePage", "/TestPage", "/Account/user/changePassword").permitAll()
+                .antMatchers("/welcome", "/Sipping/SingleObject", "/Sipping/SingleObject/**", "Sipping/addneworder", 
+                		"Sipping/addneworder/**", "Sipping/tableUpdate", "Sipping/tableUpdate/**", "Sipping/SpainDelete/").authenticated()
                 .antMatchers("/Sipping/America").hasRole("America")
+                .antMatchers("/Sipping/Pacific", "/Account/ResetPassword").hasRole("Pacific")
                 .antMatchers("/Sipping/Europe", "/Sipping/Europe/**", "/Sipping/switchup").hasRole("Europe")
                 .antMatchers("/Stats/**").hasRole("Europe")
                 .anyRequest().authenticated()

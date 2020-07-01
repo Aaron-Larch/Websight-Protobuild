@@ -30,7 +30,7 @@ public class systemTest {
 			//ccEmail.add("a.larch@yahoo.com");
 			
 			EmailEngine.send(
-					"smtp.outlook.com",
+					"smtp.office.com",
 					"a.larch@yahoo.com",
 					"aaron.larch@gce.org",
 					ccEmail,

@@ -85,6 +85,8 @@
 
 <!--table object for compairison shopping and discount coupons future proofed-->
  <div class="checkout">
+ 	<spring:url value="/Shipping/addneworder/Invoicve" var="invoice" />
+	<form:form ModelAttribute="input" method="post" action="${invoice}" id="my_form"></form:form>
 	<table class="table table-striped" id="Invoice-Table">
 	<tbody>
 		<c:forEach items="${Owner}" var="comp" varStatus="status" >
@@ -102,9 +104,6 @@
 		<form:input type="text" path="input.Ammount" form="my_form"/>
 		<div id="FailedResult">${error}</div>
 		<form:hidden path="input.Units" form="my_form" value="${status.index}"/>
-		<spring:url value="/Shipping/addneworder/Invoicve" var="invoice" />
-		<form:form ModelAttribute="input" method="post" action="${invoice}" id="my_form"></form:form>
-		
 	</td>
 	<td style="white-space:pre-wrap; word-wrap:break-word">
 

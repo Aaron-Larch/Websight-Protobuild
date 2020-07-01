@@ -1,6 +1,8 @@
 package com.webbuild.javabrains.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -19,6 +21,7 @@ public class UserValidator implements Validator {
     public boolean supports(Class<?> aClass) {
         return User.class.equals(aClass);
     }
+    
 
     @Override
     public void validate(Object o, Errors errors) {
@@ -50,6 +53,28 @@ public class UserValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
         if (user.getEmail().length() < 6 || user.getEmail().length() > 32) {
             errors.rejectValue("email", "Size.userForm.email"); //call Stored error message from the validation resource file
+        }
+    }
+    
+    public void validateToken(Object o, Errors errors) {
+        User user = (User) o;
+        User test=userService.findByUsername(user.getUsername());
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        //Check user object to see if password is null
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
+        //Check user object to see if user name is already in the data base
+        if (bCryptPasswordEncoder.matches(user.getPassword(), test.getPassword())) {
+            errors.rejectValue("password", "User.error.repeatedPassword"); //call Stored error message from the validation resource file
+        }
+        
+        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) { //Set your password parameters here
+            errors.rejectValue("password", "Size.userForm.password"); //call Stored error message from the validation resource file
+        }
+
+        //Check user object to see if the password comparison is correct 
+        if (!user.getPasswordConfirm().equals(user.getPassword())) {
+            errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm"); //call Stored error message from the validation resource file
         }
     }
 }
