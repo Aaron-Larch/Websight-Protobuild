@@ -199,8 +199,7 @@ function buildReport(
 
 function renderChart(input) {
 	/*Chart program layouts as found on https://www.chartjs.org/samples/latest/*/
-	document.getElementById('display2').innerHTML=input;
-	  var chart = new Chart("chartContainer", { 
+	var chart = new Chart("chartContainer", { 
 		  type: 'line',
 			  data: {
 			    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -214,9 +213,9 @@ function renderChart(input) {
 			  options: {
 			    title: {
 			      display: true,
-			      text: 'Simple Line Chart'
+			      text: 'This site can also track Large volumes of data over time and place them into graphs using CharJS software'
 	                    }
 	                }
 			});
-		  chart.render();
+	chart.render();
 }

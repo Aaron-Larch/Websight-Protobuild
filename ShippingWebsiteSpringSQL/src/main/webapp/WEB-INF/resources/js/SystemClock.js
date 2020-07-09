@@ -4,6 +4,7 @@ var lunchtime = 12;
 var naptime = lunchtime + 2;
 var partytime;
 var evening = 18;
+var oneSecond = 1000; // Define a second
 
 // Getting it to show the current time on the page
 var showCurrentTime = function()
@@ -43,7 +44,6 @@ var showCurrentTime = function()
  
     // put together the string that displays the time
     var clockTime = hours + ':' + minutes + ':' + seconds + " " + meridian + "!";
- 
     clock.innerText = clockTime;
 };
 
@@ -102,7 +102,6 @@ var updateClock = function()
 updateClock();
 
 // Getting the clock to increment once a second
-var oneSecond = 1000;
 setInterval( updateClock, oneSecond);
 
 
@@ -160,3 +159,22 @@ var napEvent = function()
 };
 
 napTimeSelector.addEventListener("change", napEvent);
+
+function SlidShow() {
+	  var i;
+	  var x = document.getElementsByClassName("mySlides");
+	  for (i = 0; i < x.length; i++) {
+	    x[i].style.display = "none";  
+	  }
+	  myIndex++;
+	  if (myIndex > x.length) {myIndex = 1}
+	  if (myIndex-2 > 0){
+		  x[myIndex-2].style.display = "block";
+		  trasision
+		  x[myIndex-1].style.display = "block";
+	  }else{
+		  transisition
+		  x[myIndex-1].style.display = "block";
+	  }  
+	  setTimeout(carousel, (oneSecond*2)); // Change image every 2 seconds
+}

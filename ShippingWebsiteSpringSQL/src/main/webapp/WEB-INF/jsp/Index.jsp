@@ -2,26 +2,72 @@
     pageEncoding="ISO-8859-1" import= "java.util.Arrays"%>
     <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>    
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+    <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/> 
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Hello World!</title>
+	<title>JBA Shipping inc.</title>
 	<script><%@include file="../resources/js/reportfunctions.js"%></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<style>
+
+.Site_Features_List {
+  width: 1100px;
+  height: 350px;
+  left: 8px;
+  overflow: hidden;
+  border: 1px solid black;
+  position: relative;
+  }
+.ProductSlides{
+	width: 1100px;
+	object-fit: cover;
+  }
+.SlideText {
+	position: absolute;
+	top: 89%;
+	left: 8px;
+	width: 210px;
+	height: 30px;
+	font-size:20px;
+	color:white;
+	background: black;
+	text-indent: 20px;
+  }
+#pic{width: 100%;}
+
+.ProductSlides.shifting {
+    right: 0;
+	transition: right .2s ease-out;
+    opacity:1;
+	
+}
+
+
+</style>
 </head>
 <body>
     <h2 class="hello-title">This is a home page to launch the project proper</h2>
     <p>Insert into here a fancy page to sell the compony and what it dose</p>
+    
     <div id="Placeholder">${test}</div>
-   	<div id="display2"></div>
-   	<div id="stage"></div>
-    <canvas class="item" id="chartContainer"  style="height: 300px; width: 100%;"></canvas>
+    <div id="slider" class="Site_Features_List">
+		<c:forEach var="img" items="${imageUrlList}">  
+			<div id="silde" class="ProductSlides">
+				<img id="pic" src="${contextPath}/ImageAssets/${img}" alt="MissingImg" width="800" height="400"/>
+				<p class="SlideText"><span>${fn:substringBefore(img, ".")}</span></p>
+			</div>
+		</c:forEach>
+		<canvas class="ProductSlides" id="chartContainer" style="height=50px; width: 100%; object-fit: cover;"></canvas>
+	</div>
+	
+
     <spring:url value="${contextPath}/login" var="StartURL" />
   	<a id="LoadFile" href="${StartURL }" >Login</a>.
 		<spring:url value="/TestPage" var="invoice" />
@@ -142,6 +188,23 @@
 	$(document).ready(function(){
 		renderChart(${Arrays.toString(Data)});
 	});
+	
+	var myIndex = 0;
+	
+	carousel();
+
+	
+	function carousel() {
+	  var i;
+	  var x = document.getElementsByClassName("ProductSlides");
+	  for (i = 0; i < x.length; i++) {
+	    x[i].style.display = "none";  
+	  }
+	  myIndex++;
+	  if (myIndex > x.length) {myIndex = 1}    
+	  x[myIndex-1].style.display = "block";  
+	  setTimeout(carousel, 4000); // Change image every 4 seconds
+	}
   </script>
   
 </body>
